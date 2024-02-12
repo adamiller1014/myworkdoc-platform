@@ -1,17 +1,757 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
-    provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["multiSchema"]
 }
 
 datasource db {
-    provider = "sqlite"
-    url      = env("DATABASE_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  schemas  = ["public", "triage"]
 }
 
-model Post {
-    id      String @id @default(cuid())
-    title   String
-    content String
+model business_lines {
+  id         BigInt     @id @default(autoincrement())
+  company_id BigInt?
+  active     Boolean?   @default(true)
+  name       String?    @db.VarChar(255)
+  code       String?    @db.VarChar(255)
+  companies  companies? @relation(fields: [company_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  profiles   profiles[]
+
+  @@unique([company_id, name, code])
+  @@schema("public")
+}
+
+model case_chats {
+  id                BigInt    @default(autoincrement())
+  case_id           BigInt?
+  created_on        DateTime  @id @default(now()) @db.Timestamptz(6)
+  message           String?
+  sender_profile_id BigInt?
+  cases             cases?    @relation(fields: [case_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  profiles          profiles? @relation(fields: [sender_profile_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@schema("public")
+}
+
+model case_form_responses {
+  id                   BigInt      @id @default(autoincrement())
+  case_form_id         BigInt?
+  case_id              BigInt?
+  form_response        Json?
+  created_on           DateTime?   @default(now()) @db.Timestamptz(6)
+  published            Boolean?    @default(true)
+  submitter_profile_id BigInt?
+  triage_protocol_id   Int?
+  case_forms           case_forms? @relation(fields: [case_form_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  cases                cases?      @relation(fields: [case_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  Algorithm            Algorithm?  @relation(fields: [triage_protocol_id], references: [AlgorithmID], onDelete: NoAction, onUpdate: NoAction)
+
+  @@schema("public")
+}
+
+model case_form_types {
+  id               BigInt       @id(map: "form_types_pkey") @default(autoincrement())
+  name             String?      @db.VarChar(255)
+  created_on       DateTime?    @default(now()) @db.Timestamptz(6)
+  provider_visible Boolean?     @default(true)
+  employee_visible Boolean?     @default(false)
+  company_visible  Boolean?     @default(false)
+  updated_on       DateTime?    @default(now()) @db.Timestamptz(6)
+  case_forms       case_forms[]
+
+  @@schema("public")
+}
+
+model case_forms {
+  id                  BigInt                @id @default(autoincrement())
+  name                String?               @db.VarChar(255)
+  case_form_type_id   BigInt?
+  created_on          DateTime?             @default(now()) @db.Timestamptz(6)
+  updated_on          DateTime?             @default(now()) @db.Timestamptz(6)
+  form_info           Json?
+  active              Boolean?              @default(true)
+  order               Int?
+  case_form_responses case_form_responses[]
+  case_form_types     case_form_types?      @relation(fields: [case_form_type_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@schema("public")
+}
+
+model case_types {
+  id         BigInt  @id @default(autoincrement())
+  name       String? @db.VarChar(255)
+  type       String? @db.VarChar(255)
+  properties Json?
+  cases      cases[]
+
+  @@schema("public")
+}
+
+model cases {
+  id                                               BigInt                @id @default(autoincrement())
+  profile_id                                       BigInt
+  case_notes                                       String[]
+  closed                                           Boolean?              @default(false)
+  created_on                                       DateTime?             @default(now()) @db.Timestamptz(6)
+  closed_on                                        DateTime?             @db.Timestamptz(6)
+  case_number                                      BigInt                @default(autoincrement())
+  reporter_profile_id                              BigInt?
+  case_type_id                                     BigInt?               @default(1)
+  case_manager_profile_id                          BigInt?
+  vonage_video_sid                                 String?               @db.VarChar(2048)
+  updated_on                                       DateTime?             @default(now()) @db.Timestamptz(6)
+  end_restricted_date                              DateTime?             @db.Date
+  lost_time_days                                   Int?
+  recordable                                       Boolean?
+  start_restricted_date                            DateTime?             @db.Date
+  total_restricted_days                            Int?
+  chat_subscribers_profile_ids                     BigInt[]
+  end_lost_date                                    DateTime?             @db.Date
+  start_lost_date                                  DateTime?             @db.Date
+  case_chats                                       case_chats[]
+  case_form_responses                              case_form_responses[]
+  profiles_cases_case_manager_profile_idToprofiles profiles?             @relation("cases_case_manager_profile_idToprofiles", fields: [case_manager_profile_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  case_types                                       case_types?           @relation(fields: [case_type_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  profiles_cases_profile_idToprofiles              profiles              @relation("cases_profile_idToprofiles", fields: [profile_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  profiles_cases_reporter_profile_idToprofiles     profiles?             @relation("cases_reporter_profile_idToprofiles", fields: [reporter_profile_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  followups                                        followups[]
+  rooms                                            rooms[]
+
+  @@index([case_number])
+  @@schema("public")
+}
+
+model companies {
+  id                    BigInt                @id @default(autoincrement())
+  name                  String                @unique @db.VarChar(255)
+  address               String?               @db.VarChar(255)
+  logo                  String?               @db.VarChar(255)
+  joined_on             DateTime?             @default(now()) @db.Timestamptz(6)
+  created_on            DateTime?             @default(now()) @db.Timestamptz(6)
+  settings              Json?
+  active                Boolean?              @default(true)
+  default_timezone      String?               @db.VarChar(255)
+  business_phone_number String?               @db.VarChar(255)
+  additional_notes      String?
+  poc                   Json?
+  business_lines        business_lines[]
+  departments           departments[]
+  field_offices         field_offices[]
+  job_titles            job_titles[]
+  notification_groups   notification_groups[]
+  profiles              profiles[]
+  roles                 roles[]
+
+  @@schema("public")
+}
+
+model consents {
+  id         BigInt    @id @default(autoincrement())
+  name       String?
+  content    String?
+  revision   String?
+  created_on DateTime? @default(now()) @db.Timestamptz(6)
+  updated_on DateTime? @default(now()) @db.Timestamptz(6)
+  required   Boolean?
+
+  @@schema("public")
+}
+
+model departments {
+  id         BigInt     @id @default(autoincrement())
+  company_id BigInt?
+  active     Boolean?   @default(true)
+  name       String?    @db.VarChar(255)
+  code       String?    @db.VarChar(255)
+  companies  companies? @relation(fields: [company_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  profiles   profiles[]
+
+  @@unique([company_id, name, code])
+  @@schema("public")
+}
+
+model feedback {
+  id              BigInt    @id(map: "support_pkey") @default(autoincrement())
+  profile_id      BigInt?
+  type            String?   @db.VarChar(255)
+  description     String?   @db.VarChar(10000)
+  acknowledged    Boolean?  @default(false)
+  created_on      DateTime? @default(now()) @db.Timestamptz(6)
+  acknowledged_on DateTime? @db.Timestamptz(6)
+  error           Json?
+  platform        String?   @db.VarChar(255)
+
+  @@schema("public")
+}
+
+model field_offices {
+  id         BigInt     @id @default(autoincrement())
+  company_id BigInt?
+  active     Boolean?
+  name       String?
+  code       String?
+  companies  companies? @relation(fields: [company_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  profiles   profiles[]
+
+  @@schema("public")
+}
+
+model file_uploads {
+  id                BigInt    @id @default(autoincrement())
+  case_id           BigInt?
+  file_key          String?
+  uploader_id       BigInt?
+  created_on        DateTime? @default(now()) @db.Timestamptz(6)
+  customer_access   Boolean?  @default(false)
+  original_filename String?
+
+  @@schema("public")
+}
+
+model followup_types {
+  id        BigInt      @id @default(autoincrement())
+  name      String?     @db.VarChar(255)
+  followups followups[]
+
+  @@schema("public")
+}
+
+model followups {
+  id                    BigInt          @id @default(autoincrement())
+  case_id               BigInt?
+  assigned_profile_id   BigInt?
+  start_date            DateTime?       @db.Timestamptz(6)
+  end_date              DateTime?       @db.Timestamptz(6)
+  notes                 String?         @db.VarChar(2048)
+  followup_type_id      BigInt?
+  closed                Boolean?        @default(false)
+  notify_minutes_before BigInt?         @default(10)
+  profiles              profiles?       @relation(fields: [assigned_profile_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  cases                 cases?          @relation(fields: [case_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  followup_types        followup_types? @relation(fields: [followup_type_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@schema("public")
+}
+
+model form_responses {
+  id                     BigInt    @id(map: "form_reports_pkey") @default(autoincrement())
+  profile_id             BigInt?
+  form_id                BigInt?
+  questionnaire_response Json?
+  device_info            Json?
+  created_on             DateTime? @default(now()) @db.Timestamptz(6)
+  profiles               profiles? @relation(fields: [profile_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "form_reports_profile_id_fkey")
+
+  @@schema("public")
+}
+
+model forms {
+  id             BigInt    @id @default(autoincrement())
+  default        Boolean?  @default(false)
+  form_type_id   BigInt?
+  created_on     DateTime? @db.Timestamptz(6)
+  name           String?   @db.VarChar(255)
+  form_folder_id BigInt?
+  active         Boolean?  @default(true)
+  form_info      Json?
+  company_id     BigInt?
+
+  @@schema("public")
+}
+
+model hierarchical {
+  id                                                BigInt    @id @default(autoincrement())
+  parent_profile_id                                 BigInt?
+  child_profile_id                                  BigInt?
+  profiles_hierarchical_child_profile_idToprofiles  profiles? @relation("hierarchical_child_profile_idToprofiles", fields: [child_profile_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  profiles_hierarchical_parent_profile_idToprofiles profiles? @relation("hierarchical_parent_profile_idToprofiles", fields: [parent_profile_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@unique([parent_profile_id, child_profile_id])
+  @@schema("public")
+}
+
+model job_titles {
+  id         BigInt     @id @default(autoincrement())
+  company_id BigInt?
+  active     Boolean?
+  name       String?
+  companies  companies? @relation(fields: [company_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  profiles   profiles[]
+
+  @@unique([company_id, name])
+  @@schema("public")
+}
+
+model list {
+  id           BigInt   @id @default(autoincrement())
+  company_id   BigInt?
+  list_type_id BigInt?
+  name         String?
+  code         String?
+  active       Boolean? @default(true)
+  dataset_id   BigInt?
+
+  @@schema("public")
+}
+
+model list_types {
+  id     BigInt   @id @default(autoincrement())
+  name   String?  @db.VarChar
+  active Boolean? @default(true)
+
+  @@schema("public")
+}
+
+model notification_event_types {
+  id             BigInt   @id @default(autoincrement())
+  name           String?
+  description    String?
+  customer       Boolean?
+  provider       Boolean?
+  parent_id      BigInt?
+  trigger_fields Json?
+  notify_fields  Json?
+  short_name     String?
+
+  @@schema("public")
+}
+
+model notification_groups {
+  id                 BigInt     @id @default(autoincrement())
+  company_id         BigInt?
+  active             Boolean?   @default(true)
+  event_id           BigInt?
+  notify_conditions  Json?
+  notify_email       Boolean?   @default(false)
+  notify_push        Boolean?   @default(false)
+  notify_sms         Boolean?   @default(false)
+  trigger_conditions Json?
+  name               String?    @db.VarChar(250)
+  companies          companies? @relation(fields: [company_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@schema("public")
+}
+
+model permissions {
+  id              BigInt         @id @default(autoincrement())
+  profile_type_id BigInt?
+  type            String?        @db.VarChar(255)
+  short_name      String?        @unique @db.VarChar(255)
+  name            String?        @db.VarChar(255)
+  description     String?        @db.VarChar(500)
+  V2              Boolean?       @default(false)
+  properties      Json?
+  profile_types   profile_types? @relation(fields: [profile_type_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@schema("public")
+}
+
+model profile_types {
+  id          BigInt        @id @default(autoincrement())
+  type        String?       @unique @db.VarChar(255)
+  access      Json?
+  permissions permissions[]
+  profiles    profiles[]
+
+  @@schema("public")
+}
+
+model profiles {
+  id                                                    BigInt                   @id @default(autoincrement())
+  first_name                                            String?                  @db.VarChar(255)
+  last_name                                             String?                  @db.VarChar(255)
+  email                                                 String                   @unique @db.VarChar(255)
+  birth_date                                            DateTime?                @db.Date
+  hire_date                                             DateTime?                @db.Date
+  term_date                                             DateTime?                @db.Date
+  role_id                                               BigInt?
+  cell_number                                           String                   @unique @db.VarChar(255)
+  password                                              String?                  @db.VarChar(255)
+  profile_type_id                                       BigInt?                  @default(3)
+  company_id                                            BigInt?
+  created_on                                            DateTime?                @default(now()) @db.Timestamptz(6)
+  updated_on                                            DateTime?                @db.Timestamptz(6)
+  has_password_set                                      Boolean?
+  active                                                Boolean?                 @default(true)
+  access_code                                           String?                  @db.VarChar(255)
+  metadata                                              Json?                    @default("{\"notifications\": null}")
+  access_code_attempts                                  BigInt?
+  ein                                                   String?                  @db.VarChar(255)
+  fts_col                                               Unsupported("tsvector")?
+  home_address                                          String?                  @db.VarChar(2048)
+  password_reset_on                                     DateTime?                @default(now()) @db.Timestamptz(6)
+  additional_fields                                     Json?
+  business_line_id                                      BigInt?
+  department_id                                         BigInt?
+  field_office_id                                       BigInt?
+  job_title_id                                          BigInt?
+  hse_manager_id                                        BigInt?
+  manager_id                                            BigInt?
+  supervisor_id                                         BigInt?
+  accepted_consents                                     BigInt[]
+  notifications                                         Json?
+  case_chats                                            case_chats[]
+  cases_cases_case_manager_profile_idToprofiles         cases[]                  @relation("cases_case_manager_profile_idToprofiles")
+  cases_cases_profile_idToprofiles                      cases[]                  @relation("cases_profile_idToprofiles")
+  cases_cases_reporter_profile_idToprofiles             cases[]                  @relation("cases_reporter_profile_idToprofiles")
+  followups                                             followups[]
+  form_responses                                        form_responses[]
+  hierarchical_hierarchical_child_profile_idToprofiles  hierarchical[]           @relation("hierarchical_child_profile_idToprofiles")
+  hierarchical_hierarchical_parent_profile_idToprofiles hierarchical[]           @relation("hierarchical_parent_profile_idToprofiles")
+  business_lines                                        business_lines?          @relation(fields: [business_line_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  companies                                             companies?               @relation(fields: [company_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  departments                                           departments?             @relation(fields: [department_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  field_offices                                         field_offices?           @relation(fields: [field_office_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  profiles                                              profiles?                @relation("profilesToprofiles", fields: [hse_manager_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  other_profiles                                        profiles[]               @relation("profilesToprofiles")
+  job_titles                                            job_titles?              @relation(fields: [job_title_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  profile_types                                         profile_types?           @relation(fields: [profile_type_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  roles                                                 roles?                   @relation(fields: [role_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  push_devices                                          push_devices[]
+
+  @@unique([company_id, ein])
+  @@index([fts_col], type: Gin)
+  @@schema("public")
+}
+
+model push_devices {
+  id         BigInt    @id @default(autoincrement())
+  profile_id BigInt?
+  os         String?   @db.VarChar(255)
+  token      String?   @db.VarChar(2048)
+  active     Boolean?  @default(true)
+  profiles   profiles? @relation(fields: [profile_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@unique([token, profile_id])
+  @@schema("public")
+}
+
+model refresh_tokens {
+  id            BigInt   @id @default(autoincrement())
+  profile_id    Int?
+  refresh_token String?  @db.VarChar(2048)
+  revoked       Boolean?
+
+  @@schema("public")
+}
+
+model reported_forms {
+  id                     BigInt    @id @default(autoincrement())
+  form_id                BigInt?
+  created_on             DateTime? @default(now()) @db.Timestamptz(6)
+  profile_id             BigInt?
+  device_info            Json?
+  questionnaire_response Json?
+  case_id                BigInt?
+
+  @@schema("public")
+}
+
+model roles {
+  id           BigInt     @id(map: "roles_new_pkey") @default(autoincrement())
+  company_id   BigInt?
+  name         String?    @db.VarChar(255)
+  permissions  BigInt[]
+  permissions2 Json?
+  profiles     profiles[]
+  companies    companies? @relation(fields: [company_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "roles_company_id_fkey1")
+
+  @@unique([company_id, name])
+  @@schema("public")
+}
+
+model room_types {
+  id         BigInt  @id @default(autoincrement())
+  name       String? @db.VarChar(255)
+  type       String? @db.VarChar(255)
+  properties Json?
+  rooms      rooms[]
+
+  @@schema("public")
+}
+
+model rooms {
+  id                     BigInt      @id @default(autoincrement())
+  case_id                BigInt?
+  closed                 Boolean?    @default(false)
+  created_on             DateTime?   @default(now()) @db.Timestamptz(6)
+  closed_on              DateTime?   @db.Timestamptz(6)
+  questionnaire_response Json?
+  device_info            Json?
+  room_type_id           BigInt?     @default(1)
+  triage_assesment       Json?
+  updated_on             DateTime?   @db.Timestamptz(6)
+  started_interaction_on DateTime?   @db.Timestamptz(6)
+  followup_id            BigInt?
+  images                 String[]
+  cases                  cases?      @relation(fields: [case_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  room_types             room_types? @relation(fields: [room_type_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@schema("public")
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+model system_settings {
+  maintenance_mode Boolean? @default(false)
+  motd             String?
+  ios_version      String?
+  android_version  String?
+  telehealth       Boolean? @default(true)
+
+  @@ignore
+  @@schema("public")
+}
+
+model task_types {
+  id       BigInt   @id @default(autoincrement())
+  name     String?
+  customer Boolean? @default(false)
+  provider Boolean? @default(false)
+  admin    Boolean? @default(false)
+
+  @@schema("public")
+}
+
+model tasks {
+  id                    BigInt    @id @default(autoincrement())
+  task_type_id          BigInt?
+  assigned_profile_id   BigInt?
+  due_date              DateTime? @db.Date
+  notes                 String?
+  case_id               BigInt?
+  closed                Boolean?  @default(false)
+  created_on            DateTime? @default(now()) @db.Timestamptz(6)
+  created_by_profile_id BigInt?
+  closed_on             DateTime? @db.Timestamptz(6)
+  closed_by_profile_id  BigInt?
+  options               Json?
+
+  @@schema("public")
+}
+
+model AcuityRating {
+  AcuityRating_Numeric             Int     @id
+  AcuityRating_Text                String?
+  AcuityRating_Color               String?
+  AcuityRating_Bullet              Bytes?
+  AcuityRating_Color_Alternate     String?
+  AcuityRating_Color_Alternate_Img Bytes?
+  AcuityRating_Title               String?
+
+  @@schema("triage")
+}
+
+model Advice {
+  AdviceID          Int       @id
+  AlgorithmID       Int?
+  DateCreated       DateTime? @db.Timestamp(6)
+  LastUpDate        DateTime? @db.Timestamp(6)
+  LastUpDate_XHTML  DateTime? @db.Timestamp(6)
+  Advice            String?
+  Advice_XHTML      String?
+  PatientHealthInfo Boolean?
+  AdviceSnap        String?
+  AlgorithmOrder    Int?
+
+  @@schema("triage")
+}
+
+model Algorithm {
+  AlgorithmID                          Int                   @id
+  Author                               String?
+  Copyright                            String?
+  CreatedDate                          DateTime?             @db.Timestamp(6)
+  LastUpDate                           DateTime?             @db.Timestamp(6)
+  LastReviewDate                       DateTime?             @db.Timestamp(6)
+  Title                                String?
+  Title_UpperCase                      String?
+  Title_LastUpdate                     DateTime?             @db.Timestamp(6)
+  Definition                           String?
+  DefinitionXHTML                      String?
+  Definition_LastUpdate                DateTime?             @db.Timestamp(6)
+  InitialAssessmentQuestions           String?
+  InitalAssessmentQuestions_LastUpdate DateTime?             @db.Timestamp(6)
+  Background                           String?
+  BackgroundXHTML                      String?
+  BackGround_LastUpdate                DateTime?             @db.Timestamp(6)
+  FirstAid                             String?
+  FirstAidXHTML                        String?
+  FirstAid_LastUpdate                  DateTime?             @db.Timestamp(6)
+  Reference_LastUpdate                 DateTime?             @db.Timestamp(6)
+  SearchWords_LastUpdate               DateTime?             @db.Timestamp(6)
+  Questions_LastUpdate                 DateTime?             @db.Timestamp(6)
+  CA_LastUpdate                        DateTime?             @db.Timestamp(6)
+  AH_DESCRIPTORS                       Boolean?
+  Category                             String?
+  Group                                String?
+  Type                                 String?
+  System                               String?
+  Anatomy                              String?
+  VersionYear                          String?
+  Status                               String?
+  Acuity                               Int?
+  Gender                               String?
+  AgeGroup                             String?
+  Min_Age_Years                        Int?
+  Max_Age_Years                        Int?
+  Min_Age_Months                       Int?
+  Max_Age_Months                       Int?
+  WH                                   Boolean?
+  BH                                   Boolean?
+  OA                                   Boolean?
+  CD                                   Boolean?
+  Prescription_Option                  Boolean?
+  case_form_responses                  case_form_responses[]
+
+  @@schema("triage")
+}
+
+model AlgorithmReference {
+  AlgorithmID Int
+  ReferenceID Int
+  DateUSed    DateTime? @db.Timestamp(6)
+  LastUpdate  DateTime? @db.Timestamp(6)
+
+  @@id([AlgorithmID, ReferenceID])
+  @@schema("triage")
+}
+
+model AlgorithmSearchWords {
+  AlgorithmID Int
+  SearchWord  String
+  CreateDate  DateTime? @db.Timestamp(6)
+  LastUpDate  DateTime? @db.Timestamp(6)
+
+  @@id([AlgorithmID, SearchWord])
+  @@schema("triage")
+}
+
+model AlgorithmSupplemental {
+  AlgorithmID    Int
+  SupplementalID Int
+  CreatedDate    DateTime? @db.Timestamp(6)
+
+  @@id([AlgorithmID, SupplementalID])
+  @@schema("triage")
+}
+
+model Disposition {
+  LevelID                                           Int       @id
+  CreatedDate                                       DateTime? @db.Timestamp(6)
+  LastUpDate                                        DateTime? @db.Timestamp(6)
+  DispositionHeading                                String?
+  DispositionHeading_Telemedicine                   String?
+  Adult_CareAdvice_Number                           Int?
+  Adult_CareAdvice_Statement                        String?
+  Adult_CareAdvice_Statement_XHTML                  String?
+  Adult_CareAdvice_Statement_Telemedicine           String?
+  Adult_CareAdvice_Statement_XHTML_Telemedicine     String?
+  Pediatric_CareAdvice_Number                       Int?
+  Pediatric_CareAdvice_Statement                    String?
+  Pediatric_CareAdvice_Statement_XHTML              String?
+  Pediatric_CareAdvice_Statement_Telemedicine       String?
+  Pediatric_CareAdvice_Statement_XHTML_Telemedicine String?
+  CMS_AUTHOR_FIELDS                                 Boolean?
+  AcuityRating                                      Int?
+
+  @@schema("triage")
+}
+
+model Question {
+  QuestionID           Int       @id
+  AlgorithmID          Int?
+  QuestionOrder        Int?
+  DateCreated          DateTime? @db.Timestamp(6)
+  LastUpDate           DateTime? @db.Timestamp(6)
+  Question             String?
+  DispositionLevel     Int?
+  Information          String?
+  SMAG_LINK_ID         Int?
+  CMS_NEW              Boolean?
+  Gender               String?
+  Min_Age_Days         Int?
+  Max_Age_Days         Int?
+  TelemedicineEligible Boolean?
+
+  @@schema("triage")
+}
+
+model QuestionAdvice {
+  QuestionID          Int
+  AdviceID            Int
+  LastUpdate          DateTime? @db.Timestamp(6)
+  QuestionAdviceOrder Int?
+
+  @@id([QuestionID, AdviceID])
+  @@schema("triage")
+}
+
+model Reference {
+  ReferenceID      Int       @id
+  TopicReferenceID Int?
+  ReferenceTitle   String?
+  ReferenceSource  String?
+  ReferenceAuthor  String?
+  LastUpdate       DateTime? @db.Timestamp(6)
+  DateAdded        DateTime? @db.Timestamp(6)
+  PMID             String?
+  PubMedURL        String?
+  PublicURL        String?
+
+  @@schema("triage")
+}
+
+model SearchWord {
+  SearchWord  String    @id
+  DateCreated DateTime? @db.Timestamp(6)
+
+  @@schema("triage")
+}
+
+model Supplemental {
+  SupplementalID     Int       @id
+  TopicID            Int?
+  Author             String?
+  Filename           String?
+  CreateDate         DateTime? @db.Timestamp(6)
+  LastUpDate         DateTime? @db.Timestamp(6)
+  LastReviewDate     DateTime? @db.Timestamp(6)
+  Title              String?
+  Title_LastUpdate   DateTime? @db.Timestamp(6)
+  Content_XHTML      String?
+  Content            String?
+  Content_LastUpdate DateTime? @db.Timestamp(6)
+  Category           String?
+  Group              String?
+  Status             String?
+
+  @@schema("triage")
+}
+
+model Switchboard_Items {
+  SwitchboardID Int
+  ItemNumber    Int
+  ItemText      String?
+  Command       Int?
+  Argument      String?
+
+  @@id([SwitchboardID, ItemNumber])
+  @@map("Switchboard Items")
+  @@schema("triage")
+}
+
+model System {
+  System         String  @id
+  System_Order   Int?
+  System_Example String?
+
+  @@schema("triage")
+}
+
+model Type {
+  Type       String  @id
+  Type_Topic String?
+
+  @@schema("triage")
 }
