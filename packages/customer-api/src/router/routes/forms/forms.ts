@@ -13,7 +13,11 @@ export const formsRouter = router({
         }))
         .query(async ({ input, ctx }) => {
             const result = await ctx.db.forms.findMany(
-
+                {
+                    where: {
+                        company_id: ctx.profile.company_id
+                    },
+                }
             )
 
 
