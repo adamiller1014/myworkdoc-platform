@@ -30,7 +30,7 @@ export default function RootLayout({
                 <head>
 
                 </head>
-                <body className={`font-sans ${inter.variable} bg-gray-100 h-full`}>
+                <body className={`font-sans ${inter.variable} bg-gray-100 h-full border-t-8 border-red-700`}>
                     <Theme>
                         <TRPCReactProvider>
                             <div className="flex flex-row h-screen bg-gray-100">
