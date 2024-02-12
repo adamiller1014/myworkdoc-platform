@@ -143,6 +143,8 @@ async function main() {
         ]
     });
 
+
+
     await prisma.business_lines.createMany({
         data: [
             {
@@ -3002,6 +3004,14 @@ async function main() {
             }
         ]
     });
+
+    await prisma.profiles.createMany({
+        data: [
+            // Select 
+            { email: 'jonathan.marbutt@myworkdoc.com', cell_number: '214-405-0000', company_id: 10, first_name: 'Jonathan', last_name: 'Marbutt', active: true, ein: '123456789', profile_type_id: 3 },
+            { email: 'brian.zuk@myworkdoc.com', cell_number: '214-405-0001', company_id: 10, first_name: 'Brain', last_name: 'Zuk', active: true, ein: '12345678910', profile_type_id: 3 },
+        ]
+    })
 
     await prisma.permissions.createMany({
         data: [

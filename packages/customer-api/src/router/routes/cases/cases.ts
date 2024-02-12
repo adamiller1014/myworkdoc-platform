@@ -9,17 +9,14 @@ export const casesRouter = router({
         }))
         .query(async ({ input, ctx }) => {
 
-            // const where = input.companyId ? {
-
-            //     profile: {
-            //         company_id: input.companyId
-            //     }
-
-            // } : null
 
             const result = await ctx.db.cases.findMany(
                 {
-                    //where,
+                    where: {
+                        profile: {
+                            company_id: ctx.profile.company_id
+                        }
+                    },
                     select: {
                         id: true,
                         case_number: true,
@@ -35,8 +32,6 @@ export const casesRouter = router({
             )
 
             return result;
-
-
 
         }),
     list: protectedProcedure

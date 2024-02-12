@@ -1,7 +1,7 @@
 import { prisma } from "@myworkdoc/db";
 import { type inferAsyncReturnType } from "@trpc/server";
 
-import { getAuth } from "@clerk/nextjs/server";
+import { getAuth, currentUser } from "@clerk/nextjs/server";
 import type {
   SignedInAuthObject,
   SignedOutAuthObject,
@@ -22,7 +22,29 @@ type AuthContextProps = {
  * @see https://beta.create.t3.gg/en/usage/trpc#-servertrpccontextts
  */
 export const createContextInner = async ({ auth }: AuthContextProps) => {
+
+  // Get User Profile from database to pass to context
+  const user = await currentUser();
+
+  const emailAddress = user?.emailAddresses[0]?.emailAddress;
+  if (!emailAddress) {
+    throw new Error("No email address found");
+  }
+
+  const profile = await prisma.profiles.findFirst({
+    where: {
+      email: emailAddress,
+    },
+  });
+
+  if (!profile) {
+    throw new Error("No profile found");
+  }
+
+
+
   return {
+    profile,
     auth,
     db: prisma,
   };
