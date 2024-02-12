@@ -111,7 +111,7 @@ export function SideNav({ app, userButton }: SideNavProps) {
                     );
                 })}
 
-                <div className="mt-3 rounded-full h-11 w-11 border-gray-300 border-0 bg-gray-300 flex items-center justify-center">
+                <div className="mt-3 rounded-full h-9 w-9 border-gray-300 border-0 bg-gray-300 flex items-center justify-center">
                     {userButton}
                 </div>
             </div>
