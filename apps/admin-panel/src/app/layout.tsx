@@ -14,7 +14,7 @@ const inter = Inter({
 });
 
 export const metadata = {
-    title: "MyWorkDoc",
+    title: "MyWorkDoc - Admin Panel",
     icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 
