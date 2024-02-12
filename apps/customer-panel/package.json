@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "@clerk/nextjs": "^4.29.7",
-    "@myworkdoc/api": "*",
+    "@myworkdoc/customer-api": "*",
     "@myworkdoc/db": "*",
     "@myworkdoc/tailwind-config": "*",
     "@myworkdoc/ui": "*",

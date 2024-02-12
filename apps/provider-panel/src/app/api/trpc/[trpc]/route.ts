@@ -1,9 +1,6 @@
-import { appRouter, createContext } from "@myworkdoc/api";
+import { appRouter, createContext } from "@myworkdoc/provider-api";
 import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
 import { NextRequest } from "next/server";
-
-
-
 
 /**
  * This wraps the `createTRPCContext` helper and provides the required context for the tRPC API when

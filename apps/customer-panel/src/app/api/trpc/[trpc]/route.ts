@@ -1,4 +1,4 @@
-import { appRouter, createContext } from "@myworkdoc/api";
+import { appRouter, createContext } from "@myworkdoc/customer-api";
 import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
 import { NextRequest } from "next/server";
 

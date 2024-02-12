@@ -8,7 +8,7 @@
 /** @type {import("next").NextConfig} */
 const config = {
   reactStrictMode: true,
-  transpilePackages: ["@myworkdoc/api", "@myworkdoc/db"],
+  transpilePackages: ["@myworkdoc/customer-api", "@myworkdoc/db"],
   // We already do linting on GH actions
   eslint: {
     ignoreDuringBuilds: !!process.env.CI,

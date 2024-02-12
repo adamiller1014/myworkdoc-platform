@@ -5,7 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { httpBatchLink } from "@trpc/client";
 import { createTRPCReact } from "@trpc/react-query";
 import SuperJSON from "superjson";
-import type { AppRouter } from "@myworkdoc/api";
+import type { AppRouter } from "@myworkdoc/customer-api";
 import { useAuth } from "@clerk/nextjs";
 
 export const api = createTRPCReact<AppRouter>();
