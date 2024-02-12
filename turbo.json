@@ -7,7 +7,7 @@
       ],
       "cache": false
     },
-    "db-push": {
+    "db-reset": {
       "inputs": [
         "prisma/schema.prisma"
       ],
