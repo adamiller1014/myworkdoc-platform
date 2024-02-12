@@ -8,13 +8,6 @@ import type {
 } from "@clerk/nextjs/api";
 import { RequestLike } from "@clerk/nextjs/dist/types/server/types";
 
-export enum PanelType {
-  Admin = "admin",
-  Provider = "provider",
-  Customer = "customer",
-  Employee = "employee",
-}
-
 
 /**
  * Replace this with an object if you want to pass things to createContextInner
@@ -31,7 +24,7 @@ type AuthContextProps = {
 export const createContextInner = async ({ auth }: AuthContextProps) => {
   return {
     auth,
-    prisma,
+    db: prisma,
   };
 };
 

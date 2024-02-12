@@ -2,11 +2,11 @@ import "../styles/globals.css";
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import { Inter } from "next/font/google";
-import { ClerkProvider } from "@clerk/nextjs";
+import { ClerkProvider, UserButton } from "@clerk/nextjs";
 import { Theme } from '@radix-ui/themes';
 import '@radix-ui/themes/styles.css';
 import { TRPCReactProvider } from "../utils/react";
-// import SideNav from '@myworkdoc/ui/side-nav';
+import { SideNav } from '@myworkdoc/ui';
 
 const inter = Inter({
     subsets: ["latin"],
@@ -34,7 +34,7 @@ export default function RootLayout({
                     <Theme>
                         <TRPCReactProvider>
                             <div className="flex flex-row h-screen bg-gray-100">
-                                {/* <SideNav app={'customer'} /> */}
+                                <SideNav app={'customer'} userButton={<UserButton />} />
                                 {children}
                             </div>
                         </TRPCReactProvider>

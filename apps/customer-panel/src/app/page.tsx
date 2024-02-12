@@ -1,8 +1,8 @@
-'use client'
-import { api } from "../utils/react"
+import { unstable_noStore as noStore } from "next/cache";
+import { redirect } from "next/navigation";
 
-export default function Page() {
-
-    const result = api.auth.getSecretMessage.useQuery();
-    return <>Home {result.data}</>
+export default async function Home() {
+    noStore();
+    return redirect("/cases")
 }
+
