@@ -1,11 +1,12 @@
 import { prisma } from "@myworkdoc/db";
 import { type inferAsyncReturnType } from "@trpc/server";
-import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
+
 import { getAuth } from "@clerk/nextjs/server";
 import type {
   SignedInAuthObject,
   SignedOutAuthObject,
 } from "@clerk/nextjs/api";
+import { RequestLike } from "@clerk/nextjs/dist/types/server/types";
 
 export enum PanelType {
   Admin = "admin",
@@ -38,7 +39,7 @@ export const createContextInner = async ({ auth }: AuthContextProps) => {
  * This is the actual context you'll use in your router
  * @link https://trpc.io/docs/context
  **/
-export const createContext = async (opts: CreateNextContextOptions) => {
+export const createContext = async (opts: { req: RequestLike; }) => {
   return await createContextInner({ auth: getAuth(opts.req) });
 };
 
