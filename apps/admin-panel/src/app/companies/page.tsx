@@ -1,10 +1,11 @@
 'use client';
-import { api } from "~/trpc/react";
+
 import { AgGridReact } from 'ag-grid-react'; // React Grid Logic
 import { type ValueFormatterParams, type ColDef } from "ag-grid-community";
 import { useRouter } from "next/navigation";
 import AddCompany from "./add-company";
 import { format } from 'date-fns';
+import { api } from '../../utils/react';
 
 export default function CompaniesGrid() {
 

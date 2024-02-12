@@ -1,9 +1,10 @@
 'use client';
-import { api } from "~/trpc/react";
+
 import { AgGridReact } from 'ag-grid-react'; // React Grid Logic
 import { type ColDef, type ValueFormatterParams } from "ag-grid-community";
 import { useRouter } from "next/navigation";
 import { format } from 'date-fns';
+import { api } from '../../../../utils/react';
 
 export default function CompaniesGrid({ params }: { params: { companyId: string } }) {
 
@@ -38,7 +39,7 @@ export default function CompaniesGrid({ params }: { params: { companyId: string 
             </div>
             <div className="ag-theme-alpine h-[calc(100vh-100px)]  p-5 " >
                 <AgGridReact
-                
+
                     rowData={data} columnDefs={colDefs}
                     rowSelection='single'
                     pagination={true} paginationPageSize={25}

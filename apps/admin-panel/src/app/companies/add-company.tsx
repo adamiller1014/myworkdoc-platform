@@ -2,8 +2,6 @@
 import React from 'react';
 import { Button, Dialog, Flex } from '@radix-ui/themes';
 import { useForm, type SubmitHandler } from "react-hook-form"
-import { api } from '~/trpc/react';
-import { type CreateCompanyInput } from "@myworkdoc/types";
 import { useRouter } from 'next/navigation';
 
 
@@ -11,36 +9,36 @@ import { useRouter } from 'next/navigation';
 
 export default function AddCompany() {
 
-    const utils = api.useUtils();
-    const router = useRouter();
-    const { handleSubmit, formState } = useForm<CreateCompanyInput>({
-    });
+  // const utils = api.useUtils();
+  // const router = useRouter();
+  // const { handleSubmit, formState } = useForm<CreateCompanyInput>({
+  // });
 
-    const mutation = api.companies.create.useMutation(
-        {
-            onSuccess: async (newCompany) => {
-                await utils.companies.invalidate();
-                router.push('/companies/' + newCompany.id)
-            }
-        }
-    );
+  // const mutation = api.companies.create.useMutation(
+  //     {
+  //         onSuccess: async (newCompany) => {
+  //             await utils.companies.invalidate();
+  //             router.push('/companies/' + newCompany.id)
+  //         }
+  //     }
+  // );
 
-    const onSubmit: SubmitHandler<CreateCompanyInput> = (data) => {
-        mutation.mutate(data);
-    }
+  // const onSubmit: SubmitHandler<CreateCompanyInput> = (data) => {
+  //     mutation.mutate(data);
+  // }
 
-    return <>
-        <Dialog.Root>
-            <Dialog.Trigger>
-                <Button value={'solid'}>Add Company</Button>
-            </Dialog.Trigger>
-            <Dialog.Content style={{ maxWidth: 450, overflow: 'unset' }}>
-                <form onSubmit={handleSubmit(onSubmit)}>
-                    <Dialog.Title>Add Company</Dialog.Title>
-                    <Dialog.Description size="2" mb="4">
-                        Please enter the following information to add a new company.
-                    </Dialog.Description>
-                    {/* 
+  return <>
+    <Dialog.Root>
+      <Dialog.Trigger>
+        <Button value={'solid'}>Add Company</Button>
+      </Dialog.Trigger>
+      <Dialog.Content style={{ maxWidth: 450, overflow: 'unset' }}>
+        <form >
+          <Dialog.Title>Add Company</Dialog.Title>
+          <Dialog.Description size="2" mb="4">
+            Please enter the following information to add a new company.
+          </Dialog.Description>
+          {/* 
           <Flex direction="column" gap="3">
             <label>
               <Text as="div" size="2" mb="1" weight="bold">
@@ -110,17 +108,17 @@ export default function AddCompany() {
             </label>
           </Flex> */}
 
-                    <Flex gap="3" mt="4" justify="end">
-                        <Dialog.Close>
-                            <Button variant="soft" color="gray">
-                                Cancel
-                            </Button>
-                        </Dialog.Close>
-                        <Button type='submit' disabled={!formState.isValid}>Create Company</Button>
+          <Flex gap="3" mt="4" justify="end">
+            <Dialog.Close>
+              <Button variant="soft" color="gray">
+                Cancel
+              </Button>
+            </Dialog.Close>
+            {/* <Button type='submit' disabled={!formState.isValid}>Create Company</Button> */}
 
-                    </Flex>
-                </form>
-            </Dialog.Content>
-        </Dialog.Root>
-    </>
+          </Flex>
+        </form>
+      </Dialog.Content>
+    </Dialog.Root>
+  </>
 }

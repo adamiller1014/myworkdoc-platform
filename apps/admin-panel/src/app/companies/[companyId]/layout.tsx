@@ -2,8 +2,8 @@
 import { Flex } from "@radix-ui/themes";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { api } from "~/trpc/react";
 import CompanySide from "../company-side";
+import { api } from "../../../utils/react";
 
 export default function CompanyLayout({ children, params }: { children: React.ReactNode, params: { companyId: string } }) {
     return <>
@@ -11,7 +11,7 @@ export default function CompanyLayout({ children, params }: { children: React.Re
             <Flex className=" w-60 bg-gray-100 border-r-0">
                 <CompanySide companyId={params.companyId} />
             </Flex>
-            <Flex className="bg-gray-50 w-full border-0"  direction={'column'} >
+            <Flex className="bg-gray-50 w-full border-0" direction={'column'} >
                 <CompanyTabs companyId={params.companyId} />
                 {children}
             </Flex>

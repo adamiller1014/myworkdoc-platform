@@ -1,6 +1,7 @@
 generator client {
   provider        = "prisma-client-js"
   previewFeatures = ["multiSchema"]
+  
 }
 
 datasource db {
@@ -111,10 +112,10 @@ model cases {
   start_lost_date                                  DateTime?             @db.Date
   case_chats                                       case_chats[]
   case_form_responses                              case_form_responses[]
-  profiles_cases_case_manager_profile_idToprofiles profiles?             @relation("cases_case_manager_profile_idToprofiles", fields: [case_manager_profile_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  manager profiles?             @relation("cases_case_manager_profile_idToprofiles", fields: [case_manager_profile_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   case_types                                       case_types?           @relation(fields: [case_type_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  profiles_cases_profile_idToprofiles              profiles              @relation("cases_profile_idToprofiles", fields: [profile_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  profiles_cases_reporter_profile_idToprofiles     profiles?             @relation("cases_reporter_profile_idToprofiles", fields: [reporter_profile_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  profile              profiles              @relation("cases_profile_idToprofiles", fields: [profile_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  reporter     profiles?             @relation("cases_reporter_profile_idToprofiles", fields: [reporter_profile_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   followups                                        followups[]
   rooms                                            rooms[]
 
@@ -378,7 +379,7 @@ model profiles {
   metadata                                              Json?                    @default("{\"notifications\": null}")
   access_code_attempts                                  BigInt?
   ein                                                   String?                  @db.VarChar(255)
-  fts_col                                               Unsupported("tsvector")?
+  fts_col                                               Unsupported("tsvector")? //@default(dbgenerated("to_tsvector('simple'::regconfig, (((((first_name)::text || ' '::text) || (last_name)::text) || ' '::text) || (COALESCE(ein, ''::character varying))::text))"))
   home_address                                          String?                  @db.VarChar(2048)
   password_reset_on                                     DateTime?                @default(now()) @db.Timestamptz(6)
   additional_fields                                     Json?
@@ -491,7 +492,7 @@ model rooms {
   @@schema("public")
 }
 
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model system_settings {
   maintenance_mode Boolean? @default(false)
   motd             String?

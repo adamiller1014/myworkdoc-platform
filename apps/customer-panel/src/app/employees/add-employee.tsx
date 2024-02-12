@@ -2,9 +2,8 @@
 import React from 'react';
 import { Button, Dialog, Flex } from '@radix-ui/themes';
 import { useForm, SubmitHandler } from "react-hook-form"
-import { api } from '~/trpc/react';
-import { CreateEmployeeInput } from '~/server/api/routers/employees/employee-types';
 import { useRouter } from 'next/navigation';
+import { api } from '../../utils/react';
 
 
 
@@ -12,24 +11,24 @@ export default function AddEmployee() {
 
   const utils = api.useUtils();
   const router = useRouter();
-  const { handleSubmit, formState } = useForm<CreateEmployeeInput>({
-  });
+  // const { handleSubmit, formState } = useForm<CreateEmployeeInput>({
+  // });
 
-  const mutation = api.employees.create.useMutation(
-    {
-      onSuccess: (newEmployee) => {
-        utils.employees.invalidate();
-        router.push('/employees/' + newEmployee.id)
-      }
-    }
-  );
-
-
+  // const mutation = api.employees.create.useMutation(
+  //   {
+  //     onSuccess: (newEmployee) => {
+  //       utils.employees.invalidate();
+  //       router.push('/employees/' + newEmployee.id)
+  //     }
+  //   }
+  // );
 
 
-  const onSubmit: SubmitHandler<CreateEmployeeInput> = (data) => {
-    mutation.mutate(data);
-  }
+
+
+  // const onSubmit: SubmitHandler<CreateEmployeeInput> = (data) => {
+  //   mutation.mutate(data);
+  // }
 
   return <>
     <Dialog.Root>
@@ -37,12 +36,12 @@ export default function AddEmployee() {
         <Button value={'solid'}>Add Employee</Button>
       </Dialog.Trigger>
       <Dialog.Content style={{ maxWidth: 450, overflow: 'unset' }}>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form >
           <Dialog.Title>Add Employee</Dialog.Title>
           <Dialog.Description size="2" mb="4">
             Please enter the following information to add a new employee.
           </Dialog.Description>
-{/* 
+          {/* 
           <Flex direction="column" gap="3">
             <label>
               <Text as="div" size="2" mb="1" weight="bold">
@@ -118,7 +117,7 @@ export default function AddEmployee() {
                 Cancel
               </Button>
             </Dialog.Close>
-            <Button type='submit' disabled={!formState.isValid}>Create Employee</Button>
+            {/* <Button type='submit' disabled={!formState.isValid}>Create Employee</Button> */}
 
           </Flex>
         </form>

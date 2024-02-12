@@ -1,21 +1,20 @@
 'use client';
 
 import moment from "moment";
-import { api } from "~/trpc/react";
-
 import { AgGridReact } from 'ag-grid-react'; // React Grid Logic
 
 import { useState } from "react";
 import { ColDef, ValueFormatterParams } from "ag-grid-community";
 import { useRouter } from "next/navigation";
 import AddOrganization from "./add-organization";
+import { api } from "../../utils/react";
 
 export default function OrganizationsGrid() {
 
-    const { isLoading, data } = api.organizations.all.useQuery();
+    const { isLoading, data } = api.companies.all.useQuery();
     const router = useRouter();
 
-    const [colDefs, setColDefs] = useState<ColDef[]>([
+    const colDefs: ColDef[] = [
         { field: "name", headerName: "Name", filter: 'agSetColumnFilter' },
 
         { field: "primaryContact", headerName: "Primary Contact", filter: 'agSetColumnFilter' },
@@ -41,7 +40,7 @@ export default function OrganizationsGrid() {
             }
         }
 
-    ]);
+    ];
 
 
     return (

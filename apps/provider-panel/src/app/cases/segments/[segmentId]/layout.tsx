@@ -1,9 +1,10 @@
 'use client'
-import { api } from "~/trpc/react";
+
 import CaseSegments from "../../case-segments";
 import { usePathname } from "next/navigation";
 import { formatDistance, subDays } from 'date-fns'
 import Link from "next/link";
+import { api } from "../../../../utils/react";
 function classNames(...classes: any[]) {
     return classes.filter(Boolean).join(' ')
 }
@@ -14,12 +15,12 @@ export default function Cases({ children, params }: { children: any, params: { s
 
     const pathname = usePathname();
     const { data, isLoading } = api.cases.list.useQuery({
-        status: params.segmentId
+
     });
 
 
 
-    let segmentId = params.segmentId;
+    const segmentId = params.segmentId;
     let segmentTitle = "Open Cases";
 
 

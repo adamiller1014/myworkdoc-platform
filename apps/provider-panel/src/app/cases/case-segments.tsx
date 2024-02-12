@@ -7,9 +7,7 @@ import {
 } from '@heroicons/react/24/outline'
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { api } from '~/trpc/react';
-
-
+import { api } from '../../utils/react';
 
 interface SecondaryNavItem {
     name: string
@@ -25,16 +23,16 @@ export default function CaseSegments() {
 
     const pathname = usePathname();
 
-    const { data: companies } = api.companies.list.useQuery();
+    const { data: companies } = api.companies.list.useQuery({});
 
-    const { data: counts, isLoading: countloading } = api.cases.counts.useQuery();
+    const { data: counts } = api.cases.counts.useQuery();
 
 
 
     const navigation = [
-        { name: 'New Cases', href: '/cases/segments/new', icon: FolderPlusIcon, count: counts?.newCases.toLocaleString() },
-        { name: 'Open Cases', href: '/cases/segments/open', icon: FolderOpenIcon, count: counts?.openCases.toLocaleString() },
-        { name: 'Closed', href: '/cases/segments/closed', icon: FolderMinusIcon, count: counts?.closedCases.toLocaleString() },
+        { name: 'New Cases', href: '/cases/segments/new', icon: FolderPlusIcon, count: counts?.toLocaleString() },
+        { name: 'Open Cases', href: '/cases/segments/open', icon: FolderOpenIcon, count: counts?.toLocaleString() },
+        { name: 'Closed', href: '/cases/segments/closed', icon: FolderMinusIcon, count: counts?.toLocaleString() },
     ]
 
 

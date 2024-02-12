@@ -1,20 +1,16 @@
 'use client';
-
-
-import { api } from "~/trpc/react";
-
-
 import { AgGridReact } from 'ag-grid-react'; // React Grid Logic
 
 import { useEffect, useState } from "react";
-import { ColDef, ValueFormatterParams } from "ag-grid-community";
+import { ColDef } from "ag-grid-community";
 import { useRouter } from "next/navigation";
 import Addemployee from "./add-employee";
 import { useOrganization } from "@clerk/nextjs";
+import { api } from '../../utils/react';
 
 export default function EmployeesGrid() {
 
-  const { isLoading, data } = api.employees.all.useQuery();
+  const { isLoading, data } = api.employees.list.useQuery({ orgId: '1' });
   const router = useRouter();
   const { organization } = useOrganization();
 

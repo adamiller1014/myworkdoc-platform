@@ -2,32 +2,32 @@
 import React from 'react';
 import { Button, Dialog, Flex, Separator, Text, TextField } from '@radix-ui/themes';
 import { useForm, SubmitHandler } from "react-hook-form"
-import { api } from '~/trpc/react';
+
 import { useRouter } from 'next/navigation';
-import { CreateOrganizationInput } from '~/server/api/routers/organizations/organization-types';
+
 
 
 export default function AddOrganization() {
 
-    const utils = api.useUtils();
-    const router = useRouter();
-    const { control, handleSubmit, register, formState, watch } = useForm<CreateOrganizationInput>({
-    });
+    // const utils = api.useUtils();
+    // const router = useRouter();
+    // const { control, handleSubmit, register, formState, watch } = useForm<CreateOrganizationInput>({
+    // });
 
-    const mutation = api.organizations.create.useMutation(
-        {
-            onSuccess: (newOrganization) => {
-                utils.organizations.invalidate();
-                router.push('/organizations/' + newOrganization.id)
-            }
-        }
-    );
+    // const mutation = api.organizations.create.useMutation(
+    //     {
+    //         onSuccess: (newOrganization) => {
+    //             utils.organizations.invalidate();
+    //             router.push('/organizations/' + newOrganization.id)
+    //         }
+    //     }
+    // );
 
 
 
-    const onSubmit: SubmitHandler<CreateOrganizationInput> = (data) => {
-        mutation.mutate(data);
-    }
+    // const onSubmit: SubmitHandler<CreateOrganizationInput> = (data) => {
+    //     mutation.mutate(data);
+    // }
 
     return <>
         <Dialog.Root>
@@ -35,7 +35,7 @@ export default function AddOrganization() {
                 <Button value={'solid'}>Add Organization</Button>
             </Dialog.Trigger>
             <Dialog.Content style={{ maxWidth: 800, overflow: 'unset' }}>
-                <form onSubmit={handleSubmit(onSubmit)}>
+                {/* <form onSubmit={handleSubmit(onSubmit)}>
                     <Dialog.Title>Add Organization</Dialog.Title>
                     <Dialog.Description size="2" mb="4">
                         Please enter the following information to add a new organization.
@@ -117,7 +117,7 @@ export default function AddOrganization() {
                         <Button type='submit' disabled={!formState.isValid}>Create Organization</Button>
 
                     </Flex>
-                </form>
+                </form> */}
             </Dialog.Content>
         </Dialog.Root>
     </>

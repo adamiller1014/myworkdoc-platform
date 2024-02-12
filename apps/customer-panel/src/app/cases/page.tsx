@@ -12,7 +12,7 @@ import { api } from "../../utils/react";
 
 export default function CasesGrid() {
 
-  const { isLoading, data } = api.cases.all.useQuery();
+  const { isLoading, data } = api.cases.all.useQuery({});
   const router = useRouter();
   const { organization } = useOrganization();
 
