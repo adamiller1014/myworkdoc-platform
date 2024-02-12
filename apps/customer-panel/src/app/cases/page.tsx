@@ -20,7 +20,7 @@ export default function CasesGrid() {
 
   useEffect(() => {
     setColDefs([
-      { field: "caseNumber", headerName: "Case Number", filter: 'agNumberColumnFilter', width: 150 },
+      { field: "case_number", headerName: "Case Number", filter: 'agNumberColumnFilter', width: 150 },
       { field: "organization.name", headerName: "Organization", filter: 'agSetColumnFilter', hide: !isProvider },
       {
         field: "injuryDate", headerName: "Injury Date", type: ['dateColumn'], filter: 'agDateColumnFilter',
@@ -30,8 +30,8 @@ export default function CasesGrid() {
         }
 
       },
-      { field: "patient.lastName", headerName: "Last Name", filter: 'agSetColumnFilter' },
-      { field: "patient.firstName", headerName: "First Name", filter: 'agSetColumnFilter' },
+      { field: "profile.last_name", headerName: "Last Name", filter: 'agSetColumnFilter' },
+      { field: "profile.first_name", headerName: "First Name", filter: 'agSetColumnFilter' },
     ]);
   }, [isProvider]);
 
