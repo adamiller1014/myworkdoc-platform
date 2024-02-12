@@ -7,6 +7,14 @@ import type {
   SignedOutAuthObject,
 } from "@clerk/nextjs/api";
 
+export enum PanelType {
+  Admin = "admin",
+  Provider = "provider",
+  Customer = "customer",
+  Employee = "employee",
+}
+
+
 /**
  * Replace this with an object if you want to pass things to createContextInner
  */

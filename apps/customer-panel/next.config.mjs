@@ -8,7 +8,6 @@
 /** @type {import("next").NextConfig} */
 const config = {
   reactStrictMode: true,
-  swcMinify: true,
   transpilePackages: ["@myworkdoc/api", "@myworkdoc/db"],
   // We already do linting on GH actions
   eslint: {
