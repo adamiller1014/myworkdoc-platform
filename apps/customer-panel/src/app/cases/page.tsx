@@ -43,7 +43,7 @@ export default function CasesGrid() {
     <div className=" p-5 h-full w-full">
       <div className="sm:flex sm:items-center">
         <div className="sm:flex-auto">
-          <h1 className="text-base font-semibold leading-6 text-gray-900">Cases</h1>
+          <h1 className="text-2xl font-semibold leading-6 text-gray-900">Cases</h1>
           <p className="mt-2 text-sm text-gray-700">
 
           </p>

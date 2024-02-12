@@ -87,8 +87,6 @@ export function SideNav({ app, userButton }: SideNavProps) {
                             className={classNames(isActive && activeStyle, "p-4 flex flex-col items-center ")}
                         >
                             {item.icon && <item.icon className={classNames(isActive && " text-blue-800", "w-5 h-5")} />}
-
-                            {/* <div className="text-xs text-gray-700 ">{item.name}</div> */}
                         </Link>
                     );
                 })}
@@ -105,8 +103,6 @@ export function SideNav({ app, userButton }: SideNavProps) {
                             className={classNames(isActive && activeStyle, "p-2 flex flex-col items-center")}
                         >
                             {item.icon && <item.icon className="w-5 h-5" />}
-
-                            {/* <div className="text-xs text-gray-700 ">{item.name}</div> */}
                         </Link>
                     );
                 })}
