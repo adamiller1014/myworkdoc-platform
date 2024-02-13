@@ -46,7 +46,7 @@ export function DataGrid(gridProps: DataGridProps) {
     };
 
     const props: GridProps = {
-        style: { height: "100%" },
+        style: { height: "100%", width: "100%" },
         sortable: true,
         groupable: false,
         resizable: true,
@@ -66,7 +66,8 @@ export function DataGrid(gridProps: DataGridProps) {
             // }
 
             if (gridProps.onRowDoubleClicked) {
-                gridProps.onRowDoubleClicked(e.dataItem['id']);
+
+                gridProps.onRowDoubleClicked({ id: e.dataItem.id });
             }
         },
         ...gridProps,
