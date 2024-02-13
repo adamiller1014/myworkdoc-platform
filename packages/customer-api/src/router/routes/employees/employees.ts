@@ -1,13 +1,13 @@
-import { GridStateSchema } from "../../../common-types";
-import { protectedProcedure, router } from "../../../trpc";
+import {GridStateSchema} from "../../../common-types";
+import {protectedProcedure, router} from "../../../trpc";
 
 export const employeesRouter = router({
 
     grid: protectedProcedure
 
         .input(GridStateSchema)
-        .query(async ({ input, ctx }) => {
-            const result = await ctx.db.profiles.findMany(
+        .query(async ({input, ctx}) => {
+            return ctx.db.profiles.findMany(
                 {
                     where: {
                         company_id: ctx.profile.company_id
@@ -36,19 +36,17 @@ export const employeesRouter = router({
 
                 }
             );
-            return result;
         }),
     count: protectedProcedure
         .input(GridStateSchema.optional())
-        .query(async ({ ctx }) => {
-            const result = await ctx.db.profiles.count(
+        .query(async ({ctx}) => {
+            return ctx.db.profiles.count(
                 {
                     where: {
                         company_id: ctx.profile.company_id
                     }
                 }
             );
-            return result;
         }),
 
 });

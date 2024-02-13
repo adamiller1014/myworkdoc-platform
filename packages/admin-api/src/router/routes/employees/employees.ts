@@ -1,7 +1,5 @@
-import { z } from "zod";
-import { protectedProcedure, router } from "../../../trpc";
-
-
+import {z} from "zod";
+import {protectedProcedure, router} from "../../../trpc";
 
 
 export const employeesRouter = router({
@@ -11,13 +9,8 @@ export const employeesRouter = router({
             orgId: z.string().optional(),
             search: z.string().optional(),
         }))
-        .query(async ({ input, ctx }) => {
-            const result = await ctx.db.profiles.findMany(
-
-            )
-
-
-            return result;
+        .query(async ({ctx }) => {
+            return ctx.db.profiles.findMany();
         }),
 
 });

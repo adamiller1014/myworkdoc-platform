@@ -1,6 +1,6 @@
-import { z } from "zod";
-import { protectedProcedure, router } from "../../../trpc";
-import { GridStateSchema } from "../../../common-types";
+import {z} from "zod";
+import {protectedProcedure, router} from "../../../trpc";
+import {GridStateSchema} from "../../../common-types";
 
 
 export const casesRouter = router({
@@ -21,7 +21,7 @@ export const casesRouter = router({
                 }
             }
 
-            const result = await ctx.db.cases.findMany(
+            return ctx.db.cases.findMany(
                 {
                     select: {
                         id: true,
@@ -37,11 +37,7 @@ export const casesRouter = router({
                     where,
                     ...input.gridState,
                 }
-            )
-
-            return result;
-
-
+            );
 
         }),
     count: protectedProcedure
@@ -61,10 +57,8 @@ export const casesRouter = router({
                 }
             }
 
-
-            const result = await ctx.db.cases.count({
+            return ctx.db.cases.count({
                 where
             });
-            return result;
         }),
 });

@@ -1,22 +1,12 @@
-import { z } from "zod";
-import { protectedProcedure, router } from "../../../trpc";
-import { CreateCompanySchema } from "./company-types";
-
-
-
+import {z} from "zod";
+import {protectedProcedure, router} from "../../../trpc";
+import {CreateCompanySchema} from "./company-types";
 
 export const companiesRouter = router({
-    newOne: protectedProcedure
-        .query(async ({ ctx }) => {
-            return { id: "1" };
-        }),
     all: protectedProcedure
-        .query(async ({ ctx }) => {
+        .query(async ({ctx}) => {
 
-            const result = await ctx.db.companies.findMany(
-                {}
-            )
-            return result;
+            return ctx.db.companies.findMany();
 
         }),
     list: protectedProcedure
@@ -24,35 +14,28 @@ export const companiesRouter = router({
             orgId: z.string().optional(),
             search: z.string().optional(),
         }))
-        .query(async ({ input, ctx }) => {
-            const result = await ctx.db.companies.findMany(
-
-            )
-
-
-            return result;
+        .query(async ({ctx}) => {
+            return ctx.db.companies.findMany();
         }),
 
     formsCount: protectedProcedure
         .input(z.object({
-            companyId: z.number().optional(),
+            companyId: z.number(),
         }))
-        .query(async ({ input, ctx }) => {
-            const result = await ctx.db.forms.count(
+        .query(async ({input, ctx}) => {
+            return ctx.db.forms.count(
                 {
                     where: {
                         company_id: input.companyId
                     }
                 }
             );
-
-            return result;
         }),
     employeesCount: protectedProcedure
         .input(z.object({
             companyId: z.number().optional(),
         }))
-        .query(async ({ input, ctx }) => {
+        .query(async ({input, ctx}) => {
             const result = await ctx.db.profiles.count(
                 {
                     where: {
@@ -67,7 +50,7 @@ export const companiesRouter = router({
         .input(z.object({
             companyId: z.number().optional(),
         }))
-        .query(async ({ input, ctx }) => {
+        .query(async ({input, ctx}) => {
             const result = await ctx.db.cases.count(
                 {
                     where: {
@@ -82,7 +65,7 @@ export const companiesRouter = router({
         }),
     get: protectedProcedure
         .input(z.number())
-        .query(async ({ input, ctx }) => {
+        .query(async ({input, ctx}) => {
 
             const result = await ctx.db.companies.findUnique(
                 {
@@ -97,12 +80,12 @@ export const companiesRouter = router({
         }),
     create: protectedProcedure
         .input(CreateCompanySchema)
-        .mutation(async ({ input, ctx }) => {
+        .mutation(async ({input, ctx}) => {
             // const result = await ctx.db.companies.create({
             //     data: input
             // })
 
             // return result;
-            return { id: "1" };
+            return {id: "1"};
         }),
 });

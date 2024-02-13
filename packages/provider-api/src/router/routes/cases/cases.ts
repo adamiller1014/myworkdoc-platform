@@ -1,5 +1,5 @@
-import { z } from "zod";
-import { protectedProcedure, router } from "../../../trpc";
+import {z} from "zod";
+import {protectedProcedure, router} from "../../../trpc";
 
 
 export const casesRouter = router({
@@ -7,19 +7,10 @@ export const casesRouter = router({
         .input(z.object({
             companyId: z.number().optional()
         }))
-        .query(async ({ input, ctx }) => {
+        .query(async ({ctx}) => {
 
-            // const where = input.companyId ? {
-
-            //     profile: {
-            //         company_id: input.companyId
-            //     }
-
-            // } : null
-
-            const result = await ctx.db.cases.findMany(
+            return ctx.db.cases.findMany(
                 {
-                    //where,
                     select: {
                         id: true,
                         case_number: true,
@@ -32,10 +23,7 @@ export const casesRouter = router({
                         }
                     }
                 }
-            )
-
-            return result;
-
+            );
 
 
         }),
@@ -43,7 +31,7 @@ export const casesRouter = router({
         .input(z.object({
             companyId: z.number().optional(),
         }))
-        .query(async ({ input, ctx }) => {
+        .query(async ({input, ctx}) => {
 
             const where = input.companyId ? {
 
@@ -53,25 +41,18 @@ export const casesRouter = router({
 
             } : null
 
-            const result = await ctx.db.cases.findMany(
+            return ctx.db.cases.findMany(
                 {
                     include: {
                         profile: true,
                         case_types: true
                     }
                 },
-
-            )
-
-            return result;
+            );
         }),
     counts: protectedProcedure
 
-        .query(async ({ input, ctx }) => {
-            const casesCount = await ctx.db.cases.count(
-            )
-
-            return casesCount
-
+        .query(async ({input, ctx}) => {
+            return ctx.db.cases.count();
         }),
 });

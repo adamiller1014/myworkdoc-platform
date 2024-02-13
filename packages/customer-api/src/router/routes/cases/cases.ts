@@ -1,15 +1,13 @@
-import { z } from "zod";
-import { protectedProcedure, router } from "../../../trpc";
-import { GridStateSchema } from "../../../common-types";
+import {protectedProcedure, router} from "../../../trpc";
+import {GridStateSchema} from "../../../common-types";
 
 
 export const casesRouter = router({
     grid: protectedProcedure
         .input(GridStateSchema)
-        .query(async ({ input, ctx }) => {
+        .query(async ({input, ctx}) => {
 
-
-            const result = await ctx.db.cases.findMany(
+            return ctx.db.cases.findMany(
                 {
                     where: {
                         profile: {
@@ -29,15 +27,13 @@ export const casesRouter = router({
                     },
                     ...input,
                 }
-            )
-
-            return result;
+            );
 
         }),
     count: protectedProcedure
         .input(GridStateSchema.optional())
-        .query(async ({ ctx }) => {
-            const result = await ctx.db.cases.count(
+        .query(async ({ctx}) => {
+            return ctx.db.cases.count(
                 {
                     where: {
                         profile: {
@@ -46,6 +42,5 @@ export const casesRouter = router({
                     }
                 }
             );
-            return result;
         }),
 });

@@ -10,8 +10,8 @@ import { ColDef } from "ag-grid-community";
 export default function CasesGrid() {
 
   const gridState = useGridState();
-  const { data } = api.cases.grid.useQuery(gridState);
-  const { data: count } = api.cases.count.useQuery(gridState);
+  const { data } = api.cases.grid.useQuery({ gridState });
+  const { data: count } = api.cases.count.useQuery({ gridState });
 
   const router = useRouter();
 
