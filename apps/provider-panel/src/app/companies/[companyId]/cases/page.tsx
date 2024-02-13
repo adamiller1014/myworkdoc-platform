@@ -1,8 +1,6 @@
 'use client';
 
-import { type ColDef, type ValueFormatterParams } from "ag-grid-community";
 import { useRouter } from "next/navigation";
-import { format } from 'date-fns';
 import { api } from '../../../../utils/react';
 import { DataGrid, useGridState } from '@myworkdoc/ui';
 
@@ -10,22 +8,17 @@ export default function CompaniesGrid({ params }: { params: { companyId: string 
 
     const gridState = useGridState();
     const cId = parseInt(params.companyId);
-    const { data } = api.cases.grid.useQuery({ companyId: cId, gridState });
+    const { data, isLoading } = api.cases.grid.useQuery({ companyId: cId, gridState });
     const { data: count } = api.cases.count.useQuery({ companyId: cId, gridState });
     const router = useRouter();
 
 
-    const colDefs: ColDef[] = [
-        { field: "case_number", headerName: "Case Number", width: 100 },
-        { field: "profile.first_name", headerName: "First Name", width: 300 },
-        { field: "profile.last_name", headerName: "Last Name", width: 300 },
+    const colDefs: any[] = [
+        { field: "case_number", title: "Case Number", width: 100 },
+        { field: "profile.first_name", title: "First Name", width: 300 },
+        { field: "profile.last_name", title: "Last Name", width: 300 },
         {
-            field: "created_on", headerName: "Created On", type: ['dateColumn'], filter: 'agDateColumnFilter',
-            valueFormatter: (v: ValueFormatterParams) => {
-
-                if (!v.value) return '';
-                return format(v.value, 'MM/dd/yyyy');
-            }
+            field: "created_on", title: "Created On",
         },
     ]
 
@@ -42,11 +35,12 @@ export default function CompaniesGrid({ params }: { params: { companyId: string 
             <div className="ag-theme-alpine h-[calc(100vh-100px)]  p-5 " >
 
                 <DataGrid
-                    columnDefs={colDefs}
+                    columns={colDefs}
                     data={data}
-                    rowCount={count}
+                    total={count}
+                    isLoading={isLoading}
                     onRowDoubleClicked={(e) => {
-                        router.push(`/companies/${e?.data?.id}/cases`);
+                        router.push(`/companies/${e.id}/cases`);
                     }} />
             </div>
         </div>

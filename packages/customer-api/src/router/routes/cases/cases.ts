@@ -1,11 +1,11 @@
-import {protectedProcedure, router} from "../../../trpc";
-import {GridStateSchema} from "../../../common-types";
+import { protectedProcedure, router } from "../../../trpc";
+import { GridStateSchema } from "../../../common-types";
 
 
 export const casesRouter = router({
     grid: protectedProcedure
         .input(GridStateSchema)
-        .query(async ({input, ctx}) => {
+        .query(async ({ input, ctx }) => {
 
             return ctx.db.cases.findMany(
                 {
@@ -25,14 +25,14 @@ export const casesRouter = router({
                             }
                         }
                     },
-                    ...input,
+
                 }
             );
 
         }),
     count: protectedProcedure
         .input(GridStateSchema.optional())
-        .query(async ({ctx}) => {
+        .query(async ({ ctx }) => {
             return ctx.db.cases.count(
                 {
                     where: {

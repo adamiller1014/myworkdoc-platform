@@ -4,24 +4,22 @@ import { useRouter } from "next/navigation";
 import AddCase from "./add-case";
 
 import { api } from '../../utils/react';
-import { DataGrid, DateValueFormatter, useGridState } from '@myworkdoc/ui';
-import { ColDef } from "ag-grid-community";
+import { DataGrid, GridColumn, useGridState } from '@myworkdoc/ui';
 
 export default function CasesGrid() {
 
   const gridState = useGridState();
-  const { data } = api.cases.grid.useQuery({ gridState });
+  const { data, isLoading } = api.cases.grid.useQuery({ gridState });
   const { data: count } = api.cases.count.useQuery({ gridState });
 
   const router = useRouter();
 
-  const colDefs: ColDef[] = [
-    { field: "case_number", headerName: "Case Number", width: 100 },
+  const colDefs: GridColumn[] = [
+    { field: "case_number", title: "Case Number", width: 100 },
     {
-      field: "created_on", headerName: "Created On", type: ['dateColumn'], filter: 'agDateColumnFilter',
-      valueFormatter: DateValueFormatter
+      field: "created_on", title: "Created On",
     },
-    { field: "profile.first_name", headerName: "First Name", width: 300 },
+    { field: "profile.first_name", title: "First Name", width: 300 },
 
   ];
 
@@ -37,11 +35,12 @@ export default function CasesGrid() {
       </div>
       <div className="ag-theme-alpine h-[calc(100vh-80px)]  p-5 " >
         <DataGrid
-          columnDefs={colDefs}
+          columns={colDefs}
           data={data}
-          rowCount={count}
+          total={count}
+          isLoading={isLoading}
           onRowDoubleClicked={(e) => {
-            router.push(`/cases/${e.data.id}`);
+            router.push(`/cases/${e.id}`);
           }} />
       </div>
     </div>

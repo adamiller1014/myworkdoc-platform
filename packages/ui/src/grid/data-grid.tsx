@@ -1,20 +1,20 @@
 'use client';
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { AgGridReact } from 'ag-grid-react'; // React Grid Logic
-import { ColDef, GridApi, ValueFormatterParams } from "ag-grid-community";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
-import { useCallback, useRef, useEffect } from "react";
-import { format } from 'date-fns';
+import { useCallback } from "react";
+import { Grid, GridDataStateChangeEvent, type GridColumnProps, type GridProps, GridColumn } from "@progress/kendo-react-grid";
+
+export type GridColumn = GridColumnProps
 
 export interface DataGridProps {
 
-    columnDefs: ColDef[];
+    columns: GridColumn[];
     data: any;
 
-    rowCount?: number;
+    total?: number;
 
-    onRowDoubleClicked?: (e: any) => void;
+    isLoading?: boolean;
+    onRowDoubleClicked?: (e: { id: number }) => void;
 }
 
 export interface GridState {
@@ -24,13 +24,12 @@ export interface GridState {
 }
 
 
-export function DataGrid(props: DataGridProps) {
+export function DataGrid(gridProps: DataGridProps) {
 
-    const gridState = useGridState();
-    const searchParams = useSearchParams();
+
     const pathname = usePathname();
     const router = useRouter();
-    const gridRef = useRef<AgGridReact<any>>(null);
+    const searchParams = useSearchParams();
 
     const createQueryString = useCallback(
         (name: string, value: string) => {
@@ -40,51 +39,48 @@ export function DataGrid(props: DataGridProps) {
             return params.toString()
         },
         [searchParams]
-    );
+    )
 
-    function onGridChange(e: { api: GridApi; }) {
+    const dataStateChange = (event: GridDataStateChangeEvent) => {
+        router.push(pathname + '?' + createQueryString("dataState", JSON.stringify(event.dataState)))
+    };
 
-        const currentPage = e.api.paginationGetCurrentPage();
-        const pageSize = e.api.paginationGetPageSize();
-        const columnState = e.api.getColumnState();
+    const props: GridProps = {
+        style: { height: "100%" },
+        sortable: true,
+        groupable: false,
+        resizable: true,
+        reorderable: true,
+        total: gridProps.total,
+        pageable: {
+            type: "input",
+            pageSizeValue: 50
+        },
+        onDataStateChange: dataStateChange,
 
-        const orderBy = columnState
-            .filter((c) => c.sort).map((c) => {
-                return {
-                    [c.colId]: c.sort
-                }
-            });
+        onRowDoubleClick: (e) => {
+            // if (!gridProps.editPath) {
+            //     router.push(`${pathname}/${e.dataItem[gridProps.keyfield]}`);
+            // } else {
+            //     router.push(`${gridProps.editPath}/${e.dataItem[gridProps.keyfield]}`);
+            // }
 
-        const newGridState: GridState = {
-            skip: currentPage * pageSize,
-            take: pageSize,
-            orderBy: orderBy
-        }
-        router.push(pathname + '?' + createQueryString("gridState", JSON.stringify(newGridState)))
-    }
-
-    useEffect(() => {
-        if (gridRef.current) {
-            if (props.rowCount) {
-                gridRef.current?.api?.setRowCount(props.rowCount);
+            if (gridProps.onRowDoubleClicked) {
+                gridProps.onRowDoubleClicked(e.dataItem['id']);
             }
-        }
-    }, [props]);
+        },
+        ...gridProps,
+    };
 
     return <>
-        <AgGridReact
-            ref={gridRef}
-            rowData={props.data} columnDefs={props.columnDefs}
-            rowSelection='single'
-            pagination={true}
-            paginationPageSize={gridState.take}
-
-
-            onRowDoubleClicked={props.onRowDoubleClicked}
-            onPaginationChanged={onGridChange}
-            onSortChanged={onGridChange}
-
-        />
+        {gridProps.isLoading && loadingPanel}
+        <Grid
+            {...props}
+        >
+            {gridProps.columns.map((c, i) => {
+                return <GridColumn {...c} key={"col" + i} />;
+            })}
+        </Grid>
     </>
 }
 
@@ -103,7 +99,10 @@ export function useGridState() {
 }
 
 
-export function DateValueFormatter(v: ValueFormatterParams) {
-    if (!v.value) return '';
-    return format(v.value, 'MM/dd/yyyy');
-}
+const loadingPanel = (
+    <div className='k-loading-mask'>
+        <span className='k-loading-text'>Loading</span>
+        <div className='k-loading-image'></div>
+        <div className='k-loading-color'></div>
+    </div>
+);

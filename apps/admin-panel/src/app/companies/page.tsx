@@ -1,25 +1,24 @@
 'use client';
 
-import { type ColDef } from "ag-grid-community";
 import { useRouter } from "next/navigation";
 import AddCompany from "./add-company";
 import { api } from '../../utils/react';
-import { DataGrid, DateValueFormatter, useGridState } from '@myworkdoc/ui';
+import { DataGrid, GridColumn, useGridState } from '@myworkdoc/ui';
 
 export default function CompaniesGrid() {
 
     const gridState = useGridState();
     const { data: count } = api.companies.count.useQuery(gridState);
-    const { data } = api.companies.grid.useQuery(gridState);
+    const { data, isLoading } = api.companies.grid.useQuery(gridState);
 
     const router = useRouter();
 
-    const colDefs: ColDef[] = [
-        { field: "active", headerName: "Active", width: 100 },
-        { field: "name", headerName: "Name", width: 300 },
+    const colDefs: GridColumn[] = [
+        { field: "active", title: "Active", width: 100 },
+        { field: "name", title: "Name", width: 300 },
         {
-            field: "joined_on", headerName: "Joined On", type: ['dateColumn'], filter: 'agDateColumnFilter',
-            valueFormatter: DateValueFormatter
+            field: "joined_on", title: "Joined On"
+
         },
     ];
 
@@ -35,11 +34,12 @@ export default function CompaniesGrid() {
             </div>
             <div className="ag-theme-alpine h-[calc(100vh-80px)]  p-5 " >
                 <DataGrid
-                    columnDefs={colDefs}
+                    columns={colDefs}
                     data={data}
-                    rowCount={count}
+                    total={count}
+                    isLoading={isLoading}
                     onRowDoubleClicked={(e) => {
-                        router.push(`/companies/${e.data.id}`);
+                        router.push(`/companies/${e.id}`);
                     }} />
             </div>
         </div>

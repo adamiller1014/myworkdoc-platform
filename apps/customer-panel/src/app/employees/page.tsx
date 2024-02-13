@@ -3,23 +3,22 @@
 import { useRouter } from "next/navigation";
 import Addemployee from "./add-employee";
 import { api } from '../../utils/react';
-import { ColDef } from "ag-grid-community";
-import { DataGrid, useGridState } from "@myworkdoc/ui";
+import { DataGrid, GridColumn, useGridState } from "@myworkdoc/ui";
 
 export default function EmployeesGrid() {
 
   const gridState = useGridState();
 
-  const { data } = api.employees.grid.useQuery(gridState);
+  const { data, isLoading } = api.employees.grid.useQuery(gridState);
   const { data: count } = api.employees.count.useQuery(gridState);
   const router = useRouter();
 
-  const colDefs: ColDef[] = [
-    { field: "ein", headerName: "EIN", width: 100 },
-    { field: "last_name", headerName: "Last name", width: 200, sort: "asc" },
-    { field: "first_name", headerName: "First name", width: 200 },
-    { field: "departments.name", headerName: "Department", width: 200 },
-    { field: "field_offices.name", headerName: "Field Office", width: 200 },
+  const colDefs: GridColumn[] = [
+    { field: "ein", title: "EIN", width: 100 },
+    { field: "last_name", title: "Last name", width: 200 },
+    { field: "first_name", title: "First name", width: 200 },
+    { field: "departments.name", title: "Department", width: 200 },
+    { field: "field_offices.name", title: "Field Office", width: 200 },
   ];
 
   return (
@@ -32,11 +31,12 @@ export default function EmployeesGrid() {
       </div>
       <div className="ag-theme-alpine h-[calc(100vh-70px)]  p-3" >
         <DataGrid
-          columnDefs={colDefs}
+          columns={colDefs}
           data={data}
-          rowCount={count}
+          total={count}
+          isLoading={isLoading}
           onRowDoubleClicked={(e) => {
-            router.push(`employees/${e.data.id}`);
+            router.push(`employees/${e.id}`);
           }} />
       </div>
     </div>
