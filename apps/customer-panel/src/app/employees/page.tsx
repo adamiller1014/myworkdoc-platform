@@ -4,16 +4,18 @@ import { useRouter } from "next/navigation";
 import Addemployee from "./add-employee";
 import { api } from '../../utils/react';
 import { ColDef } from "ag-grid-community";
-import { DataGrid } from "@myworkdoc/ui";
+import { DataGrid, useGridState } from "@myworkdoc/ui";
 
 export default function EmployeesGrid() {
 
-  const { data } = api.employees.grid.useQuery();
+  const gridState = useGridState();
+
+  const { data } = api.employees.grid.useQuery(gridState);
   const router = useRouter();
 
   const colDefs: ColDef[] = [
     { field: "ein", headerName: "EIN", width: 100 },
-    { field: "last_name", headerName: "Last name", width: 200 },
+    { field: "last_name", headerName: "Last name", width: 200, sort: "asc" },
     { field: "first_name", headerName: "First name", width: 200 },
     { field: "departments.name", headerName: "Department", width: 200 },
     { field: "field_offices.name", headerName: "Field Office", width: 200 },

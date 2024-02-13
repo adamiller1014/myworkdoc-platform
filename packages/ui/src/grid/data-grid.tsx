@@ -2,7 +2,7 @@
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { AgGridReact } from 'ag-grid-react'; // React Grid Logic
-import { ColDef } from "ag-grid-community";
+import { ColDef, GridApi } from "ag-grid-community";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import { useCallback } from "react";
 
@@ -12,19 +12,18 @@ export interface DataGridProps {
     data: any;
 
     onRowDoubleClicked?: (e: any) => void;
-
-    onStateChange?: (state: GridState) => void;
 }
 
 export interface GridState {
     skip: number;
     take: number;
+    orderBy?: any;
 }
 
 
 export function DataGrid(props: DataGridProps) {
 
-    const gridState = useGetGridState();
+    const gridState = useGridState();
     const searchParams = useSearchParams();
     const pathname = usePathname();
     const router = useRouter();
@@ -39,7 +38,25 @@ export function DataGrid(props: DataGridProps) {
         [searchParams]
     );
 
+    function onGridChange(e: { api: GridApi; }) {
+        const currentPage = e.api.paginationGetCurrentPage();
+        const pageSize = e.api.paginationGetPageSize();
+        const columnState = e.api.getColumnState();
 
+        const orderBy = columnState
+            .filter((c) => c.sort).map((c) => {
+                return {
+                    [c.colId]: c.sort
+                }
+            });
+
+        const newGridState: GridState = {
+            skip: currentPage * pageSize,
+            take: pageSize,
+            orderBy: orderBy
+        }
+        router.push(pathname + '?' + createQueryString("gridState", JSON.stringify(newGridState)))
+    }
 
     return <>
         <AgGridReact
@@ -48,25 +65,23 @@ export function DataGrid(props: DataGridProps) {
             pagination={true} paginationPageSize={gridState.take}
             pivotPanelShow={'always'}
             rowGroupPanelShow={'always'}
-            onRowDoubleClicked={props.onRowDoubleClicked}
 
-            onPaginationChanged={(e) => {
-                console.log('onPaginationChanged', e)
-                //router.push(pathname + '?' + createQueryString("dataState", JSON.stringify(event.dataState)))
-            }}
+            onRowDoubleClicked={props.onRowDoubleClicked}
+            onPaginationChanged={onGridChange}
+            onSortChanged={onGridChange}
         />
     </>
 }
 
 
-export function useGetGridState() {
+export function useGridState() {
     const searchParams = useSearchParams();
     let currentDataState: GridState = {
         skip: 0,
         take: 50,
     };
-    if (searchParams && searchParams.get("dataState")) {
-        currentDataState = JSON.parse(searchParams.get("dataState") as string);
+    if (searchParams && searchParams.get("gridState")) {
+        currentDataState = JSON.parse(searchParams.get("gridState") as string);
     }
 
     return currentDataState;

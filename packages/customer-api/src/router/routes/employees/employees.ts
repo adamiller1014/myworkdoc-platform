@@ -1,13 +1,11 @@
+import { GridStateSchema } from "../../../common-types";
 import { protectedProcedure, router } from "../../../trpc";
-
-
-
 
 export const employeesRouter = router({
 
     grid: protectedProcedure
 
-
+        .input(GridStateSchema)
         .query(async ({ input, ctx }) => {
             const result = await ctx.db.profiles.findMany(
                 {
@@ -31,8 +29,10 @@ export const employeesRouter = router({
                             select: {
                                 name: true
                             }
-                        }
-                    }
+                        },
+
+                    },
+                    ...input
                 }
             );
 
