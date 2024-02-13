@@ -39,7 +39,8 @@ export const casesRouter = router({
                                 last_name: true,
                             }
                         }
-                    }
+                    },
+                    take: 20
                 }
             );
 
@@ -64,7 +65,8 @@ export const casesRouter = router({
                     include: {
                         profile: true,
                         case_types: true
-                    }
+                    },
+                    take: 30
                 },
             );
         }),
