@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
-import { Button, Dialog, Flex } from '@radix-ui/themes';
-import { useForm, type SubmitHandler } from "react-hook-form"
+import { Button, Checkbox, Dialog, Flex, Text, TextField } from '@radix-ui/themes';
+import { useForm, type SubmitHandler, Controller } from "react-hook-form"
 import { useRouter } from 'next/navigation';
 
 
@@ -38,22 +38,36 @@ export default function AddCompany() {
           <Dialog.Description size="2" mb="4">
             Please enter the following information to add a new company.
           </Dialog.Description>
-          {/* 
+
           <Flex direction="column" gap="3">
             <label>
               <Text as="div" size="2" mb="1" weight="bold">
-                Organization
+                Name
               </Text>
-              <Controller
+              <TextField.Input size="2" placeholder="Name" />
+              {/* <Controller
                 name="organization"
                 control={control}
                 rules={{ required: true }}
                 render={({ field }) => (
                   <Select  {...field} onInputChange={setOrgSearch} options={organizations} />
                 )}
-              />
+              /> */}
             </label>
             <label>
+              <Text as="div" size="2" mb="1" weight="bold">
+                Address
+              </Text>
+              <TextField.Input size="2" placeholder="Address" />
+            </label>
+
+            <Text as="label" size="3">
+              <Flex gap="2">
+                <Checkbox size="2" defaultChecked /> Active
+              </Flex>
+            </Text>
+            {/* </label> */}
+            {/* <label>
               <Text as="div" size="2" mb="1" weight="bold">
                 Company
               </Text>
@@ -97,7 +111,7 @@ export default function AddCompany() {
                 Pain Level
               </Text>
               <Controller
-              
+
                 name="painLevel"
                 control={control}
                 rules={{ required: true }}
@@ -105,8 +119,8 @@ export default function AddCompany() {
                   <Select {...field} options={painLevels} isDisabled={!watch("organization")} />
                 )}
               />
-            </label>
-          </Flex> */}
+            </label> */}
+          </Flex>
 
           <Flex gap="3" mt="4" justify="end">
             <Dialog.Close>

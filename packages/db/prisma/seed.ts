@@ -3010,6 +3010,7 @@ async function main() {
             // Select 
             { email: 'jonathan.marbutt@myworkdoc.com', cell_number: '214-405-0000', company_id: 10, first_name: 'Jonathan', last_name: 'Marbutt', active: true, ein: '123456789', profile_type_id: 3 },
             { email: 'brian.zuk@myworkdoc.com', cell_number: '214-405-0001', company_id: 10, first_name: 'Brain', last_name: 'Zuk', active: true, ein: '12345678910', profile_type_id: 3 },
+            { email: 'anywhere.1228@gmail.com', cell_number: '214-405-0002', company_id: 10, first_name: 'Moana', last_name: 'Seeha', active: true, ein: '987654321', profile_type_id: 3 },
         ]
     })
 
