@@ -1,25 +1,28 @@
 import { z } from "zod";
 import { protectedProcedure, router } from "../../../trpc";
+import { GridStateSchema } from "../../../common-types";
 
 
 export const casesRouter = router({
-    all: protectedProcedure
+    grid: protectedProcedure
         .input(z.object({
-            companyId: z.number().optional()
+            gridState: GridStateSchema,
+            companyId: z.number().optional(),
         }))
         .query(async ({ input, ctx }) => {
 
-            // const where = input.companyId ? {
+            let where = {};
 
-            //     profile: {
-            //         company_id: input.companyId
-            //     }
-
-            // } : null
+            if (input.companyId) {
+                where = {
+                    profile: {
+                        company_id: input.companyId
+                    }
+                }
+            }
 
             const result = await ctx.db.cases.findMany(
                 {
-                    //where,
                     select: {
                         id: true,
                         case_number: true,
@@ -30,7 +33,9 @@ export const casesRouter = router({
                                 last_name: true,
                             }
                         }
-                    }
+                    },
+                    where,
+                    ...input.gridState,
                 }
             )
 
@@ -39,39 +44,27 @@ export const casesRouter = router({
 
 
         }),
-    list: protectedProcedure
+    count: protectedProcedure
         .input(z.object({
+            gridState: GridStateSchema,
             companyId: z.number().optional(),
         }))
-        .query(async ({ input, ctx }) => {
+        .query(async ({ ctx, input }) => {
 
-            const where = input.companyId ? {
+            let where = {};
 
-                profile: {
-                    company_id: input.companyId
-                }
-
-            } : null
-
-            const result = await ctx.db.cases.findMany(
-                {
-                    include: {
-                        profile: true,
-                        case_types: true
+            if (input.companyId) {
+                where = {
+                    profile: {
+                        company_id: input.companyId
                     }
-                },
+                }
+            }
 
-            )
 
+            const result = await ctx.db.cases.count({
+                where
+            });
             return result;
-        }),
-    counts: protectedProcedure
-
-        .query(async ({ input, ctx }) => {
-            const casesCount = await ctx.db.cases.count(
-            )
-
-            return casesCount
-
         }),
 });

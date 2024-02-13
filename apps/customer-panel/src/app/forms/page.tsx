@@ -1,17 +1,22 @@
 'use client';
-import { AgGridReact } from 'ag-grid-react'; // React Grid Logic
 import { api } from '../../utils/react';
 import { ColDef } from 'ag-grid-community';
+import { DataGrid, useGridState } from '@myworkdoc/ui';
+import { useRouter } from 'next/router';
 
-export default function formsGrid() {
+export default function FormsGrid() {
 
-  const { data } = api.forms.list.useQuery({});
+  const router = useRouter();
+  const gridState = useGridState();
+  const { data: count } = api.forms.count.useQuery(gridState);
+  const { data } = api.forms.grid.useQuery(gridState);
+
+
 
 
   const colDefs: ColDef[] = [
     { field: "name", headerName: "Title", filter: 'agSetColumnFilter' },
     { field: "description", headerName: "Description", filter: 'agSetColumnFilter' }
-
   ];
 
 
@@ -29,16 +34,13 @@ export default function formsGrid() {
         </div>
       </div>
       <div className="ag-theme-alpine h-[calc(100vh-80px)]  p-5 " >
-        <AgGridReact
-          rowData={data} columnDefs={colDefs}
-          rowSelection='single'
-          pagination={true} paginationPageSize={25}
-          pivotPanelShow={'always'}
-          rowGroupPanelShow={'always'}
+        <DataGrid
+          columnDefs={colDefs}
+          data={data}
+          rowCount={count}
           onRowDoubleClicked={(e) => {
-            //router.push(`/forms/${e?.data?.id}`);
-          }}
-        />
+            router.push(`/forms/${e.data.id}`);
+          }} />
       </div>
     </div>
   )

@@ -11,12 +11,8 @@ export default function EmployeesGrid() {
   const gridState = useGridState();
 
   const { data } = api.employees.grid.useQuery(gridState);
-  const { data: count } = api.employees.count.useQuery();
+  const { data: count } = api.employees.count.useQuery(gridState);
   const router = useRouter();
-
-  if (!data || !count) {
-    return null;
-  }
 
   const colDefs: ColDef[] = [
     { field: "ein", headerName: "EIN", width: 100 },

@@ -39,6 +39,7 @@ export const employeesRouter = router({
             return result;
         }),
     count: protectedProcedure
+        .input(GridStateSchema.optional())
         .query(async ({ ctx }) => {
             const result = await ctx.db.profiles.count(
                 {

@@ -1,38 +1,30 @@
 import { z } from "zod";
 import { protectedProcedure, router } from "../../../trpc";
 import { CreateCompanySchema } from "./company-types";
+import { GridStateSchema } from "../../../common-types";
 
 
 
 
 export const companiesRouter = router({
-    newOne: protectedProcedure
-        .query(async ({ ctx }) => {
-            return { id: "1" };
-        }),
-    all: protectedProcedure
-        .query(async ({ ctx }) => {
+    grid: protectedProcedure
+        .input(GridStateSchema)
+        .query(async ({ ctx, input }) => {
 
             const result = await ctx.db.companies.findMany(
-                {}
+                {
+                    ...input
+                }
             )
             return result;
 
         }),
-    list: protectedProcedure
-        .input(z.object({
-            orgId: z.string().optional(),
-            search: z.string().optional(),
-        }))
-        .query(async ({ input, ctx }) => {
-            const result = await ctx.db.companies.findMany(
-
-            )
-
-
+    count: protectedProcedure
+        .input(GridStateSchema.optional())
+        .query(async ({ ctx }) => {
+            const result = await ctx.db.companies.count();
             return result;
         }),
-
     formsCount: protectedProcedure
         .input(z.object({
             companyId: z.number().optional(),

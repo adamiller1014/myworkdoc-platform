@@ -1,15 +1,17 @@
 'use client';
 
-import { AgGridReact } from 'ag-grid-react'; // React Grid Logic
-import { type ValueFormatterParams, type ColDef } from "ag-grid-community";
 import { useRouter } from "next/navigation";
 import AddCase from "./add-case";
-import { format } from 'date-fns';
+
 import { api } from '../../utils/react';
+import { DataGrid, DateValueFormatter, useGridState } from '@myworkdoc/ui';
+import { ColDef } from "ag-grid-community";
 
 export default function CasesGrid() {
 
-  const { data } = api.cases.all.useQuery({});
+  const gridState = useGridState();
+  const { data } = api.cases.grid.useQuery(gridState);
+  const { data: count } = api.cases.count.useQuery(gridState);
 
   const router = useRouter();
 
@@ -17,16 +19,11 @@ export default function CasesGrid() {
     { field: "case_number", headerName: "Case Number", width: 100 },
     {
       field: "created_on", headerName: "Created On", type: ['dateColumn'], filter: 'agDateColumnFilter',
-      valueFormatter: (v: ValueFormatterParams) => {
-        if (!v.value) return '';
-        return format(v.value, 'MM/dd/yyyy');
-      }
+      valueFormatter: DateValueFormatter
     },
     { field: "profile.first_name", headerName: "First Name", width: 300 },
 
   ];
-
-
 
   return (
     <div className="h-full w-full">
@@ -39,16 +36,13 @@ export default function CasesGrid() {
         </div>
       </div>
       <div className="ag-theme-alpine h-[calc(100vh-80px)]  p-5 " >
-        <AgGridReact
-          rowData={data} columnDefs={colDefs}
-          rowSelection='single'
-          pagination={true} paginationPageSize={25}
-          pivotPanelShow={'always'}
-          rowGroupPanelShow={'always'}
+        <DataGrid
+          columnDefs={colDefs}
+          data={data}
+          rowCount={count}
           onRowDoubleClicked={(e) => {
-            router.push(`/cases/${e?.data?.id}/cases`);
-          }}
-        />
+            router.push(`/cases/${e.data.id}`);
+          }} />
       </div>
     </div>
   )

@@ -2,16 +2,14 @@ import { protectedProcedure, router } from "../../../trpc";
 import { GridStateSchema } from "../../../common-types";
 
 
-export const formsRouter = router({
+export const tasksRouter = router({
 
     grid: protectedProcedure
         .input(GridStateSchema)
         .query(async ({ input, ctx }) => {
-            const result = await ctx.db.forms.findMany(
+            const result = await ctx.db.tasks.findMany(
                 {
-                    where: {
-                        company_id: ctx.profile.company_id
-                    },
+
                     ...input,
                 }
             )
@@ -23,11 +21,9 @@ export const formsRouter = router({
     count: protectedProcedure
         .input(GridStateSchema.optional())
         .query(async ({ ctx }) => {
-            const result = await ctx.db.forms.count(
+            const result = await ctx.db.tasks.count(
                 {
-                    where: {
-                        company_id: ctx.profile.company_id
-                    }
+
                 }
             );
             return result;

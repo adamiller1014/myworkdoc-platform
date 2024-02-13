@@ -1,52 +1,35 @@
 'use client';
 
-import moment from "moment";
-import { api } from "~/trpc/react";
-
-import { AgGridReact } from 'ag-grid-react'; // React Grid Logic
-
-import { useState } from "react";
-import { ColDef, ValueFormatterParams } from "ag-grid-community";
+import { ColDef } from "ag-grid-community";
 import { useRouter } from "next/navigation";
+import { DataGrid, DateValueFormatter, useGridState } from "@myworkdoc/ui";
+import { api } from "../../utils/react";
 
 export default function TasksGrid() {
 
-  const { isLoading, data } = api.tasks.all.useQuery();
+  const gridState = useGridState();
+  const { data: count } = api.tasks.count.useQuery(gridState);
+  const { data } = api.tasks.grid.useQuery(gridState);
   const router = useRouter();
 
-  const [colDefs, setColDefs] = useState<ColDef[]>([
+  const colDefs: ColDef[] = [
     { field: "taskType.name", headerName: "Type", filter: 'agSetColumnFilter' },
     {
       field: "dueDate", headerName: "Due On", type: ['dateColumn'], filter: 'agDateColumnFilter',
-      valueFormatter: (v: ValueFormatterParams) => {
-
-        if (!v.value) return '';
-
-        return moment(v.value).format('MM/DD/YYYY');
-      }
+      valueFormatter: DateValueFormatter
     },
     { field: "case.patient.firstName", headerName: "Employee First Name", filter: 'agSetColumnFilter' },
     { field: "case.patient.lastName", headerName: "Employee Last Name", filter: 'agSetColumnFilter' },
     {
       field: "createdAt", headerName: "Created On", type: ['dateColumn'], filter: 'agDateColumnFilter',
-      valueFormatter: (v: ValueFormatterParams) => {
-
-        if (!v.value) return '';
-
-        return moment(v.value).format('MM/DD/YYYY');
-      }
+      valueFormatter: DateValueFormatter
     },
     {
       field: "updatedAt", headerName: "Updated On", type: ['dateColumn'], filter: 'agDateColumnFilter',
-      valueFormatter: (v: ValueFormatterParams) => {
-
-        if (!v.value) return '';
-
-        return moment(v.value).format('MM/DD/YYYY');
-      }
+      valueFormatter: DateValueFormatter
     }
 
-  ]);
+  ];
 
 
 
@@ -69,16 +52,13 @@ export default function TasksGrid() {
         </div>
       </div>
       <div className="ag-theme-alpine h-[calc(100vh-180px)] mt-5" >
-        <AgGridReact
-          rowData={data} columnDefs={colDefs as any}
-          rowSelection='single'
-          pagination={true} paginationPageSize={25}
-          pivotPanelShow={'always'}
-          rowGroupPanelShow={'always'}
+        <DataGrid
+          columnDefs={colDefs}
+          data={data}
+          rowCount={count}
           onRowDoubleClicked={(e) => {
-            router.push(`/tasks/${e?.data?.id}`);
-          }}
-        />
+            router.push(`/forms/${e.data.id}`);
+          }} />
       </div>
     </div>
   )

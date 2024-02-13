@@ -1,41 +1,33 @@
 'use client';
 
-import moment from "moment";
-import { AgGridReact } from 'ag-grid-react'; // React Grid Logic
 
-import { useEffect, useState } from "react";
-import { ColDef, ValueFormatterParams } from "ag-grid-community";
 import { useRouter } from "next/navigation";
 import AddCase from "./add-case";
 import { useOrganization } from "@clerk/nextjs";
 import { api } from "../../utils/react";
+import { DataGrid, DateValueFormatter, useGridState } from "@myworkdoc/ui";
 
 export default function CasesGrid() {
-
-  const { isLoading, data } = api.cases.all.useQuery({});
+  const gridState = useGridState();
+  const { data } = api.cases.grid.useQuery(gridState);
+  const { data: count } = api.cases.count.useQuery(gridState);
   const router = useRouter();
   const { organization } = useOrganization();
 
   const isProvider = organization?.publicMetadata?.org_type === 'provider';
 
-  useEffect(() => {
-    setColDefs([
-      { field: "case_number", headerName: "Case Number", filter: 'agNumberColumnFilter', width: 150 },
-      { field: "organization.name", headerName: "Organization", filter: 'agSetColumnFilter', hide: !isProvider },
-      {
-        field: "injuryDate", headerName: "Injury Date", type: ['dateColumn'], filter: 'agDateColumnFilter',
-        valueFormatter: (v: ValueFormatterParams) => {
 
-          return moment(v.value).format('MM/DD/YYYY');
-        }
 
-      },
-      { field: "profile.last_name", headerName: "Last Name", filter: 'agSetColumnFilter' },
-      { field: "profile.first_name", headerName: "First Name", filter: 'agSetColumnFilter' },
-    ]);
-  }, [isProvider]);
-
-  const [colDefs, setColDefs] = useState<ColDef[]>();
+  const colDefs = [
+    { field: "case_number", headerName: "Case Number", filter: 'agNumberColumnFilter', width: 150 },
+    { field: "organization.name", headerName: "Organization", filter: 'agSetColumnFilter', hide: !isProvider },
+    {
+      field: "injuryDate", headerName: "Injury Date", type: ['dateColumn'], filter: 'agDateColumnFilter',
+      valueFormatter: DateValueFormatter
+    },
+    { field: "profile.last_name", headerName: "Last Name", filter: 'agSetColumnFilter' },
+    { field: "profile.first_name", headerName: "First Name", filter: 'agSetColumnFilter' },
+  ]
 
 
 
@@ -53,16 +45,13 @@ export default function CasesGrid() {
         </div>
       </div>
       <div className="ag-theme-alpine h-[calc(100vh-80px)] mt-5 " >
-        <AgGridReact
-          rowData={data} columnDefs={colDefs as any}
-          rowSelection='single'
-          pagination={true} paginationPageSize={25}
-          pivotPanelShow={'always'}
-          rowGroupPanelShow={'always'}
+        <DataGrid
+          columnDefs={colDefs}
+          data={data}
+          rowCount={count}
           onRowDoubleClicked={(e) => {
-            router.push(`/cases/${e?.data?.id}`);
-          }}
-        />
+            router.push(`/cases/${e.data.id}`);
+          }} />
       </div>
     </div>
   )

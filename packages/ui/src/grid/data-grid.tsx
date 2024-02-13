@@ -2,16 +2,17 @@
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { AgGridReact } from 'ag-grid-react'; // React Grid Logic
-import { ColDef, GridApi } from "ag-grid-community";
+import { ColDef, GridApi, ValueFormatterParams } from "ag-grid-community";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import { useCallback, useRef, useEffect } from "react";
+import { format } from 'date-fns';
 
 export interface DataGridProps {
 
     columnDefs: ColDef[];
     data: any;
 
-    rowCount: number;
+    rowCount?: number;
 
     onRowDoubleClicked?: (e: any) => void;
 }
@@ -64,7 +65,9 @@ export function DataGrid(props: DataGridProps) {
 
     useEffect(() => {
         if (gridRef.current) {
-            gridRef.current?.api?.setRowCount(props.rowCount);
+            if (props.rowCount) {
+                gridRef.current?.api?.setRowCount(props.rowCount);
+            }
         }
     }, [props]);
 
@@ -99,3 +102,8 @@ export function useGridState() {
     return currentDataState;
 }
 
+
+export function DateValueFormatter(v: ValueFormatterParams) {
+    if (!v.value) return '';
+    return format(v.value, 'MM/dd/yyyy');
+}

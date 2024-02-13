@@ -1,15 +1,17 @@
 'use client';
 
-import { AgGridReact } from 'ag-grid-react'; // React Grid Logic
 import { type ColDef, type ValueFormatterParams } from "ag-grid-community";
 import { useRouter } from "next/navigation";
 import { format } from 'date-fns';
 import { api } from '../../../../utils/react';
+import { DataGrid, useGridState } from '@myworkdoc/ui';
 
 export default function CompaniesGrid({ params }: { params: { companyId: string } }) {
 
+    const gridState = useGridState();
     const cId = parseInt(params.companyId);
-    const { data } = api.cases.all.useQuery({ companyId: cId });
+    const { data } = api.cases.grid.useQuery({ companyId: cId, gridState });
+    const { data: count } = api.cases.count.useQuery({ companyId: cId, gridState });
     const router = useRouter();
 
 
@@ -38,17 +40,14 @@ export default function CompaniesGrid({ params }: { params: { companyId: string 
                 </div>
             </div>
             <div className="ag-theme-alpine h-[calc(100vh-100px)]  p-5 " >
-                <AgGridReact
 
-                    rowData={data} columnDefs={colDefs}
-                    rowSelection='single'
-                    pagination={true} paginationPageSize={25}
-                    pivotPanelShow={'always'}
-                    rowGroupPanelShow={'always'}
+                <DataGrid
+                    columnDefs={colDefs}
+                    data={data}
+                    rowCount={count}
                     onRowDoubleClicked={(e) => {
                         router.push(`/companies/${e?.data?.id}/cases`);
-                    }}
-                />
+                    }} />
             </div>
         </div>
     )

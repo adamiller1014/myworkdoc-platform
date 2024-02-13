@@ -1,12 +1,11 @@
 import { z } from "zod";
 import { protectedProcedure, router } from "../../../trpc";
+import { GridStateSchema } from "../../../common-types";
 
 
 export const casesRouter = router({
-    all: protectedProcedure
-        .input(z.object({
-            companyId: z.number().optional()
-        }))
+    grid: protectedProcedure
+        .input(GridStateSchema)
         .query(async ({ input, ctx }) => {
 
 
@@ -27,46 +26,26 @@ export const casesRouter = router({
                                 last_name: true,
                             }
                         }
-                    }
+                    },
+                    ...input,
                 }
             )
 
             return result;
 
         }),
-    list: protectedProcedure
-        .input(z.object({
-            companyId: z.number().optional(),
-        }))
-        .query(async ({ input, ctx }) => {
-
-            const where = input.companyId ? {
-
-                profile: {
-                    company_id: input.companyId
-                }
-
-            } : null
-
-            const result = await ctx.db.cases.findMany(
+    count: protectedProcedure
+        .input(GridStateSchema.optional())
+        .query(async ({ ctx }) => {
+            const result = await ctx.db.cases.count(
                 {
-                    include: {
-                        profile: true,
-                        case_types: true
+                    where: {
+                        profile: {
+                            company_id: ctx.profile.company_id
+                        }
                     }
-                },
-
-            )
-
+                }
+            );
             return result;
-        }),
-    counts: protectedProcedure
-
-        .query(async ({ input, ctx }) => {
-            const casesCount = await ctx.db.cases.count(
-            )
-
-            return casesCount
-
         }),
 });

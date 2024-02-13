@@ -1,15 +1,16 @@
 'use client';
 
-import { AgGridReact } from 'ag-grid-react'; // React Grid Logic
-import { type ValueFormatterParams, type ColDef } from "ag-grid-community";
+import { type ColDef } from "ag-grid-community";
 import { useRouter } from "next/navigation";
 import AddCompany from "./add-company";
-import { format } from 'date-fns';
 import { api } from '../../utils/react';
+import { DataGrid, DateValueFormatter, useGridState } from '@myworkdoc/ui';
 
 export default function CompaniesGrid() {
 
-    const { data } = api.companies.all.useQuery();
+    const gridState = useGridState();
+    const { data: count } = api.companies.count.useQuery(gridState);
+    const { data } = api.companies.grid.useQuery(gridState);
 
     const router = useRouter();
 
@@ -18,14 +19,9 @@ export default function CompaniesGrid() {
         { field: "name", headerName: "Name", width: 300 },
         {
             field: "joined_on", headerName: "Joined On", type: ['dateColumn'], filter: 'agDateColumnFilter',
-            valueFormatter: (v: ValueFormatterParams) => {
-                if (!v.value) return '';
-                return format(v.value, 'MM/dd/yyyy');
-            }
+            valueFormatter: DateValueFormatter
         },
     ];
-
-
 
     return (
         <div className="h-full w-full">
@@ -38,16 +34,13 @@ export default function CompaniesGrid() {
                 </div>
             </div>
             <div className="ag-theme-alpine h-[calc(100vh-80px)]  p-5 " >
-                <AgGridReact
-                    rowData={data} columnDefs={colDefs}
-                    rowSelection='single'
-                    pagination={true} paginationPageSize={25}
-                    pivotPanelShow={'always'}
-                    rowGroupPanelShow={'always'}
+                <DataGrid
+                    columnDefs={colDefs}
+                    data={data}
+                    rowCount={count}
                     onRowDoubleClicked={(e) => {
-                        router.push(`/companies/${e?.data?.id}/cases`);
-                    }}
-                />
+                        router.push(`/companies/${e.data.id}`);
+                    }} />
             </div>
         </div>
     )
