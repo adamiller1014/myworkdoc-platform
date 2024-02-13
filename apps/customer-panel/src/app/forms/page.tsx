@@ -1,7 +1,7 @@
 'use client';
 import { api } from '../../utils/react';
 import { DataGrid, GridColumn, useGridState } from '@myworkdoc/ui';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 export default function FormsGrid() {
 
