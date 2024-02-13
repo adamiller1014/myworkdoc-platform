@@ -35,10 +35,10 @@ function CompanyTabs({ companyId }: { companyId: string }) {
 
 
     const tabs = [
-        { name: 'Cases', href: `companies/${companyId}/cases`, count: companyCases?.toLocaleString() },
-        { name: 'Employees', href: `companies/${companyId}/employees`, count: companyEmployees?.toLocaleString() },
-        { name: 'Forms', href: `companies/${companyId}/forms`, count: companyForms?.toLocaleString() },
-        { name: 'Details', href: `companies/${companyId}/details`, }
+        { name: 'Cases', href: `/companies/${companyId}/cases`, count: companyCases?.toLocaleString() },
+        { name: 'Employees', href: `/companies/${companyId}/employees`, count: companyEmployees?.toLocaleString() },
+        { name: 'Forms', href: `/companies/${companyId}/forms`, count: companyForms?.toLocaleString() },
+        { name: 'Details', href: `/companies/${companyId}/details`, }
     ]
 
 
