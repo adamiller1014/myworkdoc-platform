@@ -34,7 +34,7 @@ export default function RootLayout({
                     <Theme>
                         <TRPCReactProvider>
                             <div className="flex flex-row h-screen bg-gray-100">
-                                <SideNav app={'customer'} userButton={<UserButton />} />
+                                <SideNav app={'provider'} userButton={<UserButton />} />
                                 {children}
                             </div>
                         </TRPCReactProvider>
