@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import AddCase from "./add-case";
 import { api } from "../../utils/react";
-import { DataGrid, useGridState, GridColumn } from "@myworkdoc/ui";
+import { DataGrid, useGridState, GridColumn, DateCell } from "@myworkdoc/ui";
 
 export default function CasesGrid() {
   const gridState = useGridState();
@@ -14,9 +14,8 @@ export default function CasesGrid() {
 
   const colDefs: GridColumn[] = [
     { field: "case_number", title: "Case Number", width: 150 },
-    { field: "organization.name", title: "Organization" },
     {
-      field: "injuryDate", title: "Injury Date"
+      field: "created_on", title: "Injury Date", cell: DateCell, width: 150
     },
     { field: "profile.last_name", title: "Last Name" },
     { field: "profile.first_name", title: "First Name" },

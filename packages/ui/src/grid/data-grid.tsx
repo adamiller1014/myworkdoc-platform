@@ -2,7 +2,8 @@
 
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import { useCallback } from "react";
-import { Grid, GridDataStateChangeEvent, type GridColumnProps, type GridProps, GridColumn } from "@progress/kendo-react-grid";
+import { Grid, GridDataStateChangeEvent, type GridColumnProps, type GridProps, GridColumn, GridCellProps } from "@progress/kendo-react-grid";
+import { formatDate } from "@progress/kendo-intl";
 
 export type GridColumn = GridColumnProps
 
@@ -107,3 +108,36 @@ const loadingPanel = (
         <div className='k-loading-color'></div>
     </div>
 );
+
+
+
+export function CheckboxCell(props: GridCellProps) {
+    return <>
+        <td>
+            <input
+                disabled={true}
+                type='checkbox'
+                checked={props.dataItem[props.field || ""]}
+            />
+        </td>
+    </>
+}
+
+export function DateCell(props: GridCellProps) {
+
+    let value: string | null = null;
+
+    if (!props.field) {
+        throw new Error("DateCell requires a field property");
+    }
+
+    if (props.dataItem[props.field]) {
+        value = formatDate(props.dataItem[props.field], "MM/dd/yyyy");
+    }
+
+    return <>
+        <td>
+            {value}
+        </td>
+    </>
+}
