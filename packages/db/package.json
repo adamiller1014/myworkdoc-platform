@@ -11,7 +11,7 @@
     "db-migrate": "pnpm with-env prisma db migrate dev",
     "db-pull": "pnpm with-env prisma db pull",
     "db-generate": "pnpm with-env prisma generate",
-    "db-reset": "pnpm with-env prisma migrate reset"
+    "db-reset": "pnpm with-env prisma migrate reset -f"
   },
   "dependencies": {
     "@faker-js/faker": "^8.4.1",

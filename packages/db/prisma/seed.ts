@@ -3420,8 +3420,7 @@ async function createSampleEmployees(company: companies) {
         }
     });
 
-    // Create 1000 employees
-    for (let i = 0; i < 1000; i++) {
+    for (let i = 0; i < 200; i++) {
 
         const employee = await prisma.profiles.create({
             data: {
