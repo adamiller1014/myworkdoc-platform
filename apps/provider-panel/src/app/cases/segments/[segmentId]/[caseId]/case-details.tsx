@@ -1,13 +1,17 @@
 'use client'
 import { AtSymbolIcon, BriefcaseIcon, BuildingOffice2Icon, CakeIcon, CalendarIcon, DocumentCheckIcon, FolderIcon, PhoneIcon, PlusIcon, UserIcon } from "@heroicons/react/24/outline";
 import { differenceInYears, format } from "date-fns";
-import { api } from "~/trpc/react";
+import { api } from "../../../../../utils/react";
+
 
 export default function CaseDetails({ caseId }: { caseId: number }) {
 
     const { data: currentCase, isLoading } = api.cases.get.useQuery(caseId);
-    const { data: tasks, isLoading: taskLoading } = api.tasks.caseTasks.useQuery(caseId);
-    const { data: followups, isLoading: followupLoading } = api.appointments.caseAppointments.useQuery(caseId);
+    // const { data: tasks, isLoading: taskLoading } = api.tasks.caseTasks.useQuery(caseId);
+    // const { data: followups, isLoading: followupLoading } = api.appointments.caseAppointments.useQuery(caseId);
+
+    const tasks = { counts: 0 }
+    const followups = { counts: 0 };
 
     if (!currentCase) {
         return null;

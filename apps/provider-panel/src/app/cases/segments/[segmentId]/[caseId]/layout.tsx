@@ -1,10 +1,11 @@
 'use client';
 
-import { api } from "~/trpc/react";
+
 import CaseDetails from "./case-details";
 import { ChatBubbleBottomCenterIcon, ClockIcon, ListBulletIcon } from "@heroicons/react/24/outline";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import { api } from "../../../../../utils/react";
 
 
 function classNames(...classes: (string | boolean)[]) {

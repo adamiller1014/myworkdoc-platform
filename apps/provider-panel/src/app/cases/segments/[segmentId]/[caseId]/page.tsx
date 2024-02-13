@@ -3,10 +3,12 @@ import { CheckCircleIcon } from '@heroicons/react/24/solid'
 import {
     PaperClipIcon,
 } from '@heroicons/react/20/solid'
-import { api } from '~/trpc/react'
+
 import { formatRelative, subDays } from 'date-fns'
 import { PhoneArrowDownLeftIcon, PhoneXMarkIcon } from '@heroicons/react/24/outline'
-import { FormResponseItem } from '~/server/api/routes/cases'
+import { api } from '../../../../../utils/react'
+import { FormResponseItem } from '@myworkdoc/provider-api/src/router/routes/cases/cases'
+
 
 function classNames(...classes: string[]) {
     return classes.filter(Boolean).join(' ')
@@ -137,13 +139,13 @@ function FormSummary({ formResponse }: { formResponse: FormResponseItem[] }) {
     return <>
         <div className="flex flex-col ">
 
-            {formResponse.map((item) => {
-                return <div className="flex flex-col space-x-2 mb-3">
+            {formResponse.map((item, index) => {
+                return <div key={`form-${item.id}-field-${index}`} className="flex flex-col space-x-2 mb-3">
                     <div className="flex-none">
                         <strong className=' text-gray-400'>{item.title}</strong>
                     </div>
                     <div className="flex-auto" dangerouslySetInnerHTML={{ __html: item.value }}>
-                        
+
                     </div>
                 </div>
             })}
