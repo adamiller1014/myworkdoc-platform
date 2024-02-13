@@ -11,7 +11,12 @@ export default function EmployeesGrid() {
   const gridState = useGridState();
 
   const { data } = api.employees.grid.useQuery(gridState);
+  const { data: count } = api.employees.count.useQuery();
   const router = useRouter();
+
+  if (!data || !count) {
+    return null;
+  }
 
   const colDefs: ColDef[] = [
     { field: "ein", headerName: "EIN", width: 100 },
@@ -30,9 +35,13 @@ export default function EmployeesGrid() {
         </div>
       </div>
       <div className="ag-theme-alpine h-[calc(100vh-70px)]  p-3" >
-        <DataGrid columnDefs={colDefs} data={data} onRowDoubleClicked={(e) => {
-          router.push(`/employees/${e.data.id}`);
-        }} />
+        <DataGrid
+          columnDefs={colDefs}
+          data={data}
+          rowCount={count}
+          onRowDoubleClicked={(e) => {
+            router.push(`/employees/${e.data.id}`);
+          }} />
       </div>
     </div>
   )

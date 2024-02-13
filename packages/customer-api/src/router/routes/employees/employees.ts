@@ -32,11 +32,21 @@ export const employeesRouter = router({
                         },
 
                     },
-                    ...input
+                    ...input,
+
                 }
             );
-
-
+            return result;
+        }),
+    count: protectedProcedure
+        .query(async ({ ctx }) => {
+            const result = await ctx.db.profiles.count(
+                {
+                    where: {
+                        company_id: ctx.profile.company_id
+                    }
+                }
+            );
             return result;
         }),
 
