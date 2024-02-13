@@ -1,28 +1,30 @@
-import {z} from "zod";
-import {protectedProcedure, router} from "../../../trpc";
-import {CreateCompanySchema} from "./company-types";
+import { z } from "zod";
+import { protectedProcedure, router } from "../../../trpc";
+import { CreateCompanySchema } from "./company-types";
+import { GridStateSchema } from "../../../common-types";
 
 export const companiesRouter = router({
-    all: protectedProcedure
-        .query(async ({ctx}) => {
+    grid: protectedProcedure
+        .input(GridStateSchema)
+        .query(async ({ ctx, input }) => {
 
-            return ctx.db.companies.findMany();
+            return ctx.db.companies.findMany(
+                {
+                    ...input
+                }
+            );
 
         }),
-    list: protectedProcedure
-        .input(z.object({
-            orgId: z.string().optional(),
-            search: z.string().optional(),
-        }))
-        .query(async ({ctx}) => {
-            return ctx.db.companies.findMany();
+    count: protectedProcedure
+        .input(GridStateSchema.optional())
+        .query(async ({ ctx }) => {
+            return ctx.db.companies.count();
         }),
-
     formsCount: protectedProcedure
         .input(z.object({
             companyId: z.number(),
         }))
-        .query(async ({input, ctx}) => {
+        .query(async ({ input, ctx }) => {
             return ctx.db.forms.count(
                 {
                     where: {
@@ -33,25 +35,23 @@ export const companiesRouter = router({
         }),
     employeesCount: protectedProcedure
         .input(z.object({
-            companyId: z.number().optional(),
+            companyId: z.number(),
         }))
-        .query(async ({input, ctx}) => {
-            const result = await ctx.db.profiles.count(
+        .query(async ({ input, ctx }) => {
+            return ctx.db.profiles.count(
                 {
                     where: {
                         company_id: input.companyId
                     }
                 }
-            )
-
-            return result;
+            );
         }),
     casesCount: protectedProcedure
         .input(z.object({
-            companyId: z.number().optional(),
+            companyId: z.number(),
         }))
-        .query(async ({input, ctx}) => {
-            const result = await ctx.db.cases.count(
+        .query(async ({ input, ctx }) => {
+            return ctx.db.cases.count(
                 {
                     where: {
                         // profile: {
@@ -59,33 +59,28 @@ export const companiesRouter = router({
                         // }
                     }
                 }
-            )
-
-            return result;
+            );
         }),
     get: protectedProcedure
         .input(z.number())
-        .query(async ({input, ctx}) => {
+        .query(async ({ input, ctx }) => {
 
-            const result = await ctx.db.companies.findUnique(
+            return ctx.db.companies.findUnique(
                 {
                     where: {
                         id: input
                     }
                 }
-            )
-
-
-            return result;
+            );
         }),
     create: protectedProcedure
         .input(CreateCompanySchema)
-        .mutation(async ({input, ctx}) => {
+        .mutation(async ({ input, ctx }) => {
             // const result = await ctx.db.companies.create({
             //     data: input
             // })
 
             // return result;
-            return {id: "1"};
+            return { id: "1" };
         }),
 });

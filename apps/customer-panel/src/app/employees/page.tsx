@@ -36,7 +36,7 @@ export default function EmployeesGrid() {
           data={data}
           rowCount={count}
           onRowDoubleClicked={(e) => {
-            router.push(`/employees/${e.data.id}`);
+            router.push(`employees/${e.data.id}`);
           }} />
       </div>
     </div>
