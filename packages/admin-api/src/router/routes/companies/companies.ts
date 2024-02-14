@@ -1,7 +1,7 @@
-import {z} from "zod";
-import {protectedProcedure, router} from "../../../trpc";
-import {CreateCompanySchema} from "./company-types";
-import {GridStateSchema} from "../../../common-types";
+import { z } from "zod";
+import { protectedProcedure, router } from "../../../trpc";
+import { CreateCompanySchema } from "./company-types";
+import { GridStateSchema } from "../../../common-types";
 
 export const companiesRouter = router({
     grid: protectedProcedure
@@ -25,7 +25,7 @@ export const companiesRouter = router({
             companyId: z.number(),
         }))
         .query(async ({ input, ctx }) => {
-            return  ctx.db.forms.count(
+            return ctx.db.forms.count(
                 {
                     where: {
                         company_id: input.companyId
@@ -76,11 +76,9 @@ export const companiesRouter = router({
     create: protectedProcedure
         .input(CreateCompanySchema)
         .mutation(async ({ input, ctx }) => {
-            // const result = await ctx.db.companies.create({
-            //     data: input
-            // })
+            return ctx.db.companies.create({
+                data: input
 
-            // return result;
-            return { id: "1" };
+            });
         }),
 });
