@@ -51,7 +51,7 @@ export default function Cases({ children, params }: { children: any, params: { s
                 <div className="flex-auto overflow-y-auto">
                     {data?.map((item) => {
 
-                        const url = `/cases/segments/${params.segmentId}/${item.id}`;
+                        const url = `/cases/segments/${params.segmentId}/${item.id}/activity`;
                         const isActive = pathname.indexOf(url) === 0;
 
                         return <>

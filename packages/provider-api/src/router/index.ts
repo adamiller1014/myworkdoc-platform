@@ -3,6 +3,7 @@ import { casesRouter } from "./routes/cases/cases";
 import { companiesRouter } from "./routes/companies/companies";
 import { employeesRouter } from "./routes/employees/employees";
 import { formsRouter } from "./routes/forms/forms";
+import { roomTypesRouter } from "./routes/rooms/roomTypes";
 
 export const appRouter = router({
 
@@ -10,7 +11,8 @@ export const appRouter = router({
   companies: companiesRouter,
   employees: employeesRouter,
 
-  forms: formsRouter
+  forms: formsRouter,
+  roomTypes: roomTypesRouter
 });
 
 // export type definition of API

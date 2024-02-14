@@ -3,7 +3,10 @@
 import {
     FolderOpenIcon,
     FolderPlusIcon,
-    FolderMinusIcon
+    FolderMinusIcon,
+    ClockIcon,
+    ClipboardDocumentListIcon,
+    DocumentTextIcon
 } from '@heroicons/react/24/outline'
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -23,18 +26,44 @@ export default function CaseSegments() {
 
     const pathname = usePathname();
 
-    const { data: companies } = api.companies.list.useQuery({});
+    const { data: companies } = api.companies.list.useQuery();
+    const { data: roomTypes } = api.roomTypes.list.useQuery();
 
-    const { data: counts } = api.cases.counts.useQuery();
+    if (!roomTypes) {
+        return <></>
+    }
 
 
+    const navigation: { name: string, href: string, icon: any, count?: number }[] = [];
 
-    const navigation = [
-        { name: 'New Cases', href: '/cases/segments/new', icon: FolderPlusIcon, count: counts?.toLocaleString() },
-        { name: 'Open Cases', href: '/cases/segments/open', icon: FolderOpenIcon, count: counts?.toLocaleString() },
-        { name: 'Closed', href: '/cases/segments/closed', icon: FolderMinusIcon, count: counts?.toLocaleString() },
-    ]
+    roomTypes?.map((roomType) => {
 
+        // Pick icon based on room type
+        let icon = FolderOpenIcon;
+        switch (roomType.name) {
+            case "Initial":
+                icon = FolderPlusIcon;
+                break;
+            case "Follow-up":
+                icon = ClockIcon;
+                break;
+            case "Case Management":
+                icon = ClipboardDocumentListIcon;
+                break;
+            case "Form":
+                icon = DocumentTextIcon;
+                break;
+            case "Closed":
+                icon = FolderMinusIcon;
+                break;
+            default:
+                icon = FolderOpenIcon;
+        }
+
+        navigation.push({ name: roomType.name as string, href: `/cases/segments/${roomType.id}`, icon })
+    });
+
+    navigation.push({ name: 'Closed', href: '/cases/segments/closed', icon: FolderMinusIcon });
 
 
     let secondaryItems: SecondaryNavItem[] = [];

@@ -98,8 +98,7 @@ export const casesRouter = router({
                     include: {
                         profile: true,
                         case_types: true
-                    },
-                    take: 30
+                    }
                 },
             );
         }),
@@ -142,7 +141,6 @@ export const casesRouter = router({
             });
         }),
     counts: protectedProcedure
-
         .query(async ({ input, ctx }) => {
             return ctx.db.cases.count();
         }),

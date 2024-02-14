@@ -15,6 +15,17 @@ export const companiesRouter = router({
             );
 
         }),
+    list: protectedProcedure
+        .query(async ({ ctx }) => {
+            return ctx.db.companies.findMany({
+                where: {
+                    active: true
+                },
+                orderBy: {
+                    name: 'asc'
+                }
+            });
+        }),
     count: protectedProcedure
         .input(GridStateSchema.optional())
         .query(async ({ ctx }) => {
