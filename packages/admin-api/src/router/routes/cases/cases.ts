@@ -1,6 +1,6 @@
-import {z} from "zod";
-import {protectedProcedure, router} from "../../../trpc";
-import {GridStateSchema} from "../../../common-types";
+import { z } from "zod";
+import { protectedProcedure, router } from "../../../trpc";
+import { GridStateSchema } from "../../../common-types";
 
 
 export const casesRouter = router({
@@ -60,5 +60,5 @@ export const casesRouter = router({
             return ctx.db.cases.count({
                 where
             });
-        }),
+        })
 });

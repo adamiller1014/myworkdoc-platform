@@ -4,12 +4,11 @@ import { differenceInYears, format } from "date-fns";
 import { api } from "../../../../../utils/react";
 
 
-export default function CaseDetails({ caseId }: { caseId: number }) {
+export default function CaseDetails({ caseId, segmentId }: { caseId: number, segmentId: string }) {
 
-    const { data: currentCase, isLoading } = api.cases.get.useQuery(caseId);
-
-
-    const tasks = { counts: 0 }
+    const { data: currentCase } = api.cases.get.useQuery(caseId);
+    const { data: otherCases } = api.cases.otherCases.useQuery(caseId);
+    const { data: fileUploads } = api.fileUploads.caseFiles.useQuery(caseId);
 
 
     if (!currentCase) {
@@ -69,29 +68,58 @@ export default function CaseDetails({ caseId }: { caseId: number }) {
                         className="ml-auto w-9 min-w-max whitespace-nowrap rounded-full bg-white px-2.5 py-0.5 text-center text-xs font-medium leading-5 text-gray-600 ring-1 ring-inset ring-gray-200"
                         aria-hidden="true"
                     >
-                        {tasks?.counts.toLocaleString()}
+                        {fileUploads?.length.toLocaleString()}
                     </span>
                 </h1>
             </div>
 
-            <div className="h-20">
+            <div>
+
+                {fileUploads?.map((item) => {
+                    return <><div className="flex flex-row p-2 border-b-2">
+                        <div className="flex-grow">
+                            <div className="text-sm text-gray-800">{item.original_filename}</div>
+
+                        </div>
+                        <div className="flex-none">
+                            <a href={''} target="_blank" className="text-blue-500">Download</a>
+                        </div>
+                    </div>
+                    </>
+                })}
+
+                {!fileUploads?.length && <div className="p-12 text-gray-400">No attachments found</div>}
 
             </div>
 
 
             <div className="bg-gray-100 p-4  border-b-2 border-t-2">
-                <h1 className="text-blue-800 flex flex-row text-center"> <DocumentCheckIcon className="w-5 h-5 mt-1 mr-2" /> Previous Cases
+                <h1 className="text-blue-800 flex flex-row text-center"> <DocumentCheckIcon className="w-5 h-5 mt-1 mr-2" /> Other Cases
                     <span
                         className="ml-auto w-9 min-w-max whitespace-nowrap rounded-full bg-white px-2.5 py-0.5 text-center text-xs font-medium leading-5 text-gray-600 ring-1 ring-inset ring-gray-200"
                         aria-hidden="true"
                     >
-                        0
+                        {otherCases?.length.toLocaleString()}
                     </span>
                 </h1>
             </div>
 
-            <div className="h-20">
+            <div>
 
+                {otherCases?.map((item) => {
+                    return <><div className="flex flex-row p-2 border-b-2">
+                        <div className="flex-grow">
+                            <div className="text-sm text-gray-800">Case $ {item.case_number.toString()}</div>
+                            {/* <div className="text-xs text-gray-600">{item.profile.companies?.name}</div> */}
+                        </div>
+                        <div className="flex-none">
+                            <a href={`/cases/segments/${segmentId}/${item.id}/activity`} className="text-blue-500">View</a>
+                        </div>
+                    </div>
+                    </>
+                })}
+
+                {!otherCases?.length && <div className="p-12 text-gray-400">No other cases found</div>}
             </div>
 
         </div>

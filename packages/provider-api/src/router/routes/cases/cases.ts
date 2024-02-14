@@ -249,4 +249,36 @@ export const casesRouter = router({
             });
 
         }),
+    otherCases: protectedProcedure
+        .input(z.number())
+        .query(async ({ ctx, input }) => {
+
+            const currentCase = await ctx.db.cases.findUnique({
+                where: {
+                    id: input
+                },
+                select: {
+                    profile_id: true
+                }
+            });
+
+            if (!currentCase) {
+                return [];
+            }
+
+
+            return ctx.db.cases.findMany({
+                where: {
+                    profile_id: currentCase.profile_id,
+                    id: {
+                        not: input
+                    }
+                },
+                select: {
+                    id: true,
+                    case_number: true,
+                    created_on: true,
+                }
+            });
+        }),
 });

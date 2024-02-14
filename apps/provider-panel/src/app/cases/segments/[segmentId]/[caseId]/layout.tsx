@@ -9,14 +9,11 @@ import { api } from "../../../../../utils/react";
 import { Fragment } from 'react'
 import { Menu, Transition } from '@headlessui/react'
 import {
-    ArchiveBoxIcon,
-    ArrowRightCircleIcon,
     ChevronDownIcon,
     DocumentDuplicateIcon,
     ArrowDownOnSquareIcon,
     PencilSquareIcon,
     TrashIcon,
-    UserPlusIcon,
 } from '@heroicons/react/20/solid'
 
 
@@ -59,7 +56,7 @@ export default function CaseLayout({ params, children }: { params: { segmentId: 
             {children}
         </div>
 
-        <CaseDetails caseId={cId} />
+        <CaseDetails caseId={cId} segmentId={params.segmentId} />
     </>
 }
 
