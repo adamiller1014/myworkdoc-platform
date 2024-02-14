@@ -5,7 +5,6 @@ const prisma = new PrismaClient()
 
 async function main() {
 
-    // Create Sample Companies
 
     await prisma.companies.createMany({
         data: [
@@ -143,6 +142,8 @@ async function main() {
         ]
     });
 
+    // Reset Auto Increment for testing
+    await prisma.$executeRaw`ALTER SEQUENCE companies_id_seq RESTART WITH 12;`;
 
 
     await prisma.business_lines.createMany({
