@@ -13,8 +13,9 @@
   },
   "dependencies": {
     "@clerk/nextjs": "^4.29.7",
-    "@myworkdoc/provider-api": "*",
+    "@headlessui/react": "^1.7.18",
     "@myworkdoc/db": "*",
+    "@myworkdoc/provider-api": "*",
     "@myworkdoc/tailwind-config": "*",
     "@myworkdoc/ui": "*",
     "@next/font": "^14.1.0",
