@@ -76,16 +76,9 @@ export const companiesRouter = router({
     create: protectedProcedure
         .input(CreateCompanySchema)
         .mutation(async ({ input, ctx }) => {
-            const data = await ctx.db.companies.findMany();
-            let max_id = BigInt(0);
-            for (let index = 0; index < data.length; index++) {
-                const company = data[index];
-                if (company?.id !== undefined && max_id < company?.id) max_id = company?.id;
-            }
-            const result = await ctx.db.companies.create({
-                data: { ...input, id: BigInt(Number(max_id) + 1) }
-            })
+            return ctx.db.companies.create({
+                data: input
 
-            return result;
+            });
         }),
 });
