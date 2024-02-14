@@ -1,5 +1,5 @@
 'use client'
-import { AtSymbolIcon, BriefcaseIcon, BuildingOffice2Icon, CakeIcon, CalendarIcon, DocumentCheckIcon, FolderIcon, PhoneIcon, PlusIcon, UserIcon } from "@heroicons/react/24/outline";
+import { AtSymbolIcon, BriefcaseIcon, BuildingOffice2Icon, CakeIcon, PaperClipIcon, DocumentCheckIcon, FolderIcon, PhoneIcon, UserIcon } from "@heroicons/react/24/outline";
 import { differenceInYears, format } from "date-fns";
 import { api } from "../../../../../utils/react";
 
@@ -7,11 +7,10 @@ import { api } from "../../../../../utils/react";
 export default function CaseDetails({ caseId }: { caseId: number }) {
 
     const { data: currentCase, isLoading } = api.cases.get.useQuery(caseId);
-    // const { data: tasks, isLoading: taskLoading } = api.tasks.caseTasks.useQuery(caseId);
-    // const { data: followups, isLoading: followupLoading } = api.appointments.caseAppointments.useQuery(caseId);
+
 
     const tasks = { counts: 0 }
-    const followups = { counts: 0 };
+
 
     if (!currentCase) {
         return null;
@@ -65,28 +64,12 @@ export default function CaseDetails({ caseId }: { caseId: number }) {
             </div>
 
             <div className="bg-gray-100 p-4  border-b-2 border-t-2">
-                <h1 className="text-blue-800 flex flex-row text-center"> <DocumentCheckIcon className="w-5 h-5 mt-1 mr-2" /> Tasks
+                <h1 className="text-blue-800 flex flex-row text-center"> <PaperClipIcon className="w-5 h-5 mt-1 mr-2" /> Attachments
                     <span
                         className="ml-auto w-9 min-w-max whitespace-nowrap rounded-full bg-white px-2.5 py-0.5 text-center text-xs font-medium leading-5 text-gray-600 ring-1 ring-inset ring-gray-200"
                         aria-hidden="true"
                     >
                         {tasks?.counts.toLocaleString()}
-                    </span>
-                </h1>
-            </div>
-
-            <div className="h-20">
-
-            </div>
-
-
-            <div className="bg-gray-100 p-4 border-b-2 border-t-2">
-                <h1 className="text-blue-800 flex flex-row text-center"> <CalendarIcon className="w-5 h-5 mt-1 mr-2" /> Follow-Ups
-                    <span
-                        className="ml-auto w-9 min-w-max whitespace-nowrap rounded-full bg-white px-2.5 py-0.5 text-center text-xs font-medium leading-5 text-gray-600 ring-1 ring-inset ring-gray-200"
-                        aria-hidden="true"
-                    >
-                        {followups?.counts.toLocaleString()}
                     </span>
                 </h1>
             </div>

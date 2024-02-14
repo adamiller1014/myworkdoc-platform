@@ -180,6 +180,14 @@ export const casesRouter = router({
                 }
             });
 
+            const followups = await ctx.db.followups.findMany({
+                where: {
+                    case_id: input
+                },
+                include: {
+                    followup_types: true
+                }
+            });
 
 
             const activity: ActivityItem[] = [];
@@ -219,6 +227,19 @@ export const casesRouter = router({
                         date: form.created_on,
                         comment: "notes Here ",
                         formResponse: (form.form_response as any) as FormResponseItem[],
+                    })
+                }
+            });
+
+            followups.forEach(followup => {
+                if (followup.start_date) {
+                    activity.push({
+                        id: followup.id,
+                        type: 'follow-up',
+                        title: `<strong>${followup.followup_types?.name}</strong> follow-up completed`,
+                        //profile: { name: followup.name },
+                        date: followup.start_date,
+                        comment: followup.notes as string
                     })
                 }
             });

@@ -5,7 +5,7 @@ import {
 } from '@heroicons/react/20/solid'
 
 import { formatRelative, subDays } from 'date-fns'
-import { PhoneArrowDownLeftIcon, PhoneXMarkIcon } from '@heroicons/react/24/outline'
+import { PhoneArrowDownLeftIcon, PhoneXMarkIcon, DocumentTextIcon, PencilIcon } from '@heroicons/react/24/outline'
 import { api } from '../../../../../../utils/react'
 import { FormResponseItem } from '@myworkdoc/provider-api/src/router/routes/cases/cases'
 
@@ -40,13 +40,9 @@ export default function CaseActivity({ params }: { params: { caseId: string } })
                             >
                                 <div className="w-px bg-gray-200" />
                             </div>
-                            {activityItem.type === 'form' ? (
+                            {activityItem.type === 'form' && (
                                 <>
-                                    <img
-                                        src={''}
-                                        alt=""
-                                        className="relative mt-3 h-6 w-6 flex-none rounded-full bg-gray-50"
-                                    />
+                                    <DocumentTextIcon className="relative mt-3 h-8 w-8 flex-none rounded-full bg-blue-600 text-white p-2 " />
                                     <div className="flex-auto rounded-md p-3 ring-1 ring-inset ring-gray-200">
                                         <div className="flex justify-between gap-x-4">
                                             <div className="py-0.5 text-xs leading-5 text-gray-500">
@@ -61,7 +57,29 @@ export default function CaseActivity({ params }: { params: { caseId: string } })
                                         </p>}
                                     </div>
                                 </>
-                            ) : (
+                            )}
+
+                            {activityItem.type === 'follow-up' && (
+                                <>
+                                    <PencilIcon className="relative mt-3 h-8 w-8 flex-none rounded-full bg-yellow-400 text-white p-2 " />
+                                    <div className="flex-auto rounded-md p-3 ring-1 ring-inset ring-gray-200 bg-yellow-100">
+                                        <div className="flex justify-between gap-x-4">
+                                            <div className="py-0.5 text-xs leading-5 text-gray-500">
+                                                <span className="font-medium text-gray-900" dangerouslySetInnerHTML={{ __html: activityItem.title as string }}></span>
+                                            </div>
+                                            <time className="flex-none py-0.5 text-xs leading-5 text-gray-500">
+                                                {formatRelative(subDays(activityItem.date, 3), new Date())}
+                                            </time>
+                                        </div>
+                                        {activityItem.comment && <p className="text-sm leading-6 text-gray-700 " dangerouslySetInnerHTML={{ __html: activityItem.comment as string }}>
+
+                                        </p>}
+                                    </div>
+                                </>
+                            )}
+
+
+                            {activityItem.type === 'line' && (
                                 <>
                                     <div className="relative flex h-6 w-6 flex-none items-center justify-center bg-white">
                                         {activityItem.icon === 'completed' && <CheckCircleIcon className="h-6 w-6 text-indigo-600" aria-hidden="true" />}
@@ -71,8 +89,6 @@ export default function CaseActivity({ params }: { params: { caseId: string } })
 
                                     </div>
                                     <p className="flex-auto py-0.5 text-xs leading-5 text-gray-500" dangerouslySetInnerHTML={{ __html: activityItem.title as string }}>
-                                        {/* <span className="font-medium text-gray-900">{activityItem.person.name}</span> {activityItem.type} the */}
-
                                     </p>
                                     <time className="flex-none py-0.5 text-xs leading-5 text-gray-500">
                                         {formatRelative(subDays(activityItem.date, 3), new Date())}
