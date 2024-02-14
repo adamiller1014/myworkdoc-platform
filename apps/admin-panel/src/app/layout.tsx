@@ -1,6 +1,4 @@
 import "../styles/globals.css";
-import 'ag-grid-community/styles/ag-grid.css';
-import 'ag-grid-community/styles/ag-theme-alpine.css';
 import { Inter } from "next/font/google";
 import { ClerkProvider, UserButton } from "@clerk/nextjs";
 import { Theme } from '@radix-ui/themes';

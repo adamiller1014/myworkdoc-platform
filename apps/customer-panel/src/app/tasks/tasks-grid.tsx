@@ -1,32 +1,30 @@
 'use client';
-
-import { ColDef } from "ag-grid-community";
 import { useRouter } from "next/navigation";
-import { DataGrid, DateValueFormatter, useGridState } from "@myworkdoc/ui";
+import { DataGrid, GridColumn, useGridState } from "@myworkdoc/ui";
 import { api } from "../../utils/react";
 
 export default function TasksGrid() {
 
   const gridState = useGridState();
   const { data: count } = api.tasks.count.useQuery(gridState);
-  const { data } = api.tasks.grid.useQuery(gridState);
+  const { data, isLoading } = api.tasks.grid.useQuery(gridState);
   const router = useRouter();
 
-  const colDefs: ColDef[] = [
-    { field: "taskType.name", headerName: "Type", filter: 'agSetColumnFilter' },
+  const colDefs: GridColumn[] = [
+    { field: "taskType.name", title: "Type" },
     {
-      field: "dueDate", headerName: "Due On", type: ['dateColumn'], filter: 'agDateColumnFilter',
-      valueFormatter: DateValueFormatter
+      field: "dueDate", title: "Due On",
+
     },
-    { field: "case.patient.firstName", headerName: "Employee First Name", filter: 'agSetColumnFilter' },
-    { field: "case.patient.lastName", headerName: "Employee Last Name", filter: 'agSetColumnFilter' },
+    { field: "case.patient.firstName", title: "Employee First Name" },
+    { field: "case.patient.lastName", title: "Employee Last Name" },
     {
-      field: "createdAt", headerName: "Created On", type: ['dateColumn'], filter: 'agDateColumnFilter',
-      valueFormatter: DateValueFormatter
+      field: "createdAt", title: "Created On",
+
     },
     {
-      field: "updatedAt", headerName: "Updated On", type: ['dateColumn'], filter: 'agDateColumnFilter',
-      valueFormatter: DateValueFormatter
+      field: "updatedAt", title: "Updated On",
+
     }
 
   ];
@@ -53,11 +51,12 @@ export default function TasksGrid() {
       </div>
       <div className="ag-theme-alpine h-[calc(100vh-180px)] mt-5" >
         <DataGrid
-          columnDefs={colDefs}
+          columns={colDefs}
           data={data}
-          rowCount={count}
+          total={count}
+          isLoading={isLoading}
           onRowDoubleClicked={(e) => {
-            router.push(`/forms/${e.data.id}`);
+            router.push(`/forms/${e.id}`);
           }} />
       </div>
     </div>

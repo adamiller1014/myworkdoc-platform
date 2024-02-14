@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { protectedProcedure, router } from "../../../trpc";
+import { GridStateSchema } from "../../../common-types";
 
 export interface ActivityItem {
     id: bigint
@@ -21,11 +22,22 @@ export interface FormResponseItem {
 }
 
 export const casesRouter = router({
-    all: protectedProcedure
+    grid: protectedProcedure
         .input(z.object({
-            companyId: z.number().optional()
+            gridState: GridStateSchema,
+            companyId: z.number().optional(),
         }))
-        .query(async ({ ctx }) => {
+        .query(async ({ input, ctx }) => {
+
+            let where = {};
+
+            if (input.companyId) {
+                where = {
+                    profile: {
+                        company_id: input.companyId
+                    }
+                }
+            }
 
             return ctx.db.cases.findMany(
                 {
@@ -40,11 +52,32 @@ export const casesRouter = router({
                             }
                         }
                     },
-                    take: 20
+                    where,
+                    ...input.gridState,
                 }
             );
 
+        }),
+    count: protectedProcedure
+        .input(z.object({
+            gridState: GridStateSchema,
+            companyId: z.number().optional(),
+        }))
+        .query(async ({ ctx, input }) => {
 
+            let where = {};
+
+            if (input.companyId) {
+                where = {
+                    profile: {
+                        company_id: input.companyId
+                    }
+                }
+            }
+
+            return ctx.db.cases.count({
+                where
+            });
         }),
     list: protectedProcedure
         .input(z.object({

@@ -1,22 +1,18 @@
 'use client';
 import { api } from '../../utils/react';
-import { ColDef } from 'ag-grid-community';
-import { DataGrid, useGridState } from '@myworkdoc/ui';
-import { useRouter } from 'next/router';
+import { DataGrid, GridColumn, useGridState } from '@myworkdoc/ui';
+import { useRouter } from 'next/navigation';
 
 export default function FormsGrid() {
 
   const router = useRouter();
   const gridState = useGridState();
   const { data: count } = api.forms.count.useQuery(gridState);
-  const { data } = api.forms.grid.useQuery(gridState);
+  const { data, isLoading } = api.forms.grid.useQuery(gridState);
 
-
-
-
-  const colDefs: ColDef[] = [
-    { field: "name", headerName: "Title", filter: 'agSetColumnFilter' },
-    { field: "description", headerName: "Description", filter: 'agSetColumnFilter' }
+  const colDefs: GridColumn[] = [
+    { field: "name", title: "Title" },
+    { field: "description", title: "Description" }
   ];
 
 
@@ -35,11 +31,12 @@ export default function FormsGrid() {
       </div>
       <div className="ag-theme-alpine h-[calc(100vh-80px)]  p-5 " >
         <DataGrid
-          columnDefs={colDefs}
+          columns={colDefs}
           data={data}
-          rowCount={count}
+          total={count}
+          isLoading={isLoading}
           onRowDoubleClicked={(e) => {
-            router.push(`/forms/${e.data.id}`);
+            router.push(`/forms/${e.id}`);
           }} />
       </div>
     </div>
