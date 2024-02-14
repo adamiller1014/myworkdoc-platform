@@ -28,7 +28,7 @@ export default function CompaniesGrid() {
 
                 <h3 className="text-2xl font-semibold leading-6 text-gray-900">Companies</h3>
                 <div className="mt-3 flex sm:ml-4 sm:mt-0">
-                    <AddCompany />
+
                 </div>
             </div>
             <div className="ag-theme-alpine h-[calc(100vh-80px)]  p-5 " >
