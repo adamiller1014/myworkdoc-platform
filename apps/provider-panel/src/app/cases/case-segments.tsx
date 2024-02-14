@@ -75,7 +75,7 @@ export default function CaseSegments() {
         secondaryItems = companies.map((company: any) => {
             return {
                 name: company.name,
-                href: `//companies/${company.id}`,
+                href: `/companies/${company.id}`,
                 initial: company.name.charAt(0),
             }
         });

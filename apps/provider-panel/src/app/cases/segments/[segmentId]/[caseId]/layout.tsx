@@ -60,9 +60,9 @@ function Tabs({ caseId, segmentId }: { caseId: number, segmentId: string }) {
 
     const pathname = usePathname();
     const tabs = [
-        { name: 'Activity', href: `//cases/segments/${segmentId}/${caseId}`, icon: ClockIcon },
-        { name: 'Chats', href: `//cases/segments/${segmentId}/${caseId}/chats`, icon: ChatBubbleBottomCenterIcon },
-        { name: 'Details', href: `//cases/segments/${segmentId}/${caseId}/details`, icon: ListBulletIcon },
+        { name: 'Activity', href: `/cases/segments/${segmentId}/${caseId}/activity`, icon: ClockIcon },
+        { name: 'Chats', href: `/cases/segments/${segmentId}/${caseId}/chats`, icon: ChatBubbleBottomCenterIcon },
+        { name: 'Details', href: `/cases/segments/${segmentId}/${caseId}/details`, icon: ListBulletIcon },
 
     ]
     return (
@@ -89,7 +89,7 @@ function Tabs({ caseId, segmentId }: { caseId: number, segmentId: string }) {
                         {tabs.map((tab) => {
 
 
-                            const isActive = tab.href === pathname;
+                            const isActive = tab.href.startsWith(pathname);
 
                             return <><Link
                                 key={tab.name}
