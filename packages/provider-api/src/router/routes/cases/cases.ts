@@ -119,7 +119,7 @@ export const casesRouter = router({
     get: protectedProcedure
         .input(z.number())
         .query(async ({ input, ctx }) => {
-            return ctx.db.cases.findUnique({
+            const currentCase = await ctx.db.cases.findUnique({
                 where: {
                     id: input
                 },
@@ -153,6 +153,46 @@ export const casesRouter = router({
                     }
                 }
             });
+
+
+            // Build Important fields from the initial assessment form
+
+            // This is currently hard coded to the initial assessment form
+            const formResponse = await ctx.db.case_form_responses.findFirst({
+                where: {
+                    case_id: input,
+                    case_form_id: 8
+                }
+            });
+
+            const initialAssessment: {
+                [key: string]: string | undefined
+
+                // Known fields
+                // These are the fields that are known to be in the initial assessment form
+                // This is just to help the typing more than anything
+                injury_type?: string;
+                body_part?: string;
+                pain_level?: string;
+                is_this_a_medical_emergency?: string;
+                are_you_calling_report_a_work_related_injury?: string;
+                have_you_reported_this_injury_to_your_supervisor?: string;
+            } = {};
+
+            if (formResponse) {
+
+                const initialAssessmentFields = (formResponse.form_response as any) as FormResponseItem[];
+
+                initialAssessmentFields.forEach(field => {
+                    // Replace special characters and spaces with underscores
+                    const fieldKey = field.title.toLowerCase().replace('?', '').replace('/', '').replace(/ /g, '_');
+                    initialAssessment[fieldKey] = field.value;
+                });
+            }
+            return {
+                currentCase,
+                initialAssessment
+            }
         }),
     counts: protectedProcedure
         .query(async ({ input, ctx }) => {

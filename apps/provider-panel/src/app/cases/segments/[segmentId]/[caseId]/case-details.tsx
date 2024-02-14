@@ -6,10 +6,17 @@ import { api } from "../../../../../utils/react";
 
 export default function CaseDetails({ caseId, segmentId }: { caseId: number, segmentId: string }) {
 
-    const { data: currentCase } = api.cases.get.useQuery(caseId);
+    const { data: caseResult } = api.cases.get.useQuery(caseId);
     const { data: otherCases } = api.cases.otherCases.useQuery(caseId);
     const { data: fileUploads } = api.fileUploads.caseFiles.useQuery(caseId);
 
+
+
+    if (!caseResult) {
+        return null;
+    }
+
+    const currentCase = caseResult.currentCase;
 
     if (!currentCase) {
         return null;
@@ -26,7 +33,7 @@ export default function CaseDetails({ caseId, segmentId }: { caseId: number, seg
                 <div className="space-y-3 pb-5 p-2 border-spacing-2 ">
 
                     <div className="mt-0 text-sm text-gray-800 flex flex-row items-center">
-                        <FolderIcon className="w-5 h-5 mt-1 mr-2 text-gray-400" /> Case {parseInt(currentCase?.case_number.toLocaleString())}
+                        <FolderIcon className="w-5 h-5 mt-1 mr-2 text-gray-400" /> Case {parseInt(currentCase.case_number.toLocaleString())}
                     </div>
 
                     <div className="mt-0 text-sm text-gray-800 flex flex-row items-center">

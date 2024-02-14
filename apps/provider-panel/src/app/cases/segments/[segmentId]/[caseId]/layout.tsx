@@ -24,12 +24,19 @@ function classNames(...classes: (string | boolean)[]) {
 export default function CaseLayout({ params, children }: { params: { segmentId: string, caseId: string }, children: any }) {
 
     const cId = parseInt(params.caseId);
-    const { data: currentCase, isLoading } = api.cases.get.useQuery(cId);
+    const { data: caseResult, isLoading } = api.cases.get.useQuery(cId);
 
-    if (isLoading || !currentCase) {
+
+
+    if (isLoading || !caseResult) {
         return null;
     }
 
+    const { currentCase, initialAssessment } = caseResult;
+
+    if (!currentCase || !initialAssessment) {
+        return null;
+    }
 
     return <>
 
@@ -39,7 +46,34 @@ export default function CaseLayout({ params, children }: { params: { segmentId: 
                     <strong>{currentCase.profile.first_name} {currentCase.profile.last_name}</strong>
                     <span className="text-sm text-gray-600 ">
                         <strong className="mr-2 text-blue-600">{currentCase.profile.companies?.name}</strong>
-                        - {currentCase.case_types?.name}
+
+
+                        {initialAssessment.injury_type && <span className="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">
+                            {initialAssessment.injury_type}
+                        </span>}
+
+                        {initialAssessment.pain_level && <span className="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/20 ml-2">
+                            {initialAssessment.pain_level}
+                        </span>}
+
+                        {initialAssessment.is_this_a_medical_emergency === 'Yes' && <span className="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/20 ml-2">
+                            MEDICAL EMERGENCY
+                        </span>}
+
+                        {initialAssessment.is_this_a_medical_emergency === 'No' && <span className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-600/20 ml-2">
+                            Non-Emergency
+                        </span>}
+
+                        {initialAssessment.have_you_reported_this_injury_to_your_supervisor === 'Yes' && <span className="inline-flex items-center rounded-md bg-indigo-50 px-2 py-1 text-xs font-medium text-indigo-700 ring-1 ring-inset ring-indigo-600/20 ml-2">
+                            Reported to Supervisor
+                        </span>}
+
+                        {initialAssessment.have_you_reported_this_injury_to_your_supervisor === 'No' && <span className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-600/20 ml-2">
+                            Not Reported to Supervisor
+                        </span>}
+
+
+
                     </span>
 
                 </div>
