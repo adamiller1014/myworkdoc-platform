@@ -6,7 +6,8 @@ import {
     FolderMinusIcon,
     ClockIcon,
     ClipboardDocumentListIcon,
-    DocumentTextIcon
+    DocumentTextIcon,
+    QueueListIcon
 } from '@heroicons/react/24/outline'
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -33,14 +34,16 @@ export default function CaseSegments() {
         return <></>
     }
 
-
-    const navigation: { name: string, href: string, icon: any, count?: number }[] = [];
-
+    const navigation: { name: string, href: string, icon: any, room_type_id?: number }[] = [];
+    navigation.push({ name: 'All', href: '/cases/segments/all', icon: QueueListIcon });
     roomTypes?.map((roomType) => {
 
         // Pick icon based on room type
         let icon = FolderOpenIcon;
         switch (roomType.name) {
+            case "All":
+                icon = QueueListIcon;
+                break;
             case "Initial":
                 icon = FolderPlusIcon;
                 break;
@@ -60,7 +63,7 @@ export default function CaseSegments() {
                 icon = FolderOpenIcon;
         }
 
-        navigation.push({ name: roomType.name as string, href: `/cases/segments/${roomType.id}`, icon })
+        navigation.push({ name: roomType.name as string, href: `/cases/segments/${roomType.id}`, icon, room_type_id: parseInt(roomType.id.toString()) })
     });
 
     navigation.push({ name: 'Closed', href: '/cases/segments/closed', icon: FolderMinusIcon });
@@ -86,6 +89,7 @@ export default function CaseSegments() {
                         {navigation.map((item) => {
                             const isActive = pathname.indexOf(item.href) === 0;
 
+
                             return <>
                                 <li key={item.name}>
                                     <Link
@@ -105,14 +109,9 @@ export default function CaseSegments() {
                                             aria-hidden="true"
                                         />
                                         {item.name}
-                                        {item.count ? (
-                                            <span
-                                                className="ml-auto w-9 min-w-max whitespace-nowrap rounded-full bg-white px-2.5 py-0.5 text-center text-xs font-medium leading-5 text-gray-600 ring-1 ring-inset ring-gray-200"
-                                                aria-hidden="true"
-                                            >
-                                                {item.count}
-                                            </span>
-                                        ) : null}
+                                        {item.room_type_id && <RoomTypeCount room_type_id={item.room_type_id} />}
+                                        {!item.room_type_id && <CountByStatus status={item.name.toLowerCase() as 'closed' | 'all'} />}
+
                                     </Link>
                                 </li></>
                         })}
@@ -151,4 +150,28 @@ export default function CaseSegments() {
             </ul >
         </nav >
     )
+}
+
+function RoomTypeCount({ room_type_id }: { room_type_id: number }) {
+    const { data: count } = api.cases.countBasedOnRoomType.useQuery({ room_type_id });
+
+    return <><span
+        className="ml-auto w-9 min-w-max whitespace-nowrap rounded-full bg-white px-2.5 py-0.5 text-center text-xs font-medium leading-5 text-gray-600 ring-1 ring-inset ring-gray-200"
+        aria-hidden="true"
+    >
+        {count?.toLocaleString()}
+    </span>
+    </>
+}
+
+function CountByStatus({ status }: { status: 'closed' | 'all' }) {
+    const { data: count } = api.cases.count.useQuery({ closed: status === 'closed' });
+
+    return <><span
+        className="ml-auto w-9 min-w-max whitespace-nowrap rounded-full bg-white px-2.5 py-0.5 text-center text-xs font-medium leading-5 text-gray-600 ring-1 ring-inset ring-gray-200"
+        aria-hidden="true"
+    >
+        {count?.toLocaleString()}
+    </span>
+    </>
 }

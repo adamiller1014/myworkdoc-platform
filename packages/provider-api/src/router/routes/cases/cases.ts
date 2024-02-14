@@ -60,8 +60,8 @@ export const casesRouter = router({
         }),
     count: protectedProcedure
         .input(z.object({
-            gridState: GridStateSchema,
             companyId: z.number().optional(),
+            closed: z.boolean().optional()
         }))
         .query(async ({ ctx, input }) => {
 
@@ -70,7 +70,8 @@ export const casesRouter = router({
             if (input.companyId) {
                 where = {
                     profile: {
-                        company_id: input.companyId
+                        company_id: input.companyId,
+                        closed: input.closed
                     }
                 }
             }
@@ -79,19 +80,32 @@ export const casesRouter = router({
                 where
             });
         }),
+    countBasedOnRoomType: protectedProcedure
+        .input(z.object({
+            room_type_id: z.number()
+        }))
+        .query(async ({ ctx, input }) => {
+
+
+            return ctx.db.cases.count({
+                where: {
+                    rooms: {
+                        some: {
+                            room_type_id: input.room_type_id,
+                            closed_on: null
+                        }
+                    }
+                },
+
+            });
+        }),
+
     list: protectedProcedure
         .input(z.object({
             companyId: z.number().optional(),
         }))
         .query(async ({ input, ctx }) => {
 
-            const where = input.companyId ? {
-
-                profile: {
-                    company_id: input.companyId
-                }
-
-            } : null
 
             return ctx.db.cases.findMany(
                 {
