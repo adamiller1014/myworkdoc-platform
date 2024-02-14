@@ -2,6 +2,7 @@
 import { AtSymbolIcon, BriefcaseIcon, BuildingOffice2Icon, CakeIcon, PaperClipIcon, DocumentCheckIcon, FolderIcon, PhoneIcon, UserIcon } from "@heroicons/react/24/outline";
 import { differenceInYears, format } from "date-fns";
 import { api } from "../../../../../utils/react";
+import Link from "next/link";
 
 
 export default function CaseDetails({ caseId, segmentId }: { caseId: number, segmentId: string }) {
@@ -116,11 +117,11 @@ export default function CaseDetails({ caseId, segmentId }: { caseId: number, seg
                 {otherCases?.map((item) => {
                     return <><div className="flex flex-row p-2 border-b-2">
                         <div className="flex-grow">
-                            <div className="text-sm text-gray-800">Case $ {item.case_number.toString()}</div>
+                            <div className="text-sm text-gray-800">Case #{item.case_number.toString()}</div>
                             {/* <div className="text-xs text-gray-600">{item.profile.companies?.name}</div> */}
                         </div>
                         <div className="flex-none">
-                            <a href={`/cases/segments/${segmentId}/${item.id}/activity`} className="text-blue-500">View</a>
+                            <Link href={`/cases/segments/${segmentId}/${item.id}/activity`} className="text-blue-500">View</Link>
                         </div>
                     </div>
                     </>

@@ -2,23 +2,24 @@
 
 import { useRouter } from "next/navigation";
 import { api } from '../../../../utils/react';
-import { DataGrid, useGridState } from '@myworkdoc/ui';
+import { DataGrid, DateCell, useGridState, GridColumn } from '@myworkdoc/ui';
 
 export default function CompaniesGrid({ params }: { params: { companyId: string } }) {
 
     const gridState = useGridState();
     const cId = parseInt(params.companyId);
     const { data, isLoading } = api.cases.grid.useQuery({ companyId: cId, gridState });
-    const { data: count } = api.cases.count.useQuery({ companyId: cId, gridState });
+    const { data: count } = api.cases.count.useQuery({ companyId: cId });
     const router = useRouter();
 
 
-    const colDefs: any[] = [
+    const colDefs: GridColumn[] = [
         { field: "case_number", title: "Case Number", width: 100 },
         { field: "profile.first_name", title: "First Name", width: 300 },
         { field: "profile.last_name", title: "Last Name", width: 300 },
         {
             field: "created_on", title: "Created On",
+            cell: DateCell
         },
     ]
 
