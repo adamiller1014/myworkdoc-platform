@@ -26,6 +26,7 @@ export const casesRouter = router({
         .input(z.object({
             gridState: GridStateSchema,
             companyId: z.number().optional(),
+            employeeId: z.number().optional(),
         }))
         .query(async ({ input, ctx }) => {
 
@@ -36,6 +37,12 @@ export const casesRouter = router({
                     profile: {
                         company_id: input.companyId
                     }
+                }
+            }
+
+            if (input.employeeId) {
+                where = {
+                    profile_id: input.employeeId
                 }
             }
 
@@ -61,7 +68,8 @@ export const casesRouter = router({
     count: protectedProcedure
         .input(z.object({
             companyId: z.number().optional(),
-            closed: z.boolean().optional()
+            closed: z.boolean().optional(),
+            employeeId: z.number().optional(),
         }))
         .query(async ({ ctx, input }) => {
 
@@ -73,6 +81,12 @@ export const casesRouter = router({
                         company_id: input.companyId,
                         closed: input.closed
                     }
+                }
+            }
+
+            if (input.employeeId) {
+                where = {
+                    profile_id: input.employeeId
                 }
             }
 

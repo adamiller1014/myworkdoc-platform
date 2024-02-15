@@ -36,7 +36,7 @@ export default function CaseFormsGrid() {
                     total={count}
                     isLoading={isLoading}
                     onRowDoubleClicked={(e) => {
-                        router.push(`/profiles/${e.id}`);
+                        router.push(`/case-forms/${e.id}`);
                     }} />
             </div>
         </div>

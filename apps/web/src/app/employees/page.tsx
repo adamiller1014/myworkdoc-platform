@@ -41,7 +41,7 @@ export default function EmployeesGrid() {
                     total={count}
                     isLoading={isLoading}
                     onRowDoubleClicked={(e) => {
-                        router.push(`/profiles/${e.id}`);
+                        router.push(`/employees/${e.id}`);
                     }} />
             </div>
         </div>
