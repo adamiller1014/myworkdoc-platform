@@ -13,7 +13,7 @@ const inter = Inter({
 });
 
 export const metadata = {
-    title: "MyWorkDoc - Provider",
+    title: "MyWorkDoc",
     icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 
