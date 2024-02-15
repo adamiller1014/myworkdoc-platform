@@ -5,18 +5,13 @@ import { usePathname } from "next/navigation";
 import { formatDistance, subDays } from 'date-fns'
 import Link from "next/link";
 import { api } from "../../../../utils/react";
-function classNames(...classes: any[]) {
-    return classes.filter(Boolean).join(' ')
-}
-
+import { classNames } from "@/utils/classNames";
 
 export default function Cases({ children, params }: { children: any, params: { segmentId: "open" | "closed" | "new" | "all" } }) {
 
 
     const pathname = usePathname();
-    const { data, isLoading } = api.cases.list.useQuery({
-
-    });
+    const { data, isLoading } = api.cases.list.useQuery({});
 
 
 

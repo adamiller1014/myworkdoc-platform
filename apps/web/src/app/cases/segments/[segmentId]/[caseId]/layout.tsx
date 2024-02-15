@@ -1,11 +1,9 @@
 'use client';
 
-
 import CaseDetails from "./case-details";
 import { ChatBubbleBottomCenterIcon, ClockIcon, ListBulletIcon } from "@heroicons/react/24/outline";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { api } from "../../../../../utils/react";
 import { Fragment } from 'react'
 import { Menu, Transition } from '@headlessui/react'
 import {
@@ -15,11 +13,10 @@ import {
     PencilSquareIcon,
     TrashIcon,
 } from '@heroicons/react/20/solid'
+import { api } from "@/utils/react";
+import { classNames } from "@/utils/classNames";
 
 
-function classNames(...classes: (string | boolean)[]) {
-    return classes.filter(Boolean).join(' ')
-}
 
 export default function CaseLayout({ params, children }: { params: { segmentId: string, caseId: string }, children: any }) {
 

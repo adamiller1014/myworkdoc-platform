@@ -6,13 +6,10 @@ import {
 
 import { formatRelative, subDays } from 'date-fns'
 import { PhoneArrowDownLeftIcon, PhoneXMarkIcon, DocumentTextIcon, PencilIcon } from '@heroicons/react/24/outline'
-import { api } from '../../../../../../utils/react'
-import { FormResponseItem } from '../../../../../../../../../packages/api/src/router/routes/cases/cases'
+import { api } from '@/utils/react'
+import { FormResponseItem } from '@myworkdoc/api/src/router/routes/cases/cases'
+import { classNames } from '@/utils/classNames'
 
-
-function classNames(...classes: string[]) {
-    return classes.filter(Boolean).join(' ')
-}
 
 export default function CaseActivity({ params }: { params: { caseId: string } }) {
 

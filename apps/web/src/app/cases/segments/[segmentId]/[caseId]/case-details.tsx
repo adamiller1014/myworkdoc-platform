@@ -1,7 +1,7 @@
 'use client'
+import { api } from "@/utils/react";
 import { AtSymbolIcon, BriefcaseIcon, BuildingOffice2Icon, CakeIcon, PaperClipIcon, DocumentCheckIcon, FolderIcon, PhoneIcon, UserIcon } from "@heroicons/react/24/outline";
 import { differenceInYears, format } from "date-fns";
-import { api } from "../../../../../utils/react";
 import Link from "next/link";
 
 

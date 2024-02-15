@@ -5,7 +5,7 @@ import { ClerkProvider, UserButton } from "@clerk/nextjs";
 import { Theme } from '@radix-ui/themes';
 import '@radix-ui/themes/styles.css';
 import { TRPCReactProvider } from "../utils/react";
-import { SideNav } from '@myworkdoc/ui';
+import { SideNav } from "@/components/side-nav/side-nav.component";
 
 const inter = Inter({
     subsets: ["latin"],

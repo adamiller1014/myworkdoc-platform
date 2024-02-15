@@ -137,6 +137,9 @@ importers:
       '@headlessui/react':
         specifier: ^1.7.18
         version: 1.7.18(react-dom@18.2.0)(react@18.2.0)
+      '@heroicons/react':
+        specifier: ^2.1.1
+        version: 2.1.1(react@18.2.0)
       '@myworkdoc/api':
         specifier: '*'
         version: link:../../packages/api
@@ -146,9 +149,78 @@ importers:
       '@myworkdoc/tailwind-config':
         specifier: '*'
         version: link:../../packages/config/tailwind
-      '@myworkdoc/ui':
-        specifier: '*'
-        version: link:../../packages/ui
+      '@progress/kendo-data-query':
+        specifier: ^1.7.0
+        version: 1.7.0
+      '@progress/kendo-date-math':
+        specifier: ^1.5.12
+        version: 1.5.12
+      '@progress/kendo-drawing':
+        specifier: ^1.19.0
+        version: 1.19.0
+      '@progress/kendo-inputs-common':
+        specifier: ^3.1.0
+        version: 3.1.0(@progress/kendo-drawing@1.19.0)
+      '@progress/kendo-intl':
+        specifier: ^3.1.2
+        version: 3.1.2
+      '@progress/kendo-licensing':
+        specifier: ^1.3.5
+        version: 1.3.5
+      '@progress/kendo-popup-common':
+        specifier: ^1.9.2
+        version: 1.9.2
+      '@progress/kendo-react-animation':
+        specifier: ^7.1.0
+        version: 7.1.0(@progress/kendo-licensing@1.3.5)(@progress/kendo-react-common@7.1.0)(@progress/kendo-svg-icons@2.1.0)(react-dom@18.2.0)(react-transition-group@4.4.5)(react@18.2.0)
+      '@progress/kendo-react-buttons':
+        specifier: ^7.1.0
+        version: 7.1.0(@progress/kendo-licensing@1.3.5)(@progress/kendo-react-common@7.1.0)(@progress/kendo-react-popup@7.1.0)(@progress/kendo-svg-icons@2.1.0)(react-dom@18.2.0)(react@18.2.0)
+      '@progress/kendo-react-data-tools':
+        specifier: ^7.1.0
+        version: 7.1.0(@progress/kendo-data-query@1.7.0)(@progress/kendo-drawing@1.19.0)(@progress/kendo-licensing@1.3.5)(@progress/kendo-react-animation@7.1.0)(@progress/kendo-react-buttons@7.1.0)(@progress/kendo-react-common@7.1.0)(@progress/kendo-react-dateinputs@7.1.0)(@progress/kendo-react-dropdowns@7.1.0)(@progress/kendo-react-inputs@7.1.0)(@progress/kendo-react-intl@7.1.0)(@progress/kendo-react-popup@7.1.0)(@progress/kendo-svg-icons@2.1.0)(react-dom@18.2.0)(react@18.2.0)
+      '@progress/kendo-react-dateinputs':
+        specifier: ^7.1.0
+        version: 7.1.0(@progress/kendo-date-math@1.5.12)(@progress/kendo-licensing@1.3.5)(@progress/kendo-react-buttons@7.1.0)(@progress/kendo-react-common@7.1.0)(@progress/kendo-react-intl@7.1.0)(@progress/kendo-react-labels@7.1.0)(@progress/kendo-react-layout@7.1.0)(@progress/kendo-react-popup@7.1.0)(@progress/kendo-svg-icons@2.1.0)(react-dom@18.2.0)(react@18.2.0)
+      '@progress/kendo-react-dialogs':
+        specifier: ^7.1.0
+        version: 7.1.0(@progress/kendo-licensing@1.3.5)(@progress/kendo-react-buttons@7.1.0)(@progress/kendo-react-common@7.1.0)(@progress/kendo-svg-icons@2.1.0)(react-dom@18.2.0)(react@18.2.0)
+      '@progress/kendo-react-dropdowns':
+        specifier: ^7.1.0
+        version: 7.1.0(@progress/kendo-licensing@1.3.5)(@progress/kendo-react-buttons@7.1.0)(@progress/kendo-react-common@7.1.0)(@progress/kendo-react-inputs@7.1.0)(@progress/kendo-react-intl@7.1.0)(@progress/kendo-react-labels@7.1.0)(@progress/kendo-react-layout@7.1.0)(@progress/kendo-react-popup@7.1.0)(@progress/kendo-react-treeview@7.1.0)(@progress/kendo-svg-icons@2.1.0)(react-dom@18.2.0)(react@18.2.0)
+      '@progress/kendo-react-grid':
+        specifier: ^7.1.0
+        version: 7.1.0(@progress/kendo-data-query@1.7.0)(@progress/kendo-drawing@1.19.0)(@progress/kendo-licensing@1.3.5)(@progress/kendo-react-animation@7.1.0)(@progress/kendo-react-buttons@7.1.0)(@progress/kendo-react-common@7.1.0)(@progress/kendo-react-data-tools@7.1.0)(@progress/kendo-react-dateinputs@7.1.0)(@progress/kendo-react-dropdowns@7.1.0)(@progress/kendo-react-inputs@7.1.0)(@progress/kendo-react-intl@7.1.0)(@progress/kendo-react-popup@7.1.0)(@progress/kendo-svg-icons@2.1.0)(react-dom@18.2.0)(react@18.2.0)
+      '@progress/kendo-react-inputs':
+        specifier: ^7.1.0
+        version: 7.1.0(@progress/kendo-drawing@1.19.0)(@progress/kendo-inputs-common@3.1.0)(@progress/kendo-licensing@1.3.5)(@progress/kendo-react-animation@7.1.0)(@progress/kendo-react-buttons@7.1.0)(@progress/kendo-react-common@7.1.0)(@progress/kendo-react-dialogs@7.1.0)(@progress/kendo-react-form@7.1.0)(@progress/kendo-react-intl@7.1.0)(@progress/kendo-react-labels@7.1.0)(@progress/kendo-react-popup@7.1.0)(@progress/kendo-svg-icons@2.1.0)(react-dom@18.2.0)(react@18.2.0)
+      '@progress/kendo-react-intl':
+        specifier: ^7.1.0
+        version: 7.1.0(@progress/kendo-intl@3.1.2)(@progress/kendo-licensing@1.3.5)(@progress/kendo-react-common@7.1.0)(react-dom@18.2.0)(react@18.2.0)
+      '@progress/kendo-react-labels':
+        specifier: ^7.1.0
+        version: 7.1.0(@progress/kendo-licensing@1.3.5)(@progress/kendo-react-common@7.1.0)(@progress/kendo-react-intl@7.1.0)(react-dom@18.2.0)(react@18.2.0)
+      '@progress/kendo-react-layout':
+        specifier: ^7.1.0
+        version: 7.1.0(@progress/kendo-licensing@1.3.5)(@progress/kendo-react-animation@7.1.0)(@progress/kendo-react-common@7.1.0)(@progress/kendo-react-intl@7.1.0)(@progress/kendo-react-popup@7.1.0)(@progress/kendo-react-progressbars@7.1.0)(@progress/kendo-svg-icons@2.1.0)(react-dom@18.2.0)(react@18.2.0)
+      '@progress/kendo-react-popup':
+        specifier: ^7.1.0
+        version: 7.1.0(@progress/kendo-licensing@1.3.5)(@progress/kendo-popup-common@1.9.2)(@progress/kendo-react-common@7.1.0)(react-dom@18.2.0)(react@18.2.0)
+      '@progress/kendo-react-progressbars':
+        specifier: ^7.1.0
+        version: 7.1.0(@progress/kendo-licensing@1.3.5)(@progress/kendo-react-animation@7.1.0)(@progress/kendo-react-common@7.1.0)(react-dom@18.2.0)(react@18.2.0)
+      '@progress/kendo-react-treeview':
+        specifier: ^7.1.0
+        version: 7.1.0(@progress/kendo-licensing@1.3.5)(@progress/kendo-react-animation@7.1.0)(@progress/kendo-react-common@7.1.0)(@progress/kendo-svg-icons@2.1.0)(react-dom@18.2.0)(react@18.2.0)
+      '@progress/kendo-svg-icons':
+        specifier: ^2.1.0
+        version: 2.1.0
+      '@progress/kendo-theme-bootstrap':
+        specifier: ^7.2.0
+        version: 7.2.0(@popperjs/core@2.11.8)
+      '@progress/kendo-theme-default':
+        specifier: ^7.2.0
+        version: 7.2.0
       '@radix-ui/themes':
         specifier: ^2.0.3
         version: 2.0.3(@types/react-dom@18.2.19)(@types/react@18.2.55)(react-dom@18.2.0)(react@18.2.0)
@@ -188,6 +260,9 @@ importers:
       react-select:
         specifier: ^5.8.0
         version: 5.8.0(@babel/core@7.20.5)(@types/react@18.2.55)(react-dom@18.2.0)(react@18.2.0)
+      superjson:
+        specifier: ^2.2.1
+        version: 2.2.1
       zod:
         specifier: ^3.22.4
         version: 3.22.4
@@ -283,109 +358,6 @@ importers:
         version: 5.3.3
 
   packages/shared:
-    dependencies:
-      '@clerk/nextjs':
-        specifier: ^4.29.7
-        version: 4.29.7(next@14.1.0)(react-dom@18.2.0)(react@18.2.0)
-      '@heroicons/react':
-        specifier: ^2.1.1
-        version: 2.1.1(react@18.2.0)
-      '@myworkdoc/db':
-        specifier: '*'
-        version: link:../db
-      '@progress/kendo-data-query':
-        specifier: ^1.7.0
-        version: 1.7.0
-      '@progress/kendo-date-math':
-        specifier: ^1.5.12
-        version: 1.5.12
-      '@progress/kendo-drawing':
-        specifier: ^1.19.0
-        version: 1.19.0
-      '@progress/kendo-inputs-common':
-        specifier: ^3.1.0
-        version: 3.1.0(@progress/kendo-drawing@1.19.0)
-      '@progress/kendo-intl':
-        specifier: ^3.1.2
-        version: 3.1.2
-      '@progress/kendo-licensing':
-        specifier: ^1.3.5
-        version: 1.3.5
-      '@progress/kendo-popup-common':
-        specifier: ^1.9.2
-        version: 1.9.2
-      '@progress/kendo-react-animation':
-        specifier: ^7.1.0
-        version: 7.1.0(@progress/kendo-licensing@1.3.5)(@progress/kendo-react-common@7.1.0)(@progress/kendo-svg-icons@2.1.0)(react-dom@18.2.0)(react-transition-group@4.4.5)(react@18.2.0)
-      '@progress/kendo-react-buttons':
-        specifier: ^7.1.0
-        version: 7.1.0(@progress/kendo-licensing@1.3.5)(@progress/kendo-react-common@7.1.0)(@progress/kendo-react-popup@7.1.0)(@progress/kendo-svg-icons@2.1.0)(react-dom@18.2.0)(react@18.2.0)
-      '@progress/kendo-react-data-tools':
-        specifier: ^7.1.0
-        version: 7.1.0(@progress/kendo-data-query@1.7.0)(@progress/kendo-drawing@1.19.0)(@progress/kendo-licensing@1.3.5)(@progress/kendo-react-animation@7.1.0)(@progress/kendo-react-buttons@7.1.0)(@progress/kendo-react-common@7.1.0)(@progress/kendo-react-dateinputs@7.1.0)(@progress/kendo-react-dropdowns@7.1.0)(@progress/kendo-react-inputs@7.1.0)(@progress/kendo-react-intl@7.1.0)(@progress/kendo-react-popup@7.1.0)(@progress/kendo-svg-icons@2.1.0)(react-dom@18.2.0)(react@18.2.0)
-      '@progress/kendo-react-dateinputs':
-        specifier: ^7.1.0
-        version: 7.1.0(@progress/kendo-date-math@1.5.12)(@progress/kendo-licensing@1.3.5)(@progress/kendo-react-buttons@7.1.0)(@progress/kendo-react-common@7.1.0)(@progress/kendo-react-intl@7.1.0)(@progress/kendo-react-labels@7.1.0)(@progress/kendo-react-layout@7.1.0)(@progress/kendo-react-popup@7.1.0)(@progress/kendo-svg-icons@2.1.0)(react-dom@18.2.0)(react@18.2.0)
-      '@progress/kendo-react-dialogs':
-        specifier: ^7.1.0
-        version: 7.1.0(@progress/kendo-licensing@1.3.5)(@progress/kendo-react-buttons@7.1.0)(@progress/kendo-react-common@7.1.0)(@progress/kendo-svg-icons@2.1.0)(react-dom@18.2.0)(react@18.2.0)
-      '@progress/kendo-react-dropdowns':
-        specifier: ^7.1.0
-        version: 7.1.0(@progress/kendo-licensing@1.3.5)(@progress/kendo-react-buttons@7.1.0)(@progress/kendo-react-common@7.1.0)(@progress/kendo-react-inputs@7.1.0)(@progress/kendo-react-intl@7.1.0)(@progress/kendo-react-labels@7.1.0)(@progress/kendo-react-layout@7.1.0)(@progress/kendo-react-popup@7.1.0)(@progress/kendo-react-treeview@7.1.0)(@progress/kendo-svg-icons@2.1.0)(react-dom@18.2.0)(react@18.2.0)
-      '@progress/kendo-react-grid':
-        specifier: ^7.1.0
-        version: 7.1.0(@progress/kendo-data-query@1.7.0)(@progress/kendo-drawing@1.19.0)(@progress/kendo-licensing@1.3.5)(@progress/kendo-react-animation@7.1.0)(@progress/kendo-react-buttons@7.1.0)(@progress/kendo-react-common@7.1.0)(@progress/kendo-react-data-tools@7.1.0)(@progress/kendo-react-dateinputs@7.1.0)(@progress/kendo-react-dropdowns@7.1.0)(@progress/kendo-react-inputs@7.1.0)(@progress/kendo-react-intl@7.1.0)(@progress/kendo-react-popup@7.1.0)(@progress/kendo-svg-icons@2.1.0)(react-dom@18.2.0)(react@18.2.0)
-      '@progress/kendo-react-inputs':
-        specifier: ^7.1.0
-        version: 7.1.0(@progress/kendo-drawing@1.19.0)(@progress/kendo-inputs-common@3.1.0)(@progress/kendo-licensing@1.3.5)(@progress/kendo-react-animation@7.1.0)(@progress/kendo-react-buttons@7.1.0)(@progress/kendo-react-common@7.1.0)(@progress/kendo-react-dialogs@7.1.0)(@progress/kendo-react-form@7.1.0)(@progress/kendo-react-intl@7.1.0)(@progress/kendo-react-labels@7.1.0)(@progress/kendo-react-popup@7.1.0)(@progress/kendo-svg-icons@2.1.0)(react-dom@18.2.0)(react@18.2.0)
-      '@progress/kendo-react-intl':
-        specifier: ^7.1.0
-        version: 7.1.0(@progress/kendo-intl@3.1.2)(@progress/kendo-licensing@1.3.5)(@progress/kendo-react-common@7.1.0)(react-dom@18.2.0)(react@18.2.0)
-      '@progress/kendo-react-labels':
-        specifier: ^7.1.0
-        version: 7.1.0(@progress/kendo-licensing@1.3.5)(@progress/kendo-react-common@7.1.0)(@progress/kendo-react-intl@7.1.0)(react-dom@18.2.0)(react@18.2.0)
-      '@progress/kendo-react-layout':
-        specifier: ^7.1.0
-        version: 7.1.0(@progress/kendo-licensing@1.3.5)(@progress/kendo-react-animation@7.1.0)(@progress/kendo-react-common@7.1.0)(@progress/kendo-react-intl@7.1.0)(@progress/kendo-react-popup@7.1.0)(@progress/kendo-react-progressbars@7.1.0)(@progress/kendo-svg-icons@2.1.0)(react-dom@18.2.0)(react@18.2.0)
-      '@progress/kendo-react-popup':
-        specifier: ^7.1.0
-        version: 7.1.0(@progress/kendo-licensing@1.3.5)(@progress/kendo-popup-common@1.9.2)(@progress/kendo-react-common@7.1.0)(react-dom@18.2.0)(react@18.2.0)
-      '@progress/kendo-react-progressbars':
-        specifier: ^7.1.0
-        version: 7.1.0(@progress/kendo-licensing@1.3.5)(@progress/kendo-react-animation@7.1.0)(@progress/kendo-react-common@7.1.0)(react-dom@18.2.0)(react@18.2.0)
-      '@progress/kendo-react-treeview':
-        specifier: ^7.1.0
-        version: 7.1.0(@progress/kendo-licensing@1.3.5)(@progress/kendo-react-animation@7.1.0)(@progress/kendo-react-common@7.1.0)(@progress/kendo-svg-icons@2.1.0)(react-dom@18.2.0)(react@18.2.0)
-      '@progress/kendo-svg-icons':
-        specifier: ^2.1.0
-        version: 2.1.0
-      '@progress/kendo-theme-bootstrap':
-        specifier: ^7.2.0
-        version: 7.2.0(@popperjs/core@2.11.8)
-      '@progress/kendo-theme-default':
-        specifier: ^7.2.0
-        version: 7.2.0
-      '@trpc/client':
-        specifier: ^10.45.1
-        version: 10.45.1(@trpc/server@10.45.1)
-      '@trpc/server':
-        specifier: ^10.45.1
-        version: 10.45.1
-      superjson:
-        specifier: ^2.2.1
-        version: 2.2.1
-      zod:
-        specifier: ^3.22.4
-        version: 3.22.4
-    devDependencies:
-      eslint:
-        specifier: ^8.56.0
-        version: 8.56.0
-      typescript:
-        specifier: ^5.3.3
-        version: 5.3.3
-
-  packages/ui:
     dependencies:
       '@clerk/nextjs':
         specifier: ^4.29.7

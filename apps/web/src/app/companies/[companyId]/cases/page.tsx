@@ -1,9 +1,9 @@
 'use client';
 
+import { DataGrid, DateCell, GridColumn, useGridState } from "@/components/grid/data-grid";
+import { api } from "@/utils/react";
 import { useRouter } from "next/navigation";
 
-import { api } from '../../../../utils/react';
-import { DataGrid, DateCell, GridColumn, useGridState } from '@myworkdoc/ui';
 
 export default function CompaniesGrid({ params }: { params: { companyId: string } }) {
 

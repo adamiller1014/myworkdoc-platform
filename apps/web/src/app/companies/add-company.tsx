@@ -2,8 +2,9 @@ import React from 'react';
 import { Button, Checkbox, Dialog, Flex, Text, TextField } from '@radix-ui/themes';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
-import { CreateCompanyInput } from '@myworkdoc/admin-api/src/router/routes/companies/company-types';
+
 import { api } from '../../utils/react';
+import { CreateCompanyInput } from '@myworkdoc/api/src/router/routes/companies/company-types';
 
 export default function AddCompany() {
   const utils = api.useUtils();

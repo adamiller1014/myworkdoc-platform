@@ -3,7 +3,8 @@ import { Flex } from "@radix-ui/themes";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import CompanySide from "../company-side";
-import { api } from "../../../utils/react";
+import { api } from "@/utils/react";
+import { classNames } from "@/utils/classNames";
 
 export default function CompanyLayout({ children, params }: { children: React.ReactNode, params: { companyId: string } }) {
     return <>
@@ -19,11 +20,6 @@ export default function CompanyLayout({ children, params }: { children: React.Re
     </>
 }
 
-
-
-function classNames(...classes: string[]) {
-    return classes.filter(Boolean).join(' ')
-}
 
 function CompanyTabs({ companyId }: { companyId: string }) {
 

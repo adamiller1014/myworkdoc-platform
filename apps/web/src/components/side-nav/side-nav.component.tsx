@@ -4,16 +4,13 @@ import Link from "next/link";
 import { usePathname } from 'next/navigation';
 import { BookOpenIcon, BuildingOffice2Icon, ChartBarIcon, ClipboardDocumentCheckIcon, Cog6ToothIcon, DocumentTextIcon, FolderIcon, Squares2X2Icon, UsersIcon } from '@heroicons/react/24/outline';
 import * as React from "react";
+import { classNames } from '@/utils/classNames';
 
 export interface NavItem {
     name: string;
     href: string;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     icon?: any;
-}
-
-function classNames(...classes: (string | boolean)[]) {
-    return classes.filter(Boolean).join(' ')
 }
 
 export interface SideNavProps {

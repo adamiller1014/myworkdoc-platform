@@ -12,6 +12,7 @@ import {
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { api } from '../../utils/react';
+import { classNames } from '@/utils/classNames';
 
 interface SecondaryNavItem {
     name: string
@@ -19,9 +20,7 @@ interface SecondaryNavItem {
     initial: string
 }
 
-function classNames(...classes: string[]) {
-    return classes.filter(Boolean).join(' ')
-}
+
 
 export default function CaseSegments() {
 

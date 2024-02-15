@@ -3,7 +3,8 @@
 import { useRouter } from "next/navigation";
 import AddCompany from "./add-company";
 import { api } from '../../utils/react';
-import { CheckboxCell, DataGrid, DateCell, GridColumn, useGridState } from '@myworkdoc/ui';
+import { CheckboxCell, DataGrid, DateCell, GridColumn, useGridState } from "@/components/grid/data-grid";
+
 
 export default function CompaniesGrid() {
 
