@@ -44,6 +44,13 @@ pnpm db-push
 Run `pnpm dev` at the project root folder.
 ```
 
+### Updating Seed Data
+
+# File can be found here
+packages\db\prisma\seed.ts @ line 3011
+# For each new users add
+{ email: 'user.email@email.com', cell_number: '214-405-0000', company_id: 10, first_name: 'First', last_name: 'Last', active: true, ein: '123456789', profile_type_id: 3 },
+
 ### Configure Expo app
 
 Expo doesn't use the .env for the publishable key, so you will need to go to `apps/expo/app.config.ts` and add it there.
