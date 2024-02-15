@@ -1,15 +1,3 @@
-[![CI](https://github.com/perkinsjr/t3-turbo-and-clerk/actions/workflows/ci.yml/badge.svg)](https://github.com/perkinsjr/t3-turbo-and-clerk/actions/workflows/ci.yml)
-
-# Create T3 Turbo with Clerk Authentication
-
-## Clerk Dashboard Setup
-
-For this template to work you need to enable Discord as an OAuth provider. You can find the social options under `User & Authentication / Social Providers` in the [Clerk Dashboard](https://dashboard.clerk.dev)
-
-> If you change any setting here outside of adding Discord, you may need to update your Expo code to handle any requirements you change.
-
-It uses [Turborepo](https://turborepo.org/) and contains:
-
 ## Code Layout
 
 ```
@@ -44,10 +32,16 @@ pnpm i
 
 # Configure environment variables.
 # There is an `.env.example` in the root directory you can use for reference
+# For the Clerk keys - they are avaible in secrets or you can use your own
 cp .env.example .env
+
+#Build the Database using Docker
+docker-compose up -d
 
 # Push the Prisma schema to your database
 pnpm db-push
+
+Run `pnpm dev` at the project root folder.
 ```
 
 ### Configure Expo app
@@ -199,6 +193,19 @@ Deploying your Expo application works slightly differently compared to Next.js o
    > Your OTA (Over The Air) updates must always follow the app store's rules. You can't change your app's primary functionality without getting app store approval. But this is a fast way to update your app for minor changes and bug fixes.
 
 8. Done! Now that you have created your production build, submitted it to the stores, and installed EAS Update, you are ready for anything!
+
+[![CI](https://github.com/perkinsjr/t3-turbo-and-clerk/actions/workflows/ci.yml/badge.svg)](https://github.com/perkinsjr/t3-turbo-and-clerk/actions/workflows/ci.yml)
+
+# Create T3 Turbo with Clerk Authentication
+
+## Clerk Dashboard Setup
+
+For this template to work you need to enable Discord as an OAuth provider. You can find the social options under `User & Authentication / Social Providers` in the [Clerk Dashboard](https://dashboard.clerk.dev) 
+
+> If you change any setting here outside of adding Discord, you may need to update your Expo code to handle any requirements you change.
+
+It uses [Turborepo](https://turborepo.org/) and contains:
+
 
 ## References
 
