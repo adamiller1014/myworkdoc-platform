@@ -9,6 +9,9 @@ export const CreateEmployeeSchema = z.object({
     email: z.string().email(),
     cell_number: z.string(),
 
+    home_address: z.string().optional(),
+    active: z.boolean(),
+
 });
 
 export type CreateEmployeeInput = z.infer<typeof CreateEmployeeSchema>;
