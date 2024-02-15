@@ -12,7 +12,7 @@
         "lint": "eslint . --ext ts,tsx"
     },
     "dependencies": {
-        "@myworkdoc/customer-api": "*",
+        "@myworkdoc/api": "*",
         "@myworkdoc/tailwind-config": "*",
         "@clerk/clerk-expo": "^0.17.7",
         "@shopify/flash-list": "^1.4.0",
