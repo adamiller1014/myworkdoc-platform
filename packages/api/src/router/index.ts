@@ -1,4 +1,5 @@
 import { router } from "../trpc";
+import { authRouter } from "./routes/auth/authRouter";
 import { casesRouter } from "./routes/cases/cases";
 import { companiesRouter } from "./routes/companies/companies";
 import { employeesRouter } from "./routes/employees/employees";
@@ -15,6 +16,8 @@ export const appRouter = router({
   forms: formsRouter,
   roomTypes: roomTypesRouter,
   fileUploads: fileUploadsRouter,
+
+  auth: authRouter
 });
 
 // export type definition of API

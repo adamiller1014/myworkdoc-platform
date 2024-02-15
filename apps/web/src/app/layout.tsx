@@ -1,7 +1,7 @@
 import "../styles/globals.css";
 import '@progress/kendo-theme-default/dist/all.css';
 import { Inter } from "next/font/google";
-import { ClerkProvider, UserButton } from "@clerk/nextjs";
+import { ClerkProvider } from "@clerk/nextjs";
 import { Theme } from '@radix-ui/themes';
 import '@radix-ui/themes/styles.css';
 import { TRPCReactProvider } from "../utils/react";
@@ -33,7 +33,7 @@ export default function RootLayout({
                     <Theme>
                         <TRPCReactProvider>
                             <div className="flex flex-row h-screen bg-gray-100">
-                                <SideNav app={'provider'} userButton={<UserButton />} />
+                                <SideNav />
                                 {children}
                             </div>
                         </TRPCReactProvider>

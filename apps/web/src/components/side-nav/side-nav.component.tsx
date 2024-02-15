@@ -5,6 +5,8 @@ import { usePathname } from 'next/navigation';
 import { BookOpenIcon, BuildingOffice2Icon, ChartBarIcon, ClipboardDocumentCheckIcon, Cog6ToothIcon, DocumentTextIcon, FolderIcon, Squares2X2Icon, UsersIcon } from '@heroicons/react/24/outline';
 import * as React from "react";
 import { classNames } from '@/utils/classNames';
+import { UserButton } from '@clerk/nextjs';
+import { api } from '@/utils/react';
 
 export interface NavItem {
     name: string;
@@ -13,17 +15,16 @@ export interface NavItem {
     icon?: any;
 }
 
-export interface SideNavProps {
-    app: 'customer' | 'admin' | 'provider';
-    userButton: React.ReactNode
-}
 
-export function SideNav({ app, userButton }: SideNavProps) {
+
+export function SideNav() {
 
     let topNav: NavItem[] = [];
     let bottomNavigation: NavItem[] = [];
 
-    if (app === 'provider') {
+    const { data: user, } = api.auth.user.useQuery();
+
+    if (user?.panelType === 'Provider') {
         topNav = [
             { name: 'Cases', icon: FolderIcon, href: '/cases' },
             { name: 'Companies', icon: BuildingOffice2Icon, href: '/companies' },
@@ -35,7 +36,7 @@ export function SideNav({ app, userButton }: SideNavProps) {
             { name: 'Reports', icon: ChartBarIcon, href: '/reports' },
             { name: 'Settings', icon: Cog6ToothIcon, href: '/settings' },
         ]
-    } else if (app === 'admin') {
+    } else if (user?.panelType === 'Admin') {
 
         topNav = [
 
@@ -51,7 +52,7 @@ export function SideNav({ app, userButton }: SideNavProps) {
             { name: 'Settings', icon: Cog6ToothIcon, href: '/settings' },
         ]
 
-    } else if (app === 'customer') {
+    } else if (user?.panelType === 'End User') {
         topNav = [
             { name: 'Cases', icon: FolderIcon, href: '/cases' },
             { name: 'Employees', icon: UsersIcon, href: '/employees' },
@@ -105,7 +106,7 @@ export function SideNav({ app, userButton }: SideNavProps) {
                 })}
 
                 <div className="mt-3 rounded-full h-9 w-9 border-gray-300 border-0 bg-gray-300 flex items-center justify-center">
-                    {userButton}
+                    <UserButton />
                 </div>
             </div>
 

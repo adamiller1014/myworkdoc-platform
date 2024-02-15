@@ -1,13 +1,14 @@
 import { prisma } from "@myworkdoc/db";
 import { type inferAsyncReturnType } from "@trpc/server";
 
-import { getAuth } from "@clerk/nextjs/server";
+import { currentUser, getAuth } from "@clerk/nextjs/server";
 import type {
   SignedInAuthObject,
   SignedOutAuthObject,
 } from "@clerk/nextjs/api";
 import { RequestLike } from "@clerk/nextjs/dist/types/server/types";
 
+type PanelType = "Admin" | "Provider" | "End User";
 
 /**
  * Replace this with an object if you want to pass things to createContextInner
@@ -22,8 +23,43 @@ type AuthContextProps = {
  * @see https://beta.create.t3.gg/en/usage/trpc#-servertrpccontextts
  */
 export const createContextInner = async ({ auth }: AuthContextProps) => {
+
+  // Inject Profile into context if user is signed in
+  const user = await currentUser();
+
+  const emailAddress = user?.emailAddresses[0]?.emailAddress;
+  if (!emailAddress) {
+    throw new Error("No email address found");
+  }
+
+  const profile = await prisma.profiles.findFirst({
+    where: {
+      email: emailAddress,
+    },
+    include: {
+      profile_types: true,
+    }
+  });
+
+  if (!profile) {
+    throw new Error("Profile not found");
+  }
+
+  let panelType: PanelType;
+
+  if (profile.profile_types?.type === 'Admin') {
+    panelType = 'Admin';
+  } else if (profile.profile_types?.type === 'Provider') {
+    panelType = 'Provider';
+  } else {
+    panelType = 'End User';
+  }
+
+
   return {
-    auth,
+    panelType,
+    profile,
+    user,
     db: prisma,
   };
 };
