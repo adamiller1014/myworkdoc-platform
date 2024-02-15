@@ -203,16 +203,6 @@ Deploying your Expo application works slightly differently compared to Next.js o
 
 [![CI](https://github.com/perkinsjr/t3-turbo-and-clerk/actions/workflows/ci.yml/badge.svg)](https://github.com/perkinsjr/t3-turbo-and-clerk/actions/workflows/ci.yml)
 
-# Create T3 Turbo with Clerk Authentication
-
-## Clerk Dashboard Setup
-
-For this template to work you need to enable Discord as an OAuth provider. You can find the social options under `User & Authentication / Social Providers` in the [Clerk Dashboard](https://dashboard.clerk.dev) 
-
-> If you change any setting here outside of adding Discord, you may need to update your Expo code to handle any requirements you change.
-
-It uses [Turborepo](https://turborepo.org/) and contains:
-
 
 ## References
 
