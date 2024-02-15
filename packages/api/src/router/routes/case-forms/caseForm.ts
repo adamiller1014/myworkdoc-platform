@@ -2,14 +2,14 @@ import { z } from "zod";
 import { protectedProcedure, router } from "../../../trpc";
 
 import { GridStateSchema } from "../../../common-types";
-import { CreateFormSchema } from "./form-types";
+import { CreateCaseFormSchema } from "./case-form-types";
 
-export const formsRouter = router({
+export const caseFormsRouter = router({
     grid: protectedProcedure
         .input(GridStateSchema)
         .query(async ({ ctx, input }) => {
 
-            return ctx.db.forms.findMany(
+            return ctx.db.case_forms.findMany(
                 {
                     select: {
                         id: true,
@@ -24,7 +24,7 @@ export const formsRouter = router({
         }),
     list: protectedProcedure
         .query(async ({ ctx }) => {
-            return ctx.db.forms.findMany({
+            return ctx.db.case_forms.findMany({
                 where: {
                     active: true
                 },
@@ -36,7 +36,7 @@ export const formsRouter = router({
     count: protectedProcedure
         .input(GridStateSchema.optional())
         .query(async ({ ctx }) => {
-            return ctx.db.forms.count();
+            return ctx.db.case_forms.count();
         }),
 
     casesCount: protectedProcedure
@@ -56,7 +56,7 @@ export const formsRouter = router({
         .input(z.number())
         .query(async ({ input, ctx }) => {
 
-            return ctx.db.forms.findUnique(
+            return ctx.db.case_forms.findUnique(
                 {
                     where: {
                         id: input
@@ -65,9 +65,9 @@ export const formsRouter = router({
             );
         }),
     create: protectedProcedure
-        .input(CreateFormSchema)
+        .input(CreateCaseFormSchema)
         .mutation(async ({ input, ctx }) => {
-            return ctx.db.forms.create({
+            return ctx.db.case_forms.create({
                 data: input
             });
         }),
