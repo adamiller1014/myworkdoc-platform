@@ -58,8 +58,9 @@ export const createContextInner = async ({ auth }: AuthContextProps) => {
 
   return {
     panelType,
-    profile,
+    auth,
     user,
+    profile,
     db: prisma,
   };
 };
