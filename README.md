@@ -210,3 +210,7 @@ It uses [Turborepo](https://turborepo.org/) and contains:
 ## References
 
 The stack originates from [create-t3-turbo](https://github.com/t3-oss/create-t3-turbo).
+
+PNPM - https://pnpm.io/
+
+Using Node v18.17.0
