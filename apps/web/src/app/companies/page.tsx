@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import AddCompany from "./add-company";
 import { api } from '../../utils/react';
-import { DataGrid, DateCell, GridColumn, useGridState } from '@myworkdoc/ui';
+import { CheckboxCell, DataGrid, DateCell, GridColumn, useGridState } from '@myworkdoc/ui';
 
 export default function CompaniesGrid() {
 
@@ -14,7 +14,7 @@ export default function CompaniesGrid() {
     const router = useRouter();
 
     const colDefs: GridColumn[] = [
-        { field: "active", title: "Active", width: 100 },
+        { field: "active", title: "Active", width: 100, cell: CheckboxCell },
         { field: "name", title: "Name", width: 300 },
         { field: "joined_on", title: "Joined On", cell: DateCell },
     ];
