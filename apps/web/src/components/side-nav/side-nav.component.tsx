@@ -42,7 +42,7 @@ export function SideNav() {
 
             { name: 'Companies', icon: BuildingOffice2Icon, href: '/companies' },
             { name: 'Cases', icon: FolderIcon, href: '/cases' },
-            { name: 'Profiles', icon: UsersIcon, href: '/profiles' },
+            { name: 'Profiles', icon: UsersIcon, href: '/employees' },
             { name: 'Rooms', icon: Squares2X2Icon, href: '/rooms' },
             { name: 'Forms', icon: DocumentTextIcon, href: '/forms' },
         ];
