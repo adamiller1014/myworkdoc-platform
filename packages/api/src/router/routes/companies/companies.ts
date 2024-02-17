@@ -15,6 +15,35 @@ export const companiesRouter = router({
             );
 
         }),
+    cases: protectedProcedure
+        .input(z.object({
+            company_id: z.number(),
+            gridState: GridStateSchema
+        }))
+        .query(async ({ input, ctx }) => {
+            return ctx.db.cases.findMany(
+                {
+                    select: {
+                        id: true,
+                        case_number: true,
+                        created_on: true,
+                        profile: {
+                            select: {
+                                first_name: true,
+                                last_name: true,
+                            }
+                        }
+                    },
+                    where: {
+                        profile: {
+                            company_id: input.company_id
+                        }
+                    },
+                    ...input.gridState,
+                }
+            );
+
+        }),
     list: protectedProcedure
         .query(async ({ ctx }) => {
             return ctx.db.companies.findMany({
@@ -32,42 +61,36 @@ export const companiesRouter = router({
             return ctx.db.companies.count();
         }),
     formsCount: protectedProcedure
-        .input(z.object({
-            companyId: z.number(),
-        }))
+        .input(z.number())
         .query(async ({ input, ctx }) => {
             return ctx.db.forms.count(
                 {
                     where: {
-                        company_id: input.companyId
+                        company_id: input
                     }
                 }
             );
         }),
     employeesCount: protectedProcedure
-        .input(z.object({
-            companyId: z.number(),
-        }))
+        .input(z.number())
         .query(async ({ input, ctx }) => {
             return ctx.db.profiles.count(
                 {
                     where: {
-                        company_id: input.companyId
+                        company_id: input
                     }
                 }
             );
         }),
     casesCount: protectedProcedure
-        .input(z.object({
-            companyId: z.number(),
-        }))
+        .input(z.number())
         .query(async ({ input, ctx }) => {
             return ctx.db.cases.count(
                 {
                     where: {
-                        // profile: {
-                        //     company_id: input.companyId
-                        // }
+                        profile: {
+                            company_id: input
+                        }
                     }
                 }
             );

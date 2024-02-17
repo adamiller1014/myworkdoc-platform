@@ -37,7 +37,7 @@ export const createContextInner = async ({ auth }: AuthContextProps) => {
       email: emailAddress,
     },
     include: {
-      profile_types: true,
+      profile_type: true,
     }
   });
 
@@ -47,9 +47,9 @@ export const createContextInner = async ({ auth }: AuthContextProps) => {
 
   let panelType: PanelType;
 
-  if (profile.profile_types?.type === 'Admin') {
+  if (profile.profile_type?.type === 'Admin') {
     panelType = 'Admin';
-  } else if (profile.profile_types?.type === 'Provider') {
+  } else if (profile.profile_type?.type === 'Provider') {
     panelType = 'Provider';
   } else {
     panelType = 'End User';

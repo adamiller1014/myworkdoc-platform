@@ -25,9 +25,9 @@ function CompanyTabs({ companyId }: { companyId: string }) {
 
     const pathname = usePathname();
     const cId = parseInt(companyId);
-    const { data: companyCases } = api.companies.casesCount.useQuery({ companyId: cId });
-    const { data: companyEmployees } = api.companies.employeesCount.useQuery({ companyId: cId });
-    const { data: companyForms } = api.companies.formsCount.useQuery({ companyId: cId });
+    const { data: companyCases } = api.companies.casesCount.useQuery(cId);
+    const { data: companyEmployees } = api.companies.employeesCount.useQuery(cId);
+    const { data: companyForms } = api.companies.formsCount.useQuery(cId);
 
 
     const tabs = [

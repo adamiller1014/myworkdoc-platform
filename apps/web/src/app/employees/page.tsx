@@ -18,8 +18,8 @@ export default function EmployeesGrid() {
         { field: "active", title: "Active", width: 100, cell: CheckboxCell },
         { field: "last_name", title: "Last Name", width: 300 },
         { field: "first_name", title: "First Name", width: 300 },
-        { field: "companies.name", title: "Company Name" },
-        { field: "companies.active", title: "Company Active", cell: CheckboxCell },
+        { field: "company.name", title: "Company Name" },
+        { field: "company.active", title: "Company Active", cell: CheckboxCell },
         { field: "created_on", title: "Created On", cell: DateCell },
 
     ];

@@ -9,8 +9,8 @@ export default function CompaniesGrid({ params }: { params: { companyId: string 
 
     const gridState = useGridState();
     const cId = parseInt(params.companyId);
-    const { data, isLoading } = api.cases.grid.useQuery({ companyId: cId, gridState });
-    const { data: count } = api.cases.count.useQuery({ companyId: cId });
+    const { data, isLoading } = api.companies.cases.useQuery({ company_id: cId, gridState });
+    const { data: count } = api.companies.casesCount.useQuery(cId);
     const router = useRouter();
 
 

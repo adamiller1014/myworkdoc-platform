@@ -24,28 +24,9 @@ export interface FormResponseItem {
 export const casesRouter = router({
     grid: protectedProcedure
         .input(z.object({
-            gridState: GridStateSchema,
-            companyId: z.number().optional(),
-            employeeId: z.number().optional(),
+            gridState: GridStateSchema
         }))
         .query(async ({ input, ctx }) => {
-
-            let where = {};
-
-            if (input.companyId) {
-                where = {
-                    profile: {
-                        company_id: input.companyId
-                    }
-                }
-            }
-
-            if (input.employeeId) {
-                where = {
-                    profile_id: input.employeeId
-                }
-            }
-
             return ctx.db.cases.findMany(
                 {
                     select: {
@@ -59,7 +40,6 @@ export const casesRouter = router({
                             }
                         }
                     },
-                    where,
                     ...input.gridState,
                 }
             );
@@ -153,12 +133,12 @@ export const casesRouter = router({
                             birth_date: true,
                             cell_number: true,
                             email: true,
-                            companies: {
+                            company: {
                                 select: {
                                     name: true
                                 }
                             },
-                            job_titles: {
+                            job_title: {
                                 select: {
                                     name: true
                                 }
@@ -221,7 +201,7 @@ export const casesRouter = router({
                     case_id: input
                 },
                 include: {
-                    room_types: true
+                    room_type: true
                 }
             });
 
@@ -230,7 +210,7 @@ export const casesRouter = router({
                     case_id: input
                 },
                 include: {
-                    case_forms: true
+                    case_form: true
                 }
             });
 
@@ -239,7 +219,7 @@ export const casesRouter = router({
                     case_id: input
                 },
                 include: {
-                    followup_types: true
+                    followup_type: true
                 }
             });
 
@@ -251,7 +231,7 @@ export const casesRouter = router({
                     activity.push({
                         id: room.id,
                         type: 'line',
-                        title: `<strong>${room.room_types?.name}</strong> room created`,
+                        title: `<strong>${room.room_type?.name}</strong> room created`,
                         //profile: { name: room.name },
                         date: room.created_on,
                         icon: 'open'
@@ -263,7 +243,7 @@ export const casesRouter = router({
                     activity.push({
                         id: room.id,
                         type: 'line',
-                        title: `<strong>${room.room_types?.name}</strong> room closed`,
+                        title: `<strong>${room.room_type?.name}</strong> room closed`,
                         //profile: { name: room.name },
                         date: room.closed_on,
                         icon: 'closed'
@@ -276,7 +256,7 @@ export const casesRouter = router({
                     activity.push({
                         id: form.id,
                         type: 'form',
-                        title: `<strong>${form.case_forms?.name}</strong> form completed`,
+                        title: `<strong>${form.case_form?.name}</strong> form completed`,
                         //profile: { name: form.name },
                         date: form.created_on,
                         comment: "notes Here ",
@@ -290,7 +270,7 @@ export const casesRouter = router({
                     activity.push({
                         id: followup.id,
                         type: 'follow-up',
-                        title: `<strong>${followup.followup_types?.name}</strong> follow-up completed`,
+                        title: `<strong>${followup.followup_type?.name}</strong> follow-up completed`,
                         //profile: { name: followup.name },
                         date: followup.start_date,
                         comment: followup.notes as string

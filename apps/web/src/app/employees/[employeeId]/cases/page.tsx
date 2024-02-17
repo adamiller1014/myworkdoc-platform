@@ -9,8 +9,8 @@ export default function EmployeesGrid({ params }: { params: { employeeId: string
 
     const gridState = useGridState();
     const cId = parseInt(params.employeeId);
-    const { data, isLoading } = api.cases.grid.useQuery({ employeeId: cId, gridState });
-    const { data: count } = api.cases.count.useQuery({ employeeId: cId });
+    const { data, isLoading } = api.employees.cases.useQuery({ employee_id: cId, gridState });
+    const { data: count } = api.employees.casesCount.useQuery(cId);
     const router = useRouter();
 
 

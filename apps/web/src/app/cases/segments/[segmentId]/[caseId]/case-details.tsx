@@ -42,10 +42,10 @@ export default function CaseDetails({ caseId, segmentId }: { caseId: number, seg
                     </div>
 
                     <div className="mt-0 text-sm text-gray-800 flex flex-row items-center">
-                        <BuildingOffice2Icon className="w-5 h-5 mt-1 mr-2 text-gray-400" /> {currentCase?.profile.companies?.name}
+                        <BuildingOffice2Icon className="w-5 h-5 mt-1 mr-2 text-gray-400" /> {currentCase?.profile.company?.name}
                     </div>
                     <div className="mt-0 text-sm text-gray-800 flex flex-row items-center">
-                        <BriefcaseIcon className="w-5 h-5 mt-1 mr-2 text-gray-400" /> {currentCase?.profile.job_titles?.name}
+                        <BriefcaseIcon className="w-5 h-5 mt-1 mr-2 text-gray-400" /> {currentCase?.profile.job_title?.name}
                     </div>
 
                     <div className="mt-0 text-sm text-gray-800 flex flex-row items-center border-t-2 ">

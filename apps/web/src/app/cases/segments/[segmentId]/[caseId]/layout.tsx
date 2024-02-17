@@ -42,7 +42,7 @@ export default function CaseLayout({ params, children }: { params: { segmentId: 
                 <div className="flex flex-col space-y-1">
                     <strong>{currentCase.profile.first_name} {currentCase.profile.last_name}</strong>
                     <span className="text-sm text-gray-600 ">
-                        <strong className="mr-2 text-blue-600">{currentCase.profile.companies?.name}</strong>
+                        <strong className="mr-2 text-blue-600">{currentCase.profile.company?.name}</strong>
 
 
                         {initialAssessment.injury_type && <span className="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">

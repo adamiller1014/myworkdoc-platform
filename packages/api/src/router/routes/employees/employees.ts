@@ -19,7 +19,7 @@ export const employeesRouter = router({
                         cell_number: true,
                         active: true,
                         created_on: true,
-                        companies: {
+                        company: {
                             select: {
                                 name: true,
                                 active: true
@@ -43,6 +43,32 @@ export const employeesRouter = router({
                 }
             });
         }),
+    cases: protectedProcedure
+        .input(z.object({
+            employee_id: z.number(),
+            gridState: GridStateSchema
+        }))
+        .query(async ({ input, ctx }) => {
+            return ctx.db.cases.findMany(
+                {
+                    select: {
+                        id: true,
+                        case_number: true,
+                        created_on: true,
+                        profile: {
+                            select: {
+                                first_name: true,
+                                last_name: true,
+                            }
+                        }
+                    },
+                    where: {
+                        profile_id: input.employee_id
+                    },
+                    ...input.gridState,
+                }
+            );
+        }),
     count: protectedProcedure
         .input(GridStateSchema.optional())
         .query(async ({ ctx }) => {
@@ -50,14 +76,12 @@ export const employeesRouter = router({
         }),
 
     casesCount: protectedProcedure
-        .input(z.object({
-            employeeId: z.number(),
-        }))
+        .input(z.number())
         .query(async ({ input, ctx }) => {
             return ctx.db.cases.count(
                 {
                     where: {
-                        profile_id: input.employeeId
+                        profile_id: input
                     }
                 }
             );
