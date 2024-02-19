@@ -25,7 +25,7 @@ function EmployeeTabs({ employeeId }: { employeeId: string }) {
 
     const pathname = usePathname();
     const cId = parseInt(employeeId);
-    const { data: employeeCases } = api.employees.casesCount.useQuery({ employeeId: cId });
+    const { data: employeeCases } = api.employees.casesCount.useQuery(cId);
 
 
 
