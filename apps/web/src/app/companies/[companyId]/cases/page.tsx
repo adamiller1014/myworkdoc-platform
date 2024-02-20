@@ -1,8 +1,10 @@
 'use client';
 
+
 import { DataGrid, DateCell, GridColumn, useGridState } from "@/components/grid/data-grid";
 import { api } from "@/utils/react";
 import { useRouter } from "next/navigation";
+import AddCase from "../../../cases/add-case";
 
 
 export default function CompaniesGrid({ params }: { params: { companyId: string } }) {
@@ -29,7 +31,7 @@ export default function CompaniesGrid({ params }: { params: { companyId: string 
 
                 <h3 className="text-2xl font-semibold leading-6 text-gray-900">Cases</h3>
                 <div className="mt-3 flex sm:ml-4 sm:mt-0">
-                    {/* <AddCompany /> */}
+                    <AddCase />
                 </div>
             </div>
             <div className="h-[calc(100vh-70px)]  p-3" >

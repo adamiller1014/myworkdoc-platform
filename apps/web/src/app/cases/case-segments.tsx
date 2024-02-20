@@ -2,11 +2,7 @@
 
 import {
     FolderOpenIcon,
-    FolderPlusIcon,
-    FolderMinusIcon,
     ClockIcon,
-    ClipboardDocumentListIcon,
-    DocumentTextIcon,
     QueueListIcon
 } from '@heroicons/react/24/outline'
 import Link from 'next/link';
@@ -27,46 +23,12 @@ export default function CaseSegments() {
     const pathname = usePathname();
 
     const { data: companies } = api.companies.list.useQuery();
-    const { data: roomTypes } = api.roomTypes.list.useQuery();
-
-    if (!roomTypes) {
-        return <></>
-    }
 
     const navigation: { name: string, href: string, icon: any, room_type_id?: number }[] = [];
+
+    navigation.push({ name: 'Follow-Ups', href: '/cases/segments/follow-ups', icon: ClockIcon });
+    navigation.push({ name: 'Recently Updated', href: '/cases/segments/recently-updated', icon: FolderOpenIcon });
     navigation.push({ name: 'All', href: '/cases/segments/all', icon: QueueListIcon });
-    roomTypes?.map((roomType) => {
-
-        // Pick icon based on room type
-        let icon = FolderOpenIcon;
-        switch (roomType.name) {
-            case "All":
-                icon = QueueListIcon;
-                break;
-            case "Initial":
-                icon = FolderPlusIcon;
-                break;
-            case "Follow-up":
-                icon = ClockIcon;
-                break;
-            case "Case Management":
-                icon = ClipboardDocumentListIcon;
-                break;
-            case "Form":
-                icon = DocumentTextIcon;
-                break;
-            case "Closed":
-                icon = FolderMinusIcon;
-                break;
-            default:
-                icon = FolderOpenIcon;
-        }
-
-        navigation.push({ name: roomType.name as string, href: `/cases/segments/${roomType.id}`, icon, room_type_id: parseInt(roomType.id.toString()) })
-    });
-
-    navigation.push({ name: 'Closed', href: '/cases/segments/closed', icon: FolderMinusIcon });
-
 
     let secondaryItems: SecondaryNavItem[] = [];
 
@@ -108,8 +70,7 @@ export default function CaseSegments() {
                                             aria-hidden="true"
                                         />
                                         {item.name}
-                                        {item.room_type_id && <RoomTypeCount room_type_id={item.room_type_id} />}
-                                        {!item.room_type_id && <CountByStatus status={item.name.toLowerCase() as 'closed' | 'all'} />}
+                                        {!item.room_type_id && <CountByStatus status={item.name.toLowerCase() as 'follow-ups' | 'all' | 'recently updated'} />}
 
                                     </Link>
                                 </li></>
@@ -151,20 +112,8 @@ export default function CaseSegments() {
     )
 }
 
-function RoomTypeCount({ room_type_id }: { room_type_id: number }) {
-    const { data: count } = api.cases.countBasedOnRoomType.useQuery({ room_type_id });
-
-    return <><span
-        className="ml-auto w-9 min-w-max whitespace-nowrap rounded-full bg-white px-2.5 py-0.5 text-center text-xs font-medium leading-5 text-gray-600 ring-1 ring-inset ring-gray-200"
-        aria-hidden="true"
-    >
-        {count?.toLocaleString()}
-    </span>
-    </>
-}
-
-function CountByStatus({ status }: { status: 'closed' | 'all' }) {
-    const { data: count } = api.cases.count.useQuery({ closed: status === 'closed' });
+function CountByStatus({ status }: { status: 'follow-ups' | 'all' | 'recently updated' }) {
+    const { data: count } = api.cases.countByStatus.useQuery({ status });
 
     return <><span
         className="ml-auto w-9 min-w-max whitespace-nowrap rounded-full bg-white px-2.5 py-0.5 text-center text-xs font-medium leading-5 text-gray-600 ring-1 ring-inset ring-gray-200"

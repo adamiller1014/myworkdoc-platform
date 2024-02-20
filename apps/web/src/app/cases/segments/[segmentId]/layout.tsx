@@ -14,7 +14,7 @@ import { FolderIcon } from "@heroicons/react/24/outline";
 import { Pager } from "@progress/kendo-react-data-tools";
 import { useCallback } from "react";
 
-export default function Cases({ children, params }: { children: any, params: { segmentId: "open" | "closed" | "new" | "all" } }) {
+export default function Cases({ children, params }: { children: any, params: { segmentId: 'follow-ups' | 'all' | 'recently updated' } }) {
     const segmentId = params.segmentId;
     let segmentTitle = "Open Cases";
 
@@ -41,7 +41,7 @@ export default function Cases({ children, params }: { children: any, params: { s
                 </div>
 
 
-                <CasesList />
+                <CasesList status={segmentId} />
 
             </div>
 
@@ -51,7 +51,7 @@ export default function Cases({ children, params }: { children: any, params: { s
     );
 }
 
-function CasesList() {
+function CasesList({ status }: { status: 'follow-ups' | 'all' | 'recently updated' }) {
     const pathname = usePathname();
     const gridState = useGridState();
     const searchParams = useSearchParams();
@@ -66,7 +66,7 @@ function CasesList() {
     )
 
     const router = useRouter();
-    const { data, isLoading } = api.cases.grid.useQuery({ gridState });
+    const { data, isLoading } = api.cases.list.useQuery({ gridState, status: status });
     const { data: count } = api.cases.count.useQuery();
 
 
@@ -111,7 +111,7 @@ function CasesList() {
             take={gridState.take}
             total={count}
             type="numeric"
-            buttonCount={4}
+            buttonCount={2}
             onPageChange={handlePageChange}
 
         />

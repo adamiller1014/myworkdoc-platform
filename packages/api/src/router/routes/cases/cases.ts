@@ -47,6 +47,36 @@ export const casesRouter = router({
             );
 
         }),
+    list: protectedProcedure
+        .input(z.object({
+            gridState: GridStateSchema,
+            status: z.enum(['follow-ups', 'all', 'recently updated'])
+        }))
+        .query(async ({ input, ctx }) => {
+
+
+            const where = WhereStatementBasedOnStatus(input.status);
+
+            return ctx.db.cases.findMany(
+                {
+                    select: {
+                        id: true,
+                        case_number: true,
+                        created_on: true,
+                        profile: {
+                            select: {
+                                first_name: true,
+                                last_name: true,
+                            }
+                        }
+                    },
+                    where,
+                    ...input.gridState,
+
+                }
+            );
+
+        }),
     count: protectedProcedure
         .input(z.object({
             companyId: z.number().optional(),
@@ -78,26 +108,18 @@ export const casesRouter = router({
                 where
             });
         }),
-    countBasedOnRoomType: protectedProcedure
+    countByStatus: protectedProcedure
         .input(z.object({
-            room_type_id: z.number()
+            status: z.enum(['follow-ups', 'all', 'recently updated'])
         }))
         .query(async ({ ctx, input }) => {
 
+            const where = WhereStatementBasedOnStatus(input.status);
 
-            return ctx.db.cases.count({
-                where: {
-                    rooms: {
-                        some: {
-                            room_type_id: input.room_type_id,
-                            closed_on: null
-                        }
-                    }
-                },
+            return ctx.db.cases.count({ where });
 
-            });
+
         }),
-
     get: protectedProcedure
         .input(z.number())
         .query(async ({ input, ctx }) => {
@@ -304,3 +326,36 @@ export const casesRouter = router({
             });
         }),
 });
+
+
+function WhereStatementBasedOnStatus(status: 'follow-ups' | 'all' | 'recently updated') {
+    let where = {};
+
+    if (status === 'follow-ups') {
+
+        // Follow-ups in the next 24 hrs
+        where = {
+            followups: {
+                some: {
+                    start_date: {
+                        gt: new Date(),
+                        lt: new Date(new Date().getTime() + 24 * 60 * 60 * 1000)
+                    }
+                }
+            }
+        };
+    }
+
+    if (status === 'recently updated') {
+        // Cases updated in the last 24 hrs
+        where = {
+            updated_on: {
+                gt: new Date(new Date().getTime() - 24 * 60 * 60 * 1000)
+            }
+        };
+    }
+
+    return where;
+
+
+}
