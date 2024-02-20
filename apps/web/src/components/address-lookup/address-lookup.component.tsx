@@ -1,9 +1,8 @@
 'use client';
 
 import { api } from '@/utils/react';
-import { CreateCompanyInput } from '@myworkdoc/api/src/router/routes/companies/company-types';
-import { AutoComplete, ComboBox } from '@progress/kendo-react-dropdowns';
-import { Text, TextField } from '@radix-ui/themes';
+import { ComboBox } from '@progress/kendo-react-dropdowns';
+import { Text } from '@radix-ui/themes';
 import React, { useState, useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
@@ -14,7 +13,6 @@ interface AddressLookupProps {
 const AddressLookup = ({ setAddress }: AddressLookupProps) => {
 
     const [addressesList, setAddressesList] = useState<String[]>([]);
-    const { register } = useForm<CreateCompanyInput>();
     const [key, setkey] = useState("");
     const { control } = useForm({});
     const data = api.addresses.fetchingByQuery.useQuery(key)
@@ -51,7 +49,9 @@ const AddressLookup = ({ setAddress }: AddressLookupProps) => {
                                     Address
                                 </Text>
                                 <ComboBox
-                                    className='border border-gray-300 p-2 rounded-md focus:outline-none focus:ring focus:border-blue-500'
+                                    allowCustom={true}
+                                    size="medium"
+                                    fillMode="solid"
                                     data={addressesList}
                                     filterable
                                     loading={!data?.isFetched}

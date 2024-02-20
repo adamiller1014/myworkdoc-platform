@@ -31,7 +31,7 @@ export default function CompaniesGrid() {
                     <AddCompany />
                 </div>
             </div>
-            <div className="ag-theme-alpine h-[calc(100vh-70px)]  p-3 " >
+            <div className="ag-theme-alpine h-[calc(100vh-150px)]  p-3 " >
                 <DataGrid
                     columns={colDefs}
                     data={data}
