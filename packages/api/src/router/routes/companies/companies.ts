@@ -104,6 +104,28 @@ export const companiesRouter = router({
                 }
             );
         }),
+    forms: protectedProcedure
+        .input(z.object({
+            company_id: z.number(),
+            gridState: GridStateSchema
+        }))
+        .query(async ({ input, ctx }) => {
+
+            return ctx.db.forms.findMany(
+                {
+                    select: {
+                        id: true,
+                        name: true,
+                        active: true,
+
+                    },
+                    where: {
+                        company_id: input.company_id
+                    },
+                    ...input.gridState
+                }
+            );
+        }),
     employeesCount: protectedProcedure
         .input(z.number())
         .query(async ({ input, ctx }) => {
