@@ -8,9 +8,7 @@ import AddForm from "./add-form";
 
 export default function FormsGrid() {
 
-    const defaultSort = [{ field: "name", dir: 'asc' }];
-
-    const gridState = useGridState({ defaultSort });
+    const gridState = useGridState();
 
     const { data: count } = api.forms.count.useQuery(gridState);
     const { data, isLoading } = api.forms.grid.useQuery(gridState);
@@ -37,6 +35,7 @@ export default function FormsGrid() {
                     columns={colDefs}
                     data={data}
                     total={count}
+                    defaultSort={[{ field: "name", dir: 'asc' }]}
                     isLoading={isLoading}
                     onRowDoubleClicked={(e) => {
                         router.push(`/case-forms/${e.id}`);

@@ -8,10 +8,7 @@ import { CheckboxCell, DataGrid, DateCell, GridColumn, useGridState } from "@/co
 
 export default function EmployeesGrid() {
 
-
-    const defaultSort = [{ field: "last_name", dir: 'asc' }];
-
-    const gridState = useGridState({ defaultSort });
+    const gridState = useGridState();
     const { data: count } = api.employees.count.useQuery(gridState);
     const { data, isLoading } = api.employees.grid.useQuery(gridState);
 
@@ -42,6 +39,7 @@ export default function EmployeesGrid() {
                     columns={colDefs}
                     data={data}
                     total={count}
+                    defaultSort={[{ field: "last_name", dir: 'asc' }]}
                     isLoading={isLoading}
                     onRowDoubleClicked={(e) => {
                         router.push(`/employees/${e.id}`);

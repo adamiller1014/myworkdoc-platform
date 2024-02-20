@@ -8,9 +8,7 @@ import { CheckboxCell, DataGrid, GridColumn, useGridState } from "@/components/g
 
 export default function CaseFormsGrid() {
 
-    const defaultSort = [{ field: "name", dir: 'asc' }];
-
-    const gridState = useGridState({ defaultSort });
+    const gridState = useGridState();
     const { data: count } = api.caseForms.count.useQuery(gridState);
     const { data, isLoading } = api.caseForms.grid.useQuery(gridState);
 
@@ -36,6 +34,7 @@ export default function CaseFormsGrid() {
                     columns={colDefs}
                     data={data}
                     total={count}
+                    defaultSort={[{ field: "name", dir: 'asc' }]}
                     isLoading={isLoading}
                     onRowDoubleClicked={(e) => {
                         router.push(`/case-forms/${e.id}`);

@@ -7,10 +7,7 @@ import { useRouter } from "next/navigation";
 
 export default function EmployeesGrid({ params }: { params: { employeeId: string } }) {
 
-
-    const defaultSort = [{ field: "case_number", dir: 'asc' }];
-
-    const gridState = useGridState({ defaultSort });
+    const gridState = useGridState();
 
     const cId = parseInt(params.employeeId);
     const { data, isLoading } = api.employees.cases.useQuery({ employee_id: cId, gridState });
@@ -41,6 +38,7 @@ export default function EmployeesGrid({ params }: { params: { employeeId: string
                     columns={colDefs}
                     data={data}
                     total={count}
+                    defaultSort={[{ field: "case_number", dir: 'asc' }]}
                     isLoading={isLoading}
                     onRowDoubleClicked={(e) => {
                         router.push(`/employees/${e.id}/cases`);

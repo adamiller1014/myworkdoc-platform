@@ -7,9 +7,7 @@ import { useRouter } from "next/navigation";
 
 export default function CompaniesGrid({ params }: { params: { companyId: string } }) {
 
-    const defaultSort = [{ field: "last_name", dir: 'asc' }];
-
-    const gridState = useGridState({ defaultSort });
+    const gridState = useGridState();
 
     const cId = parseInt(params.companyId);
     const { data, isLoading } = api.companies.employees.useQuery({ company_id: cId, gridState });
@@ -42,6 +40,7 @@ export default function CompaniesGrid({ params }: { params: { companyId: string 
                     columns={colDefs}
                     data={data}
                     total={count}
+                    defaultSort={[{ field: "last_name", dir: 'asc' }]}
                     isLoading={isLoading}
                     onRowDoubleClicked={(e) => {
                         router.push(`/companies/${e.id}/employees`);

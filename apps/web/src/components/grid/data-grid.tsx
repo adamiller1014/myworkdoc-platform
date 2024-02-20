@@ -4,6 +4,7 @@ import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import { useCallback } from "react";
 import { Grid, GridDataStateChangeEvent, type GridColumnProps, type GridProps, GridColumn, GridCellProps } from "@progress/kendo-react-grid";
 import { formatDate } from "@progress/kendo-intl";
+import { SortDescriptor } from "@progress/kendo-data-query";
 
 export type GridColumn = GridColumnProps
 
@@ -11,7 +12,7 @@ export interface DataGridProps {
 
     columns: GridColumn[];
 
-    defaultSort?: sortItem[];
+    defaultSort?: SortDescriptor[];
 
     data: any;
 
@@ -25,13 +26,9 @@ export interface GridState {
     skip: number;
     take: number;
 
-    sort?: sortItem[];
+    sort?: SortDescriptor[];
 }
 
-export interface sortItem {
-    field: string;
-    dir: string;
-}
 
 
 export function DataGrid(gridProps: DataGridProps) {
@@ -40,7 +37,11 @@ export function DataGrid(gridProps: DataGridProps) {
     const pathname = usePathname();
     const router = useRouter();
     const searchParams = useSearchParams();
-    const gridState = useGridState({ defaultSort: gridProps.defaultSort });
+    const gridState = useGridState();
+
+    if (gridProps.defaultSort && !gridState.sort) {
+        gridState.sort = gridProps.defaultSort;
+    }
 
     const createQueryString = useCallback(
         (name: string, value: string) => {
@@ -79,6 +80,7 @@ export function DataGrid(gridProps: DataGridProps) {
 
         skip: gridState.skip,
         take: gridState.take,
+        sort: gridState.sort
     };
 
     return <>
@@ -94,13 +96,12 @@ export function DataGrid(gridProps: DataGridProps) {
 }
 
 
-export function useGridState({ defaultSort }: { defaultSort?: sortItem[] } = {}) {
+export function useGridState() {
     const searchParams = useSearchParams();
 
     let currentDataState: GridState = {
         skip: 0,
-        take: 50,
-        sort: defaultSort
+        take: 50
     };
 
     if (searchParams && searchParams.get("gridState")) {

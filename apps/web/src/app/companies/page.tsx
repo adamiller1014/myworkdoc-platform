@@ -8,9 +8,7 @@ import { CheckboxCell, DataGrid, DateCell, GridColumn, useGridState } from "@/co
 
 export default function CompaniesGrid() {
 
-    const defaultSort = [{ field: "name", dir: 'asc' }];
-
-    const gridState = useGridState({ defaultSort });
+    const gridState = useGridState();
 
     const { data: count } = api.companies.count.useQuery(gridState);
     const { data, isLoading } = api.companies.grid.useQuery(gridState);
@@ -38,6 +36,7 @@ export default function CompaniesGrid() {
                     columns={colDefs}
                     data={data}
                     total={count}
+                    defaultSort={[{ field: "name", dir: 'asc' }]}
                     isLoading={isLoading}
                     onRowDoubleClicked={(e) => {
                         router.push(`/companies/${e.id}`);
