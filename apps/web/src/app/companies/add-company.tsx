@@ -12,7 +12,7 @@ export default function AddCompany() {
   const utils = api.useUtils();
   const router = useRouter();
   const { handleSubmit, formState, register } = useForm<CreateCompanyInput>();
-  const [address, setAddress] = useState("");
+  const [address, addressSelected] = useState("");
 
   const mutation = api.companies.create.useMutation({
     onSuccess: async (newCompany) => {
@@ -55,7 +55,7 @@ export default function AddCompany() {
                 />
               </label>
 
-              <AddressLookup setAddress={setAddress} />
+              <AddressLookup addressSelected={addressSelected} />
 
               <Text as="label" size="3">
                 <Flex gap="2">

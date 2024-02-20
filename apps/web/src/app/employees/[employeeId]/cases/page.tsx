@@ -32,7 +32,7 @@ export default function EmployeesGrid({ params }: { params: { employeeId: string
 
                 </div>
             </div>
-            <div className="h-[calc(100vh-150px)]  p-3" >
+            <div className="h-[calc(100vh-70px)]  p-3" >
 
                 <DataGrid
                     columns={colDefs}

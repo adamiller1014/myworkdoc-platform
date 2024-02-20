@@ -1,5 +1,5 @@
 import "../styles/globals.css";
-import '@progress/kendo-theme-material/dist/all.css';
+import '@progress/kendo-theme-bootstrap/dist/all.css';
 import '@radix-ui/themes/styles.css';
 
 import { Inter } from "next/font/google";

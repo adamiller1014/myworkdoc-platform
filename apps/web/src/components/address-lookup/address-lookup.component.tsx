@@ -1,67 +1,42 @@
 'use client';
 
 import { api } from '@/utils/react';
-import { ComboBox } from '@progress/kendo-react-dropdowns';
+import { AutoComplete } from '@progress/kendo-react-dropdowns';
 import { Text } from '@radix-ui/themes';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
 interface AddressLookupProps {
-    setAddress: (address: any) => void;
+    addressSelected: (address: any) => void;
 }
 
-const AddressLookup = ({ setAddress }: AddressLookupProps) => {
+const AddressLookup = ({ addressSelected }: AddressLookupProps) => {
 
-    const [addressesList, setAddressesList] = useState<String[]>([]);
-    const [key, setkey] = useState("");
+    const [key, setKey] = useState("");
     const { control } = useForm({});
-    const data = api.addresses.fetchingByQuery.useQuery(key)
-
-    useEffect(() => {
-        if (data?.isFetched && data?.data?.length > 0) {
-            let arr: String[] = [];
-            data?.data?.map((item: any) => {
-                arr.push(`${item?.address?.formatted} `)
-                // arr.push()
-            })
-            setAddressesList(arr)
-        }
-
-    }, [data?.isFetched])
-
-
-    const onSubmitHandle = (value: string) => {
-        if (value !== "" && value !== null && value !== undefined)
-            setkey(value);
-    }
-
+    const { data, isLoading } = api.addresses.autocomplete.useQuery(key)
 
     return (
         <div>
             <Controller
                 name="address_lookup"
                 control={control}
-                render={({ field: { onChange, onBlur, value, ref }, formState, fieldState }) => {
+                render={({ }) => {
                     return (
                         <>
                             <label>
                                 <Text as="div" size="2" mb="1" weight="bold" aria-required>
                                     Address
                                 </Text>
-                                <ComboBox
-                                    allowCustom={true}
+                                <AutoComplete
                                     size="medium"
                                     fillMode="solid"
-                                    data={addressesList}
-                                    filterable
-                                    loading={!data?.isFetched}
+                                    data={data}
+                                    loading={isLoading}
+                                    textField='formatted'
                                     suggest
                                     onChange={(e) => {
-                                        setAddress(e.value)
-                                    }}
-                                    placeholder="key word"
-                                    onFilterChange={(e) => {
-                                        onSubmitHandle(e?.filter?.value)
+                                        setKey(e.value)
                                     }}
                                 />
 
