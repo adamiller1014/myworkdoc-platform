@@ -28,7 +28,7 @@ export default function CaseActivity({ params }: { params: { caseId: string } })
             <div className='m-8 mt-5 overflow-auto'>
                 <ul role="list" className="space-y-6">
                     {activity.map((activityItem, activityItemIdx) => (
-                        <li key={activityItem.id} className="relative flex gap-x-4">
+                        <li key={activityItem.id + '_' + activityItemIdx} className="relative flex gap-x-4">
                             <div
                                 className={classNames(
                                     activityItemIdx === activity.length - 1 ? 'h-6' : '-bottom-6',

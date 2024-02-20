@@ -9,16 +9,43 @@ import { classNames } from "@/utils/classNames";
 import {
     ListView,
 } from "@progress/kendo-react-listview";
-import { useGridState } from "@/components/grid/data-grid";
+import { GridState, useGridState } from "@/components/grid/data-grid";
 import { FolderIcon } from "@heroicons/react/24/outline";
 import { Pager } from "@progress/kendo-react-data-tools";
 import { useCallback } from "react";
+import { Select } from "@radix-ui/themes";
+import { SortDescriptor } from "@progress/kendo-data-query";
 
 export default function Cases({ children, params }: { children: any, params: { segmentId: 'follow-ups' | 'all' | 'recently updated' } }) {
+
+    const gridState = useGridState();
+    const router = useRouter();
+    const pathname = usePathname();
+    const searchParams = useSearchParams();
+    const createQueryString = useCallback(
+        (name: string, value: string) => {
+            const params = new URLSearchParams(searchParams)
+            params.set(name, value)
+
+            return params.toString()
+        },
+        [searchParams]
+    )
+
     const segmentId = params.segmentId;
     let segmentTitle = "Open Cases";
 
+
     segmentTitle = `${segmentId.charAt(0).toUpperCase()}${segmentId.slice(1)} Cases`;
+    function filterChange(value: string): void {
+
+    }
+
+    function sortChanged(value: string): void {
+        const dataState: GridState = { ...gridState, sort: [{ field: "created_on", dir: value === "newest" ? "desc" : "asc" }] };
+
+        router.push(pathname + '?' + createQueryString("gridState", JSON.stringify(dataState)))
+    }
 
     return (<>
         <div className="w-64 flex-none bg-gray-100 flex flex-col space-y-4 ">
@@ -34,10 +61,39 @@ export default function Cases({ children, params }: { children: any, params: { s
 
         <div className="flex flex-row flex-auto bg-white rounded-tl-xl border-l shadow-xl">
             <div className="flex flex-col w-1/5">
-                <div className="flex-none h-20 bg-gray-100 shadow-sm border-b-2">
+                <div className="flex-none bg-gray-100 shadow-sm border-b-2">
                     <div className="flex flex-row justify-between items-center p-4">
                         <h1 className="font-semibold text-xl text-blue-900">{segmentTitle}</h1>
                     </div>
+
+                    <div className="flex justify-between mb-2">
+                        <div className="ml-2">
+                            <Select.Root defaultValue="open" onValueChange={filterChange}>
+                                <Select.Trigger variant="ghost" />
+                                <Select.Content>
+                                    <Select.Group>
+                                        <Select.Label>Filter by</Select.Label>
+                                        <Select.Item value="open">Open</Select.Item>
+                                        <Select.Item value="closed">Closed</Select.Item>
+                                    </Select.Group>
+                                </Select.Content>
+                            </Select.Root>
+                        </div>
+                        <div className="mr-2">
+                            <Select.Root defaultValue="newest" onValueChange={sortChanged} >
+                                <Select.Trigger variant="ghost" />
+                                <Select.Content>
+                                    <Select.Group>
+                                        <Select.Label>Sort by</Select.Label>
+                                        <Select.Item value="newest">Newest</Select.Item>
+                                        <Select.Item value="oldest">Oldest</Select.Item>
+
+                                    </Select.Group>
+                                </Select.Content>
+                            </Select.Root>
+                        </div>
+                    </div>
+
                 </div>
 
 
@@ -64,6 +120,11 @@ function CasesList({ status }: { status: 'follow-ups' | 'all' | 'recently update
         },
         [searchParams]
     )
+
+    const defaultSort: SortDescriptor[] = [{ field: "created_on", dir: "desc" }];
+    if (!gridState.sort) {
+        gridState.sort = defaultSort;
+    }
 
     const router = useRouter();
     const { data, isLoading } = api.cases.list.useQuery({ gridState, status: status });
