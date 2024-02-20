@@ -1,6 +1,6 @@
 import "../styles/globals.css";
-import '@radix-ui/themes/styles.css';
 import '@progress/kendo-theme-material/dist/all.css';
+import '@radix-ui/themes/styles.css';
 
 import { Inter } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";

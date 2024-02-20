@@ -29,7 +29,7 @@ export default function AddCompany() {
     <>
       <Dialog.Root>
         <Dialog.Trigger>
-          <Button >Add Company</Button>
+          <Button className='bg-blue-600'>Add Company</Button>
         </Dialog.Trigger>
         <Dialog.Content style={{ maxWidth: 450, overflow: 'unset' }}>
           <form onSubmit={handleSubmit(onSubmit)}>

@@ -31,7 +31,7 @@ export default function AddForm() {
     <>
       <Dialog.Root>
         <Dialog.Trigger>
-          <Button >Add Form</Button>
+          <Button className='bg-blue-600'>Add Form</Button>
         </Dialog.Trigger>
         <Dialog.Content style={{ maxWidth: 450, overflow: 'unset' }}>
           <form onSubmit={handleSubmit(onSubmit)}>

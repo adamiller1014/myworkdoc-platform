@@ -29,7 +29,7 @@ export default function AddEmployee() {
     <>
       <Dialog.Root>
         <Dialog.Trigger>
-          <Button >Add Employee</Button>
+          <Button className='bg-blue-600' >Add Employee</Button>
         </Dialog.Trigger>
         <Dialog.Content style={{ maxWidth: 450, overflow: 'unset' }}>
           <form onSubmit={handleSubmit(onSubmit)}>
