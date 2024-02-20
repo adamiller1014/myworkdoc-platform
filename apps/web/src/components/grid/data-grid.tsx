@@ -10,6 +10,9 @@ export type GridColumn = GridColumnProps
 export interface DataGridProps {
 
     columns: GridColumn[];
+
+    defaultSort?: sortItem[];
+
     data: any;
 
     total?: number;
@@ -22,7 +25,12 @@ export interface GridState {
     skip: number;
     take: number;
 
-    sort?: { field: string, dir: "asc" | "desc" }[];
+    sort?: sortItem[];
+}
+
+export interface sortItem {
+    field: string;
+    dir: string;
 }
 
 
@@ -32,7 +40,7 @@ export function DataGrid(gridProps: DataGridProps) {
     const pathname = usePathname();
     const router = useRouter();
     const searchParams = useSearchParams();
-    const gridState = useGridState();
+    const gridState = useGridState({ defaultSort: gridProps.defaultSort });
 
     const createQueryString = useCallback(
         (name: string, value: string) => {
@@ -86,12 +94,15 @@ export function DataGrid(gridProps: DataGridProps) {
 }
 
 
-export function useGridState() {
+export function useGridState({ defaultSort }: { defaultSort?: sortItem[] } = {}) {
     const searchParams = useSearchParams();
+
     let currentDataState: GridState = {
         skip: 0,
         take: 50,
+        sort: defaultSort
     };
+
     if (searchParams && searchParams.get("gridState")) {
         currentDataState = JSON.parse(searchParams.get("gridState") as string);
     }

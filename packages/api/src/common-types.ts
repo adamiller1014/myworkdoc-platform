@@ -7,7 +7,7 @@ export const GridStateSchema = z.object({
 
     sort: z.array(z.object({
         field: z.string(),
-        dir: z.enum(["asc", "desc"])
+        dir: z.string().optional()
     })).optional()
 
 }).transform(data => {
@@ -34,8 +34,6 @@ export const GridStateSchema = z.object({
             }
         });
     }
-
-    console.log("OrderBy", orderBy);
 
     return {
         skip: data.skip,

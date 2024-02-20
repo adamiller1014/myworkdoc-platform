@@ -8,7 +8,10 @@ import AddForm from "./add-form";
 
 export default function FormsGrid() {
 
-    const gridState = useGridState();
+    const defaultSort = [{ field: "name", dir: 'asc' }];
+
+    const gridState = useGridState({ defaultSort });
+
     const { data: count } = api.forms.count.useQuery(gridState);
     const { data, isLoading } = api.forms.grid.useQuery(gridState);
 

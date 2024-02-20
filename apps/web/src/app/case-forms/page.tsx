@@ -8,7 +8,9 @@ import { CheckboxCell, DataGrid, GridColumn, useGridState } from "@/components/g
 
 export default function CaseFormsGrid() {
 
-    const gridState = useGridState();
+    const defaultSort = [{ field: "name", dir: 'asc' }];
+
+    const gridState = useGridState({ defaultSort });
     const { data: count } = api.caseForms.count.useQuery(gridState);
     const { data, isLoading } = api.caseForms.grid.useQuery(gridState);
 

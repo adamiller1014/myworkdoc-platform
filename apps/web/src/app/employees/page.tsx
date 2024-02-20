@@ -8,7 +8,10 @@ import { CheckboxCell, DataGrid, DateCell, GridColumn, useGridState } from "@/co
 
 export default function EmployeesGrid() {
 
-    const gridState = useGridState();
+
+    const defaultSort = [{ field: "last_name", dir: 'asc' }];
+
+    const gridState = useGridState({ defaultSort });
     const { data: count } = api.employees.count.useQuery(gridState);
     const { data, isLoading } = api.employees.grid.useQuery(gridState);
 

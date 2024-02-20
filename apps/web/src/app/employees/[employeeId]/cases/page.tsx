@@ -7,7 +7,11 @@ import { useRouter } from "next/navigation";
 
 export default function EmployeesGrid({ params }: { params: { employeeId: string } }) {
 
-    const gridState = useGridState();
+
+    const defaultSort = [{ field: "case_number", dir: 'asc' }];
+
+    const gridState = useGridState({ defaultSort });
+
     const cId = parseInt(params.employeeId);
     const { data, isLoading } = api.employees.cases.useQuery({ employee_id: cId, gridState });
     const { data: count } = api.employees.casesCount.useQuery(cId);
