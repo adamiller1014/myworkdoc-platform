@@ -36,8 +36,6 @@ export const addressesRouter = router({
                 .then(res => res.json())
             const geoRec = response;
 
-            console.log('geoRec', geoRec)
-
             const results = geoRec?.items?.map((item: GeoLookupResult) => ({
                 line1: (item?.address?.houseNumber ?? '') + ' ' + (item?.address?.street ?? ''),
                 line2: null,
