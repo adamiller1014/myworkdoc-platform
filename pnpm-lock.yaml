@@ -221,6 +221,9 @@ importers:
       '@progress/kendo-theme-default':
         specifier: ^7.2.0
         version: 7.2.0
+      '@progress/kendo-theme-material':
+        specifier: ^7.2.0
+        version: 7.2.0
       '@radix-ui/themes':
         specifier: ^2.0.3
         version: 2.0.3(@types/react-dom@18.2.19)(@types/react@18.2.55)(react-dom@18.2.0)(react@18.2.0)
@@ -3536,6 +3539,15 @@ packages:
     dependencies:
       '@progress/kendo-svg-icons': 2.1.0
       '@progress/kendo-theme-core': 7.2.0
+      '@progress/kendo-theme-utils': 7.2.0
+    dev: false
+
+  /@progress/kendo-theme-material@7.2.0:
+    resolution: {integrity: sha512-Jak/VQ0HV7E5+5rEz0CyeetIqVc7Eb5E5MAsHAzQVfZQ7zoYZ2FlCKFdKfcQfAwDumJmw36AFsKkWGFXd3NuBw==}
+    dependencies:
+      '@progress/kendo-svg-icons': 2.1.0
+      '@progress/kendo-theme-core': 7.2.0
+      '@progress/kendo-theme-default': 7.2.0
       '@progress/kendo-theme-utils': 7.2.0
     dev: false
 

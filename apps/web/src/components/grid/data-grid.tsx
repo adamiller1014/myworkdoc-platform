@@ -4,12 +4,16 @@ import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import { useCallback } from "react";
 import { Grid, GridDataStateChangeEvent, type GridColumnProps, type GridProps, GridColumn, GridCellProps } from "@progress/kendo-react-grid";
 import { formatDate } from "@progress/kendo-intl";
+import { SortDescriptor } from "@progress/kendo-data-query";
 
 export type GridColumn = GridColumnProps
 
 export interface DataGridProps {
 
     columns: GridColumn[];
+
+    defaultSort?: SortDescriptor[];
+
     data: any;
 
     total?: number;
@@ -21,8 +25,10 @@ export interface DataGridProps {
 export interface GridState {
     skip: number;
     take: number;
-    orderBy?: any;
+
+    sort?: SortDescriptor[];
 }
+
 
 
 export function DataGrid(gridProps: DataGridProps) {
@@ -31,6 +37,11 @@ export function DataGrid(gridProps: DataGridProps) {
     const pathname = usePathname();
     const router = useRouter();
     const searchParams = useSearchParams();
+    const gridState = useGridState();
+
+    if (gridProps.defaultSort && !gridState.sort) {
+        gridState.sort = gridProps.defaultSort;
+    }
 
     const createQueryString = useCallback(
         (name: string, value: string) => {
@@ -43,7 +54,7 @@ export function DataGrid(gridProps: DataGridProps) {
     )
 
     const dataStateChange = (event: GridDataStateChangeEvent) => {
-        router.push(pathname + '?' + createQueryString("dataState", JSON.stringify(event.dataState)))
+        router.push(pathname + '?' + createQueryString("gridState", JSON.stringify(event.dataState)))
     };
 
     const props: GridProps = {
@@ -55,23 +66,23 @@ export function DataGrid(gridProps: DataGridProps) {
         total: gridProps.total,
         pageable: {
             type: "input",
-            pageSizeValue: 50
+            pageSizeValue: 50,
         },
         onDataStateChange: dataStateChange,
 
         onRowDoubleClick: (e) => {
-            // if (!gridProps.editPath) {
-            //     router.push(`${pathname}/${e.dataItem[gridProps.keyfield]}`);
-            // } else {
-            //     router.push(`${gridProps.editPath}/${e.dataItem[gridProps.keyfield]}`);
-            // }
-
             if (gridProps.onRowDoubleClicked) {
-
                 gridProps.onRowDoubleClicked({ id: e.dataItem.id });
             }
         },
+
+
+
         ...gridProps,
+
+        skip: gridState.skip,
+        take: gridState.take,
+        sort: gridState.sort
     };
 
     return <>
@@ -89,10 +100,12 @@ export function DataGrid(gridProps: DataGridProps) {
 
 export function useGridState() {
     const searchParams = useSearchParams();
+
     let currentDataState: GridState = {
         skip: 0,
-        take: 50,
+        take: 50
     };
+
     if (searchParams && searchParams.get("gridState")) {
         currentDataState = JSON.parse(searchParams.get("gridState") as string);
     }

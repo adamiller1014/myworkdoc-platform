@@ -9,6 +9,7 @@ import { CheckboxCell, DataGrid, DateCell, GridColumn, useGridState } from "@/co
 export default function CompaniesGrid() {
 
     const gridState = useGridState();
+
     const { data: count } = api.companies.count.useQuery(gridState);
     const { data, isLoading } = api.companies.grid.useQuery(gridState);
 
@@ -30,11 +31,12 @@ export default function CompaniesGrid() {
                     <AddCompany />
                 </div>
             </div>
-            <div className="ag-theme-alpine h-[calc(100vh-80px)]  p-5 " >
+            <div className="ag-theme-alpine h-[calc(100vh-70px)]  p-3 " >
                 <DataGrid
                     columns={colDefs}
                     data={data}
                     total={count}
+                    defaultSort={[{ field: "name", dir: 'asc' }]}
                     isLoading={isLoading}
                     onRowDoubleClicked={(e) => {
                         router.push(`/companies/${e.id}`);

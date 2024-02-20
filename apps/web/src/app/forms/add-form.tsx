@@ -4,22 +4,23 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 
 import { api } from '../../utils/react';
-import { CreateCaseFormInput } from '@myworkdoc/api/src/router/routes/case-forms/case-form-types';
+import { CreateFormInput } from '@myworkdoc/api/src/router/routes/forms/form-types';
 
 
-export default function AddCaseForm() {
+
+export default function AddForm() {
   const utils = api.useUtils();
   const router = useRouter();
-  const { handleSubmit, formState, register } = useForm<CreateCaseFormInput>();
+  const { handleSubmit, formState, register } = useForm<CreateFormInput>();
 
-  const mutation = api.caseForms.create.useMutation({
-    onSuccess: async (newCaseForm) => {
-      await utils.caseForms.invalidate();
-      router.push('/caseforms/' + newCaseForm.id);
+  const mutation = api.forms.create.useMutation({
+    onSuccess: async (newForm) => {
+      await utils.forms.invalidate();
+      router.push('/forms/' + newForm.id);
     },
   });
 
-  const onSubmit: SubmitHandler<CreateCaseFormInput> = (data) => {
+  const onSubmit: SubmitHandler<CreateFormInput> = (data) => {
     const { active, ...rest } = data;
     const isActive = active.toString() === "on";
 
@@ -30,13 +31,13 @@ export default function AddCaseForm() {
     <>
       <Dialog.Root>
         <Dialog.Trigger>
-          <Button className='bg-blue-600'>Add Case Form</Button>
+          <Button className='bg-blue-600'>Add Form</Button>
         </Dialog.Trigger>
         <Dialog.Content style={{ maxWidth: 450, overflow: 'unset' }}>
           <form onSubmit={handleSubmit(onSubmit)}>
-            <Dialog.Title>Add Case Form</Dialog.Title>
+            <Dialog.Title>Add Form</Dialog.Title>
             <Dialog.Description size="2" mb="4">
-              Please enter the following information to add a new caseform.
+              Please enter the following information to add a new form.
             </Dialog.Description>
 
             <Flex direction="column" gap="3">
@@ -69,7 +70,7 @@ export default function AddCaseForm() {
                 </Button>
               </Dialog.Close>
               <Button type="submit" disabled={!formState.isValid} variant="soft" color="blue">
-                Create CaseForm
+                Create Form
               </Button>
             </Flex>
           </form>

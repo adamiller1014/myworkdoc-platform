@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 export default function CompaniesGrid({ params }: { params: { companyId: string } }) {
 
     const gridState = useGridState();
+
     const cId = parseInt(params.companyId);
     const { data, isLoading } = api.companies.cases.useQuery({ company_id: cId, gridState });
     const { data: count } = api.companies.casesCount.useQuery(cId);
@@ -31,12 +32,13 @@ export default function CompaniesGrid({ params }: { params: { companyId: string 
                     {/* <AddCompany /> */}
                 </div>
             </div>
-            <div className="ag-theme-alpine h-[calc(100vh-100px)]  p-5 " >
+            <div className="h-[calc(100vh-70px)]  p-3" >
 
                 <DataGrid
                     columns={colDefs}
                     data={data}
                     total={count}
+                    defaultSort={[{ field: "created_on", dir: 'desc' }]}
                     isLoading={isLoading}
                     onRowDoubleClicked={(e) => {
                         router.push(`/companies/${e.id}/cases`);

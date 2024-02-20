@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 export default function EmployeesGrid({ params }: { params: { employeeId: string } }) {
 
     const gridState = useGridState();
+
     const cId = parseInt(params.employeeId);
     const { data, isLoading } = api.employees.cases.useQuery({ employee_id: cId, gridState });
     const { data: count } = api.employees.casesCount.useQuery(cId);
@@ -28,15 +29,16 @@ export default function EmployeesGrid({ params }: { params: { employeeId: string
 
                 <h3 className="text-2xl font-semibold leading-6 text-gray-900">Cases</h3>
                 <div className="mt-3 flex sm:ml-4 sm:mt-0">
-                    {/* <AddEmployee /> */}
+
                 </div>
             </div>
-            <div className="ag-theme-alpine h-[calc(100vh-100px)]  p-5 " >
+            <div className="h-[calc(100vh-70px)]  p-3" >
 
                 <DataGrid
                     columns={colDefs}
                     data={data}
                     total={count}
+                    defaultSort={[{ field: "case_number", dir: 'asc' }]}
                     isLoading={isLoading}
                     onRowDoubleClicked={(e) => {
                         router.push(`/employees/${e.id}/cases`);
