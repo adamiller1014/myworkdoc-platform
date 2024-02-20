@@ -50,12 +50,13 @@ export const casesRouter = router({
     list: protectedProcedure
         .input(z.object({
             gridState: GridStateSchema,
-            status: z.enum(['follow-ups', 'all', 'recently updated'])
+            segment: z.enum(['follow-ups', 'all', 'recently updated']),
+            closed: z.boolean().default(true)
         }))
         .query(async ({ input, ctx }) => {
 
 
-            const where = WhereStatementBasedOnStatus(input.status);
+            const where = WhereStatementBasedOnStatus(input.segment);
 
             return ctx.db.cases.findMany(
                 {
@@ -70,7 +71,10 @@ export const casesRouter = router({
                             }
                         }
                     },
-                    where,
+                    where: {
+                        closed: input.closed,
+                        ...where
+                    },
                     ...input.gridState,
 
                 }
@@ -333,10 +337,10 @@ export const casesRouter = router({
 });
 
 
-function WhereStatementBasedOnStatus(status: 'follow-ups' | 'all' | 'recently updated') {
+function WhereStatementBasedOnStatus(segment: 'follow-ups' | 'all' | 'recently updated') {
     let where = {};
 
-    if (status === 'follow-ups') {
+    if (segment === 'follow-ups') {
 
         // Follow-ups in the next 24 hrs
         where = {
@@ -351,7 +355,7 @@ function WhereStatementBasedOnStatus(status: 'follow-ups' | 'all' | 'recently up
         };
     }
 
-    if (status === 'recently updated') {
+    if (segment === 'recently updated') {
         // Cases updated in the last 24 hrs
         where = {
             updated_on: {

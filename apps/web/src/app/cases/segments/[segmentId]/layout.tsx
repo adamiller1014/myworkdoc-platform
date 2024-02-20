@@ -12,7 +12,7 @@ import {
 import { GridState, useGridState } from "@/components/grid/data-grid";
 import { FolderIcon } from "@heroicons/react/24/outline";
 import { Pager } from "@progress/kendo-react-data-tools";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { Select } from "@radix-ui/themes";
 import { SortDescriptor } from "@progress/kendo-data-query";
 
@@ -22,6 +22,7 @@ export default function Cases({ children, params }: { children: any, params: { s
     const router = useRouter();
     const pathname = usePathname();
     const searchParams = useSearchParams();
+    const [closed, setClosed] = useState(false);
     const createQueryString = useCallback(
         (name: string, value: string) => {
             const params = new URLSearchParams(searchParams)
@@ -38,7 +39,7 @@ export default function Cases({ children, params }: { children: any, params: { s
 
     segmentTitle = `${segmentId.charAt(0).toUpperCase()}${segmentId.slice(1)} Cases`;
     function filterChange(value: string): void {
-
+        setClosed(value === "closed");
     }
 
     function sortChanged(value: string): void {
@@ -97,7 +98,7 @@ export default function Cases({ children, params }: { children: any, params: { s
                 </div>
 
 
-                <CasesList status={segmentId} />
+                <CasesList segment={segmentId} closed={closed} />
 
             </div>
 
@@ -107,7 +108,7 @@ export default function Cases({ children, params }: { children: any, params: { s
     );
 }
 
-function CasesList({ status }: { status: 'follow-ups' | 'all' | 'recently updated' }) {
+function CasesList({ segment, closed }: { segment: 'follow-ups' | 'all' | 'recently updated', closed: boolean }) {
     const pathname = usePathname();
     const gridState = useGridState();
     const searchParams = useSearchParams();
@@ -127,7 +128,7 @@ function CasesList({ status }: { status: 'follow-ups' | 'all' | 'recently update
     }
 
     const router = useRouter();
-    const { data, isLoading } = api.cases.list.useQuery({ gridState, status: status });
+    const { data, isLoading } = api.cases.list.useQuery({ gridState, segment: segment, closed: closed });
     const { data: count } = api.cases.count.useQuery();
 
 
