@@ -31,6 +31,7 @@ export function DataGrid(gridProps: DataGridProps) {
     const pathname = usePathname();
     const router = useRouter();
     const searchParams = useSearchParams();
+    const gridState = useGridState();
 
     const createQueryString = useCallback(
         (name: string, value: string) => {
@@ -43,7 +44,7 @@ export function DataGrid(gridProps: DataGridProps) {
     )
 
     const dataStateChange = (event: GridDataStateChangeEvent) => {
-        router.push(pathname + '?' + createQueryString("dataState", JSON.stringify(event.dataState)))
+        router.push(pathname + '?' + createQueryString("gridState", JSON.stringify(event.dataState)))
     };
 
     const props: GridProps = {
@@ -55,23 +56,19 @@ export function DataGrid(gridProps: DataGridProps) {
         total: gridProps.total,
         pageable: {
             type: "input",
-            pageSizeValue: 50
+            pageSizeValue: 50,
         },
         onDataStateChange: dataStateChange,
 
         onRowDoubleClick: (e) => {
-            // if (!gridProps.editPath) {
-            //     router.push(`${pathname}/${e.dataItem[gridProps.keyfield]}`);
-            // } else {
-            //     router.push(`${gridProps.editPath}/${e.dataItem[gridProps.keyfield]}`);
-            // }
-
             if (gridProps.onRowDoubleClicked) {
-
                 gridProps.onRowDoubleClicked({ id: e.dataItem.id });
             }
         },
         ...gridProps,
+
+        skip: gridState.skip,
+        take: gridState.take,
     };
 
     return <>
