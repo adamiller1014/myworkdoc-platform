@@ -1,9 +1,10 @@
 import "../styles/globals.css";
+import '@radix-ui/themes/styles.css';
 import '@progress/kendo-theme-material/dist/all.css';
+
 import { Inter } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Theme } from '@radix-ui/themes';
-import '@radix-ui/themes/styles.css';
 import { TRPCReactProvider } from "../utils/react";
 import { SideNav } from "@/components/side-nav/side-nav.component";
 

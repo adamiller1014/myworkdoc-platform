@@ -30,7 +30,7 @@ export default function AddCaseForm() {
     <>
       <Dialog.Root>
         <Dialog.Trigger>
-          <Button value={'solid'}>Add Case Form</Button>
+          <Button >Add Case Form</Button>
         </Dialog.Trigger>
         <Dialog.Content style={{ maxWidth: 450, overflow: 'unset' }}>
           <form onSubmit={handleSubmit(onSubmit)}>
