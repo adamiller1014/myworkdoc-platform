@@ -76,6 +76,9 @@ export function DataGrid(gridProps: DataGridProps) {
                 gridProps.onRowDoubleClicked({ id: e.dataItem.id });
             }
         },
+
+
+
         ...gridProps,
 
         skip: gridState.skip,
