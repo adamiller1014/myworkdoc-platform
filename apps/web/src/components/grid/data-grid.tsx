@@ -54,7 +54,6 @@ export function DataGrid(gridProps: DataGridProps) {
     )
 
     const dataStateChange = (event: GridDataStateChangeEvent) => {
-        console.log("DataStateChange", event.dataState)
         router.push(pathname + '?' + createQueryString("gridState", JSON.stringify(event.dataState)))
     };
 
