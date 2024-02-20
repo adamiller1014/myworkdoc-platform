@@ -29,7 +29,7 @@ export default function CaseFormsGrid() {
                     <Addprofile />
                 </div>
             </div>
-            <div className="ag-theme-alpine h-[calc(100vh-80px)]  p-5 " >
+            <div className="h-[calc(100vh-70px)]  p-3 " >
                 <DataGrid
                     columns={colDefs}
                     data={data}
