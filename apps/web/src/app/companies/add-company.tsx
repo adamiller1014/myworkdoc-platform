@@ -1,15 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button, Checkbox, Dialog, Flex, Text, TextField } from '@radix-ui/themes';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 
 import { api } from '../../utils/react';
 import { CreateCompanyInput } from '@myworkdoc/api/src/router/routes/companies/company-types';
+import AddressLookup from '@/components/address-lookup/address-lookup.component';
+
 
 export default function AddCompany() {
   const utils = api.useUtils();
   const router = useRouter();
   const { handleSubmit, formState, register } = useForm<CreateCompanyInput>();
+  const [address, setAddress] = useState("");
 
   const mutation = api.companies.create.useMutation({
     onSuccess: async (newCompany) => {
@@ -22,7 +25,7 @@ export default function AddCompany() {
     const { active, ...rest } = data;
     const isActive = active.toString() === "on";
 
-    mutation.mutate({ ...rest, active: isActive });
+    mutation.mutate({ ...rest, active: isActive, address });
   };
 
   return (
@@ -51,16 +54,8 @@ export default function AddCompany() {
                     } p-2 rounded-md focus:outline-none focus:ring focus:border-blue-500`}
                 />
               </label>
-              <label>
-                <Text as="div" size="2" mb="1" weight="bold">
-                  Address
-                </Text>
-                <TextField.Input
-                  size="2"
-                  placeholder="Address"
-                  {...register('address')}
-                />
-              </label>
+
+              <AddressLookup setAddress={setAddress} />
 
               <Text as="label" size="3">
                 <Flex gap="2">
