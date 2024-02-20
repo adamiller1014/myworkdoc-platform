@@ -67,6 +67,7 @@ export function DataGrid(gridProps: DataGridProps) {
         pageable: {
             type: "input",
             pageSizeValue: 50,
+            buttonCount: 0
         },
         onDataStateChange: dataStateChange,
 

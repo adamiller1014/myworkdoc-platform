@@ -24,9 +24,10 @@ export interface FormResponseItem {
 export const casesRouter = router({
     grid: protectedProcedure
         .input(z.object({
-            gridState: GridStateSchema
+            gridState: GridStateSchema,
         }))
         .query(async ({ input, ctx }) => {
+
             return ctx.db.cases.findMany(
                 {
                     select: {
@@ -41,6 +42,7 @@ export const casesRouter = router({
                         }
                     },
                     ...input.gridState,
+
                 }
             );
 
@@ -50,23 +52,25 @@ export const casesRouter = router({
             companyId: z.number().optional(),
             closed: z.boolean().optional(),
             employeeId: z.number().optional(),
-        }))
+        }).optional())
         .query(async ({ ctx, input }) => {
 
             let where = {};
 
-            if (input.companyId) {
-                where = {
-                    profile: {
-                        company_id: input.companyId,
-                        closed: input.closed
+            if (input) {
+                if (input.companyId) {
+                    where = {
+                        profile: {
+                            company_id: input.companyId,
+                            closed: input.closed
+                        }
                     }
                 }
-            }
 
-            if (input.employeeId) {
-                where = {
-                    profile_id: input.employeeId
+                if (input.employeeId) {
+                    where = {
+                        profile_id: input.employeeId
+                    }
                 }
             }
 
@@ -94,22 +98,6 @@ export const casesRouter = router({
             });
         }),
 
-    list: protectedProcedure
-        .input(z.object({
-            companyId: z.number().optional(),
-        }))
-        .query(async ({ input, ctx }) => {
-
-
-            return ctx.db.cases.findMany(
-                {
-                    include: {
-                        profile: true,
-                        case_types: true
-                    }
-                },
-            );
-        }),
     get: protectedProcedure
         .input(z.number())
         .query(async ({ input, ctx }) => {
