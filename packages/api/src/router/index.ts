@@ -1,4 +1,5 @@
 import { router } from "../trpc";
+import { addressesRouter } from "./routes/addresses/addresses";
 import { authRouter } from "./routes/auth/authRouter";
 import { caseFormsRouter } from "./routes/case-forms/caseForm";
 import { casesRouter } from "./routes/cases/cases";
@@ -17,6 +18,7 @@ export const appRouter = router({
   forms: formsRouter,
   roomTypes: roomTypesRouter,
   fileUploads: fileUploadsRouter,
+  addresses: addressesRouter,
 
   auth: authRouter,
   caseForms: caseFormsRouter,
