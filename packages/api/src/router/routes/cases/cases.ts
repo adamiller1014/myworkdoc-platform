@@ -116,7 +116,12 @@ export const casesRouter = router({
 
             const where = WhereStatementBasedOnStatus(input.status);
 
-            return ctx.db.cases.count({ where });
+            return ctx.db.cases.count({
+                where: {
+                    ...where,
+                    closed: false
+                }
+            });
 
 
         }),
