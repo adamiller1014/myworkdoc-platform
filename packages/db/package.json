@@ -15,12 +15,12 @@
   },
   "dependencies": {
     "@faker-js/faker": "^8.4.1",
-    "@prisma/client": "^5.9.1",
+    "@prisma/client": "^5.10.0",
     "tsx": "^4.7.1"
   },
   "devDependencies": {
     "dotenv-cli": "^7.3.0",
-    "prisma": "^5.9.1",
+    "prisma": "^5.10.0",
     "typescript": "^5.3.3"
   },
   "prisma": {
