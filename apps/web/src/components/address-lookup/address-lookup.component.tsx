@@ -7,19 +7,20 @@ import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
 interface AddressLookupProps {
-    addressSelected: (address: any) => void;
+    setAddressSelected: (address: any) => void;
 }
 
-const AddressLookup = ({ addressSelected }: AddressLookupProps) => {
+const AddressLookup = ({ setAddressSelected }: AddressLookupProps) => {
 
     const [key, setKey] = useState("");
     const { control } = useForm({});
     const { data, isLoading } = api.addresses.autocomplete.useQuery(key)
+    let autocomplete = null;
 
     return (
         <div>
             <Controller
-                name="address_lookup"
+                name="address-lookup"
                 control={control}
                 render={({ }) => {
                     return (
@@ -29,17 +30,20 @@ const AddressLookup = ({ addressSelected }: AddressLookupProps) => {
                                     Address
                                 </Text>
                                 <AutoComplete
+                                    name="address"
                                     size="medium"
                                     fillMode="solid"
                                     data={data}
                                     loading={isLoading}
                                     textField='formatted'
                                     suggest
+                                    onFocus={(e) => {
+                                        console.log(e, "___________")
+                                    }}
                                     onChange={(e) => {
                                         setKey(e.value)
                                     }}
                                 />
-
                             </label>
                         </>
                     )

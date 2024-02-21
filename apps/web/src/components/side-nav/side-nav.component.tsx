@@ -7,6 +7,7 @@ import * as React from "react";
 import { classNames } from '@/utils/classNames';
 import { UserButton } from '@clerk/nextjs';
 import { api } from '@/utils/react';
+import { SideNavLink } from './side-nav-link.component';
 
 export interface NavItem {
     name: string;
@@ -15,7 +16,126 @@ export interface NavItem {
     icon?: any;
 }
 
+export interface SideNavLink {
+    [x: string]: unknown;
+    name: string;
+    url: string;
+    icon?: string;
+    current?: boolean;
+    count?: any;
+    segmentId?: string;
+    entityTypeId?: string;
+    filter?: any;
+    isExternal?: boolean;
+    noFAIcon?: boolean;
+}
+export interface SideNavParams {
+    items?: SideNavGroup[];
+}
 
+
+export interface SideNavGroup {
+    name: string;
+    items: SideNavLink[];
+}
+
+function SideBarGroup({
+    group,
+    index,
+}: {
+    group: SideNavGroup;
+    index: number;
+}) {
+    return (
+        <>
+            <div
+                className={index == 0 ? "mt-0" : "pt-7"}
+                key={"sidebar-group" + index}
+            >
+                <h3
+                    className='px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider'
+                    id='projects-headline'
+                >
+                    {group.name}
+                </h3>
+                <div
+                    className='mt-1 space-y-1'
+                    aria-labelledby={group.name + "-headline"}
+                >
+                    {group.items.map((item, index) => {
+                        {
+                            //var isActive = useMatch(item.url);
+                            // TODO Fix isActive on Side Nav
+                            var isActive = false;
+                            return (
+                                <React.Fragment key={group.name + "-" + index}>
+                                    <SideNavLink
+                                        key={group.name + "-" + item.url}
+                                        href={item.url}
+                                        aria-current={isActive ? "page" : undefined}
+                                    >
+                                        <ItemIcon item={item} />
+
+                                        <span className='truncate'>{item.name}</span>
+                                        {item.count || item.showCount ? (
+                                            <span
+                                                className={classNames(
+                                                    isActive
+                                                        ? "bg-white"
+                                                        : "bg-gray-100 group-hover:bg-gray-200",
+                                                    "ml-auto inline-block py-0.5 px-3 text-xs rounded-full"
+                                                )}
+                                            >
+                                                {item.count}
+                                            </span>
+                                        ) : null}
+                                    </SideNavLink>
+                                </React.Fragment>
+                            );
+                        }
+                    })}
+                </div>
+            </div>
+        </>
+    );
+}
+
+export const SideNavSetting: React.FC<SideNavParams> = (params) => {
+    return (
+        <nav aria-label='Sidebar'>
+            <div className='space-y-1'>
+                {params.items?.map((item, index) => (
+                    <SideBarGroup
+                        group={item}
+                        index={index}
+                        key={index + "_key_" + item?.items}
+                    />
+                ))}
+            </div>
+        </nav>
+    );
+};
+
+export const ItemIcon: React.FC<{ item: SideNavLink }> = ({ item }) => {
+    if (!item.icon) {
+        return <></>;
+    }
+
+    return (
+        <></>
+        //   <Icon
+        //     name={item.icon.split(" ")[1] as any}
+        //     className={classNames(
+        //       item.current
+        //         ? "text-gray-500"
+        //         : "text-gray-400 group-hover:text-gray-500",
+        //       "flex-shrink-0 -ml-1 mr-3 h-5 w-5"
+        //     )}
+        //   />
+
+    );
+
+};
 
 export function SideNav() {
 
