@@ -39,7 +39,7 @@ cp .env.example .env
 docker-compose up -d
 
 # Push the Prisma schema to your database
-pnpm db-push
+pnpm db-reset
 
 Run `pnpm dev` at the project root folder.
 ```
