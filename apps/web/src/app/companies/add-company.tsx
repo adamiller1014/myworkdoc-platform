@@ -12,7 +12,7 @@ export default function AddCompany() {
   const utils = api.useUtils();
   const router = useRouter();
   const { handleSubmit, formState, register } = useForm<CreateCompanyInput>();
-  const [address, addressSelected] = useState("");
+  const [address, setAddressSelected] = useState("");
 
   const mutation = api.companies.create.useMutation({
     onSuccess: async (newCompany) => {
@@ -24,8 +24,8 @@ export default function AddCompany() {
   const onSubmit: SubmitHandler<CreateCompanyInput> = (data) => {
     const { active, ...rest } = data;
     const isActive = active.toString() === "on";
-
-    mutation.mutate({ ...rest, active: isActive, address });
+    console.log(rest, "+++++++");
+    // mutation.mutate({ ...rest, active: isActive });
   };
 
   return (
@@ -55,7 +55,7 @@ export default function AddCompany() {
                 />
               </label>
 
-              <AddressLookup addressSelected={addressSelected} />
+              <AddressLookup setAddressSelected={setAddressSelected} />
 
               <Text as="label" size="3">
                 <Flex gap="2">
