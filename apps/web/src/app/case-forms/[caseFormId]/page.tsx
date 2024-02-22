@@ -7,6 +7,8 @@ export default function CaseForm({ params }: { params: { caseFormId: string } })
 
     const { data: form, isLoading } = api.caseForms.get.useQuery(parseInt(params.caseFormId));
 
+
+
     if (isLoading) {
         return <div>Loading...</div>
     }
@@ -20,6 +22,8 @@ export default function CaseForm({ params }: { params: { caseFormId: string } })
             pages: []
         }
     }
+
+
 
     return <FormEditor formInfo={form.form_info} name={form?.name} />
 

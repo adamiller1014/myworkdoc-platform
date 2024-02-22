@@ -4,13 +4,21 @@ import { FormField, FormInfo } from "@myworkdoc/api/src/router/routes/case-forms
 
 import { SortableOnDragOverEvent, SortableOnNavigateEvent, Sortable, SortableItemUIProps } from "@progress/kendo-react-sortable";
 import { Button, Tabs, Box, Flex, TextField, TextArea, Checkbox, Text } from "@radix-ui/themes";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useEditFormStore } from "./edit-form-store";
 import { Settings } from "../inputs/settings";
 import { FormInput } from "../inputs/input/input.component";
 import { Conditions } from "./input-conditions";
 
 export function FormEditor({ formInfo, name }: { formInfo: FormInfo, name: string | null }) {
+
+    const { setFormInfo, addPage } = useEditFormStore();
+
+    useEffect(() => {
+        if (formInfo) {
+            setFormInfo(formInfo);
+        }
+    }, [formInfo, setFormInfo])
 
     return <>
         <div className="h-full w-full bg-gray-100">
@@ -28,7 +36,7 @@ export function FormEditor({ formInfo, name }: { formInfo: FormInfo, name: strin
                 <div className="w-3/4 p-10 overflow-auto">
 
                     <div className="flex justify-end">
-                        <button className="text-blue-700 m-3 text-sm">Add Page</button>
+                        <button className="text-blue-700 m-3 text-sm" onClick={addPage}>Add Page</button>
                         <button className="text-blue-700 m-3 text-sm">Add Field</button>
                     </div>
 
