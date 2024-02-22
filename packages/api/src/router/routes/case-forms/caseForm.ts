@@ -106,9 +106,11 @@ export interface FormField {
     type: 'select' | 'checkbox' | 'header' | 'description' | 'input' | 'rich-input' | 'date-time' | 'file-uploader' | 'signature'
 
     title: string;
+    shortTitle: string;
     hidden: boolean;
     required: boolean;
-    settings: any;
+    description: string;
+    settings: SelectInputSettings | null;
 
     conditions: FormFieldCondition;
 }
@@ -123,4 +125,17 @@ export interface FormFieldConditionRule {
     field: string;
     value: string;
     operator: '=' | '!=' | 'contains' | 'not-contains' | 'is-empty' | 'is-not-empty';
+}
+
+export interface SelectItem {
+    id: string;
+    label: string;
+    lable: string;
+    value: string;
+
+}
+export interface SelectInputSettings {
+    items: SelectItem[];
+    style: 'dropdown' | 'rating' | 'list'
+    multiple: boolean;
 }
