@@ -69,10 +69,10 @@ export const caseFormsRouter = router({
             }
 
 
-            let form_info: Form | null = null;
+            let form_info: FormInfo | null = null;
             if (result.form_info) {
                 // This is just to strongly type the form_info
-                form_info = result.form_info as any as Form;
+                form_info = result.form_info as any as FormInfo;
             }
 
             return {
@@ -90,7 +90,7 @@ export const caseFormsRouter = router({
 });
 
 
-export interface Form {
+export interface FormInfo {
     pages: FormPage[]
 }
 
@@ -103,7 +103,7 @@ export interface FormPage {
 export interface FormField {
 
     id: string;
-    type: 'select' | 'checkbox' | 'header' | 'description' | 'input' | 'rich-input' | 'date-time' | 'file-uploader' | 'signature'
+    type: 'date' | 'select' | 'checkbox' | 'header' | 'description' | 'input' | 'rich-input' | 'date-time' | 'file-uploader' | 'signature'
 
     title: string;
     shortTitle: string;
