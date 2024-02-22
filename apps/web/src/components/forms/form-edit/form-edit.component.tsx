@@ -130,8 +130,9 @@ function SortableItem(props: SortableItemProps) {
         <div ref={forwardRef} style={style} {...attributes}
             className={
                 classNames("bg-gray-50 p-3 m-2 rounded-md shadow-sm",
-                    selectedField?.id == dataItem.id && 'border-2 border-blue-800',
-                    dataItem.conditions.rules.length > 0 && 'border-dashed border-yellow-400 bg-yellow-50'
+                    dataItem.conditions.rules.length == 0 && selectedField?.id == dataItem.id && 'border-2 border-blue-800',
+                    dataItem.conditions.rules.length > 0 && selectedField?.id !== dataItem.id && 'border-2 border-dashed border-yellow-400 bg-yellow-50',
+                    dataItem.conditions.rules.length > 0 && selectedField?.id == dataItem.id && 'border-2  border-dashed border-blue-800 bg-yellow-50'
                 )}
             onClick={onClick}>
             <div className="flex justify-between">
