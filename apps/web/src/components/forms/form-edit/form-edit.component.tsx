@@ -3,16 +3,17 @@ import { Bars4Icon } from "@heroicons/react/24/outline";
 import { FormField, FormInfo } from "@myworkdoc/api/src/router/routes/case-forms/caseForm";
 
 import { SortableOnDragOverEvent, SortableOnNavigateEvent, Sortable, SortableItemUIProps } from "@progress/kendo-react-sortable";
-import { Button, Tabs, Box, Flex, TextField, TextArea, Checkbox, Text } from "@radix-ui/themes";
+import { Button, Tabs, Box, Flex, TextField, TextArea, Checkbox, Text, DropdownMenu } from "@radix-ui/themes";
 import { useEffect, useState } from "react";
-import { useEditFormStore } from "./edit-form-store";
+import { FormFieldTypes, useEditFormStore } from "./edit-form-store";
 import { Settings } from "../inputs/settings";
 import { FormInput } from "../inputs/input/input.component";
 import { Conditions } from "./input-conditions";
+import { CaretDownIcon } from "@radix-ui/react-icons";
 
 export function FormEditor({ formInfo, name }: { formInfo: FormInfo, name: string | null }) {
 
-    const { setFormInfo, addPage } = useEditFormStore();
+    const { setFormInfo, addPage, addField, setCurrentPageIndex } = useEditFormStore();
 
     useEffect(() => {
         if (formInfo) {
@@ -35,19 +36,33 @@ export function FormEditor({ formInfo, name }: { formInfo: FormInfo, name: strin
             <div className="flex h-full ">
                 <div className="w-3/4 p-10 overflow-auto">
 
-                    <div className="flex justify-end">
-                        <button className="text-blue-700 m-3 text-sm" onClick={addPage}>Add Page</button>
-                        <button className="text-blue-700 m-3 text-sm">Add Field</button>
+                    <div className="flex justify-end mb-3 gap-2">
+                        <Button variant={'outline'} size={'1'} onClick={addPage}>Add Page</Button>
+
+                        <DropdownMenu.Root>
+                            <DropdownMenu.Trigger>
+                                <Button variant={'outline'} size={'1'}>
+                                    Add Field
+                                    <CaretDownIcon />
+                                </Button>
+                            </DropdownMenu.Trigger>
+                            <DropdownMenu.Content>
+                                {FormFieldTypes.map((type, idx) => (
+                                    <DropdownMenu.Item key={'add_' + type.value} onClick={() => addField(type.value as any)}>{type.name}</DropdownMenu.Item>
+                                ))}
+
+                            </DropdownMenu.Content>
+                        </DropdownMenu.Root>
                     </div>
 
                     <div className="flex justify-between bg-white shadow-sm rounded-md min-h-96">
 
 
 
-                        <Tabs.Root defaultValue={formInfo?.pages[0]?.title} className="w-full">
+                        <Tabs.Root defaultValue={formInfo?.pages[0]?.title} className="w-full" >
                             <Tabs.List>
                                 {formInfo.pages.map((page, idx) => (
-                                    <Tabs.Trigger key={idx} value={page.title}>{page.title}</Tabs.Trigger>
+                                    <Tabs.Trigger key={idx} value={page.title} onClick={() => setCurrentPageIndex(idx)}>{page.title}</Tabs.Trigger>
                                 ))}
 
                             </Tabs.List>
@@ -114,10 +129,9 @@ function SortableItem(props: SortableItemProps) {
     return <>
         <div ref={forwardRef} style={style} {...attributes}
             className={
-                classNames("bg-gray-50 p-3 m-2 rounded-md shadow-sm border-2 border-gray-300",
+                classNames("bg-gray-50 p-3 m-2 rounded-md shadow-sm",
                     selectedField?.id == dataItem.id && 'border-2 border-blue-800',
-                    dataItem.conditions.rules.length > 0 && selectedField?.id !== dataItem.id && 'border-dashed border-yellow-400 bg-yellow-50',
-                    dataItem.conditions.rules.length > 0 && selectedField?.id == dataItem.id && 'border-dashed border-blue-800 bg-yellow-50',
+                    dataItem.conditions.rules.length > 0 && 'border-dashed border-yellow-400 bg-yellow-50'
                 )}
             onClick={onClick}>
             <div className="flex justify-between">
