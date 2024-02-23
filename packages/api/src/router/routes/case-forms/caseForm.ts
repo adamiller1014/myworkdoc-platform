@@ -56,13 +56,29 @@ export const caseFormsRouter = router({
         .input(z.number())
         .query(async ({ input, ctx }) => {
 
-            return ctx.db.case_forms.findUnique(
+            const result = await ctx.db.case_forms.findUnique(
                 {
                     where: {
                         id: input
                     }
                 }
             );
+
+            if (!result) {
+                return null;
+            }
+
+
+            let form_info: FormInfo | null = null;
+            if (result.form_info) {
+                // This is just to strongly type the form_info
+                form_info = result.form_info as any as FormInfo;
+            }
+
+            return {
+                ...result,
+                form_info
+            };
         }),
     create: protectedProcedure
         .input(CreateCaseFormSchema)
@@ -72,3 +88,56 @@ export const caseFormsRouter = router({
             });
         }),
 });
+
+
+export interface FormInfo {
+    pages: FormPage[]
+}
+
+export interface FormPage {
+    title: string;
+    active: boolean;
+    fields: FormField[]
+}
+
+
+
+export interface FormField {
+
+    id: string;
+    type: 'date' | 'select' | 'checkbox' | 'header' | 'description' | 'input' | 'rich-input' | 'date-time' | 'file-uploader' | 'signature'
+
+    title: string;
+    shortTitle: string;
+    hidden: boolean;
+    required: boolean;
+    description: string;
+    settings: SelectInputSettings | null;
+
+    conditions: FormFieldCondition;
+}
+
+export interface FormFieldCondition {
+    rules: FormFieldConditionRule[]
+    condition: 'and' | 'or'
+
+}
+
+export interface FormFieldConditionRule {
+    field: string;
+    value: string;
+    operator: '=' | '!=' | 'contains' | 'not-contains' | 'is-empty' | 'is-not-empty';
+}
+
+export interface SelectItem {
+    id: string;
+    label: string;
+    lable: string;
+    value: string;
+
+}
+export interface SelectInputSettings {
+    items: SelectItem[];
+    style: 'dropdown' | 'rating' | 'list'
+    multiple: boolean;
+}
