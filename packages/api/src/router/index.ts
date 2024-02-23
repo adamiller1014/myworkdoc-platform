@@ -2,6 +2,7 @@ import { router } from "../trpc";
 import { addressesRouter } from "./routes/addresses/addresses";
 import { authRouter } from "./routes/auth/authRouter";
 import { caseFormsRouter } from "./routes/case-forms/caseForm";
+import { caseFormTypesRouter } from "./routes/case-forms/caseFormTypes";
 import { casesRouter } from "./routes/cases/cases";
 import { companiesRouter } from "./routes/companies/companies";
 import { departmentsRouter } from "./routes/departments/departments";
@@ -26,6 +27,7 @@ export const appRouter = router({
 
   auth: authRouter,
   caseForms: caseFormsRouter,
+  caseFormTypes: caseFormTypesRouter,
 });
 
 // export type definition of API

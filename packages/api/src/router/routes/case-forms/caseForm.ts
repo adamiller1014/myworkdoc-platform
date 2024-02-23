@@ -28,6 +28,9 @@ export const caseFormsRouter = router({
                 where: {
                     active: true
                 },
+                include: {
+                    case_form_type: true
+                },
                 orderBy: {
                     name: 'asc'
                 }
