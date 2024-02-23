@@ -138,10 +138,8 @@ function SortableItem(props: SortableItemProps) {
             <div className="flex justify-between">
                 <div className="flex flex-auto flex-col">
 
-                    <div className="w-full font-semibold" >{dataItem.title} {dataItem.required && <span className="ml-1 text-red-700">*</span>}</div>
-                    <div className="m-2">
-                        <FormInput field={dataItem} />
-                    </div>
+                    <FormInput {...dataItem} />
+
 
                 </div>
                 <div className="flex-none">
