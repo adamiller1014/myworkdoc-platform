@@ -1,6 +1,6 @@
 import { FormField } from "@myworkdoc/api/src/router/routes/case-forms/caseForm"
 
-import { Button, TextField } from "@radix-ui/themes"
+import { TextField } from "@radix-ui/themes"
 import { CheckboxFormInput } from "../checkbox/checkbox-input.component"
 import { DateInput } from "../date/date-input.component"
 import { Description } from "../description/description-input.component"
@@ -11,7 +11,7 @@ import { Header } from "../header/header-input.component"
 import { DateTimeInput } from "../date-time/date-time-input.component"
 import { FormRichInput } from "../rich-input/rich-input.component"
 
-function Input(field: FormField) {
+export function FormInput(field: FormField) {
 
     switch (field.type) {
         case 'select':
@@ -44,19 +44,5 @@ function Input(field: FormField) {
         // className={`border ${formState.errors.name ? 'border-red-500' : 'border-gray-300'
         //     } p-2 rounded-md focus:outline-none focus:ring focus:border-blue-500`}
         />
-    </>
-}
-
-export function FormInput(field: FormField) {
-
-    if (['description', 'checkbox', 'header'].includes(field.type)) {
-        return <Input {...field} />;
-    }
-
-    return <>
-        <div className="w-full font-semibold" >{field.title} {field.required && <span className="ml-1 text-red-700">*</span>}</div>
-        <div className="m-2">
-            <Input {...field} />
-        </div>
     </>
 }

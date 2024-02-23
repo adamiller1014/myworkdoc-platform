@@ -33,6 +33,7 @@
     "@progress/kendo-react-dateinputs": "^7.2.0",
     "@progress/kendo-react-dialogs": "^7.2.0",
     "@progress/kendo-react-dropdowns": "^7.2.0",
+    "@progress/kendo-react-form": "^7.2.2",
     "@progress/kendo-react-grid": "^7.2.0",
     "@progress/kendo-react-inputs": "^7.2.0",
     "@progress/kendo-react-intl": "^7.2.0",
