@@ -15,8 +15,6 @@ export default function CaseLayout({ params, children }: { params: { segmentId: 
     const cId = parseInt(params.caseId);
     const { data: caseResult, isLoading } = api.cases.get.useQuery(cId);
 
-
-
     if (isLoading || !caseResult) {
         return null;
     }
@@ -67,7 +65,7 @@ export default function CaseLayout({ params, children }: { params: { segmentId: 
 
                 </div>
                 <div className="flex flex-row items-center space-x-2">
-                    <CreateCaseNote caseId={cId} />
+                    <CreateCaseNote />
                 </div>
             </div>
 
