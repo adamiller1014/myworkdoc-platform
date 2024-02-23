@@ -1,10 +1,10 @@
 import { FormField } from "@myworkdoc/api/src/router/routes/case-forms/caseForm";
 import { Field } from "@progress/kendo-react-form";
-import { DatePicker } from "@progress/kendo-react-dateinputs";
+import { TimePicker } from "@progress/kendo-react-dateinputs";
 import { Error, Label } from "@progress/kendo-react-labels";
 
 
-export function DateInput({ field }: { field: FormField }) {
+export function TimeInput({ field }: { field: FormField }) {
 
 
     let validator: any;
@@ -38,7 +38,7 @@ const ValidatedInput = (fieldRenderProps: {
         <div>
 
             <Label className="w-full font-semibold" >{others.label}</Label>
-            <DatePicker
+            <TimePicker
                 {...others}
                 label=""
                 required={required}

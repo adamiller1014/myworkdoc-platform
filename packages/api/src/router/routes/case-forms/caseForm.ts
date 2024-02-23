@@ -108,7 +108,7 @@ export interface FormPage {
 export interface FormField {
 
     id: string;
-    type: 'date' | 'select' | 'checkbox' | 'header' | 'description' | 'input' | 'rich-input' | 'date-time' | 'file-uploader' | 'signature'
+    type: 'time' | 'date' | 'select' | 'checkbox' | 'header' | 'description' | 'input' | 'rich-input' | 'date-time' | 'file-uploader' | 'signature'
 
     title: string;
     shortTitle: string;
