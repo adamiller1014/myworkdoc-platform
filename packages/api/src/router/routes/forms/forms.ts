@@ -3,6 +3,7 @@ import { protectedProcedure, router } from "../../../trpc";
 
 import { GridStateSchema } from "../../../common-types";
 import { CreateFormSchema } from "./form-types";
+import { FormInfo } from "../case-forms/caseForm";
 
 export const formsRouter = router({
     grid: protectedProcedure
@@ -56,13 +57,28 @@ export const formsRouter = router({
         .input(z.number())
         .query(async ({ input, ctx }) => {
 
-            return ctx.db.forms.findUnique(
+            const result = await ctx.db.forms.findUnique(
                 {
                     where: {
                         id: input
                     }
                 }
             );
+
+            if (!result) {
+                return null;
+            }
+
+            let form_info: FormInfo | null = null;
+            if (result.form_info) {
+                // This is just to strongly type the form_info
+                form_info = result.form_info as any as FormInfo;
+            }
+
+            return {
+                ...result,
+                form_info
+            };
         }),
     create: protectedProcedure
         .input(CreateFormSchema)

@@ -37,7 +37,6 @@ function Input(field: FormField) {
 
 
     return <>
-        <Button>Test</Button>
         <TextField.Input
             size="2"
             variant='soft'
@@ -49,6 +48,11 @@ function Input(field: FormField) {
 }
 
 export function FormInput(field: FormField) {
+
+    if (['description', 'checkbox', 'header'].includes(field.type)) {
+        return <Input {...field} />;
+    }
+
     return <>
         <div className="w-full font-semibold" >{field.title} {field.required && <span className="ml-1 text-red-700">*</span>}</div>
         <div className="m-2">

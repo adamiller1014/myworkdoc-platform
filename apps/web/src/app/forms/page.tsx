@@ -38,7 +38,7 @@ export default function FormsGrid() {
                     defaultSort={[{ field: "name", dir: 'asc' }]}
                     isLoading={isLoading}
                     onRowDoubleClicked={(e) => {
-                        router.push(`/case-forms/${e.id}`);
+                        router.push(`/forms/${e.id}`);
                     }} />
             </div>
         </div>
