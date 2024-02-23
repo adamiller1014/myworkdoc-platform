@@ -34,51 +34,21 @@ export default function SettingsLayout({ children }: { children: any }) {
           icon: 'fad fa-door-open',
         },
         {
-          name: 'Online Giving Settings',
-          url: `/settings/online-giving-settings`,
+          name: 'Business Lines',
+          url: `/settings/business-lines`,
           icon: 'fad fa-credit-card',
-        }
-      ]
-
-    },
-    {
-      name: 'Billing',
-      items: [
-        {
-          name: 'Billing Info',
-          url: `/settings/billing-info`,
+        }, {
+          name: 'Job Titles',
+          url: `/settings/job-titles`,
           icon: 'fad fa-credit-card',
         },
         {
-          name: 'Billing History',
-          url: `/settings/billing-history`,
+          name: 'Field Offices',
+          url: `/settings/field-offices`,
           icon: 'fad fa-history',
         }
       ]
     },
-    {
-      name: 'Integrations',
-      items: [
-        {
-          name: 'Integrations',
-          url: `/settings/integrations`,
-          icon: 'fad fa-plug',
-        },
-        {
-          name: 'API Keys',
-          url: `/settings/api-keys`,
-          icon: 'fad fa-key',
-        },
-        {
-
-          name: 'Webhooks',
-          url: `/settings/webhooks`,
-          icon: 'fad fa-link',
-        }
-      ]
-    },
-
-
   ];
 
   // var breadCrumbParams: BreadcrumbParams = {
