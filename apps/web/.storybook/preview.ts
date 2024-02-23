@@ -1,5 +1,8 @@
 import type { Preview } from "@storybook/react";
+import '../src/styles/globals.css';
+import '@radix-ui/themes/styles.css';
 
+import { ThemeDecorator } from "./theme-decorator";
 const preview: Preview = {
   parameters: {
     actions: { argTypesRegex: "^on[A-Z].*" },
@@ -11,5 +14,10 @@ const preview: Preview = {
     },
   },
 };
+
+export const decorators = [
+  ThemeDecorator
+];
+
 
 export default preview;
