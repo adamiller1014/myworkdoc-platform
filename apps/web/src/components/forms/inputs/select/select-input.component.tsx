@@ -19,7 +19,7 @@ export function SelectFormInput({ field }: { field: FormField }) {
             label={field.title}
             validator={validator}
             data={settings.items}
-            reqiorequired={field.required}
+            required={field.required}
         />
     </>
 }

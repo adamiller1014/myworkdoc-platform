@@ -18,7 +18,7 @@ export function TimeInput({ field }: { field: FormField }) {
             component={ValidatedInput}
             label={field.title}
             validator={validator}
-            reqiorequired={field.required}
+            required={field.required}
         />
     </>
 }
