@@ -1,6 +1,4 @@
 import { FormField } from "@myworkdoc/api/src/router/routes/case-forms/caseForm"
-
-import { TextField } from "@radix-ui/themes"
 import { CheckboxFormInput } from "../checkbox/checkbox-input.component"
 import { DateInput } from "../date/date-input.component"
 import { Description } from "../description/description-input.component"
@@ -10,6 +8,7 @@ import { SignatureInput } from "../signature/signature-input.component"
 import { Header } from "../header/header-input.component"
 import { DateTimeInput } from "../date-time/date-time-input.component"
 import { FormRichInput } from "../rich-input/rich-input.component"
+import { TextBoxInput } from "./text-box-input.component"
 
 export function FormInput(field: FormField) {
 
@@ -32,17 +31,7 @@ export function FormInput(field: FormField) {
             return <FileUploaderInput field={field} />
         case 'signature':
             return <SignatureInput field={field} />
+        default:
+            return <TextBoxInput field={field} />
     }
-
-
-
-    return <>
-        <TextField.Input
-            size="2"
-            variant='soft'
-        // {...register('name', { required: 'Name is required' })}
-        // className={`border ${formState.errors.name ? 'border-red-500' : 'border-gray-300'
-        //     } p-2 rounded-md focus:outline-none focus:ring focus:border-blue-500`}
-        />
-    </>
 }

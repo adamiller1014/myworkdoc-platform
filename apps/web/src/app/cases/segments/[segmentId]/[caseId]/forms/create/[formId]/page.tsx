@@ -12,6 +12,7 @@ export default function CreateFormPage({ params }: { params: { segmentId: string
     const { data: form, isLoading } = api.caseForms.get.useQuery(parseInt(params.formId));
     const handleSubmit = (dataItem: any) => {
         //props.handleSubmit(dataItem);
+        console.log('handleSubmit', dataItem)
     };
 
     if (isLoading) {
@@ -46,12 +47,12 @@ export default function CreateFormPage({ params }: { params: { segmentId: string
                                         <Tabs.Root defaultValue={formInfo?.pages[0]?.title} className="w-full" >
                                             <Tabs.List>
                                                 {formInfo?.pages.map((page, idx) => (
-                                                    <Tabs.Trigger key={idx} value={page.title} >{page.title}</Tabs.Trigger>
+                                                    <Tabs.Trigger key={'tab_trigger_' + idx} value={page.title} >{page.title}</Tabs.Trigger>
                                                 ))}
                                             </Tabs.List>
                                             <Box px="4" pt="3" pb="2">
                                                 {formInfo?.pages.map((page, idx) => (
-                                                    <Tabs.Content key={idx} value={page.title} >
+                                                    <Tabs.Content key={'tab_' + idx} value={page.title} >
                                                         <FormFields fields={page.fields} />
                                                     </Tabs.Content>
                                                 ))}
@@ -72,7 +73,7 @@ export default function CreateFormPage({ params }: { params: { segmentId: string
 function FormFields({ fields }: { fields: FormField[] }) {
     return <>
         {fields.map((field, idx) => {
-            return <div key={idx} className="flex flex-col gap-3 mb-3">
+            return <div key={'field_' + idx} className="flex flex-col gap-3 mb-3">
                 <FormInput {...field} />
             </div>
         })}

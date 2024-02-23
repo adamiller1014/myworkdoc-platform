@@ -115,7 +115,7 @@ export interface FormField {
     hidden: boolean;
     required: boolean;
     description: string;
-    settings: SelectInputSettings | null;
+    settings: SelectInputSettings | TextBoxInputSettings | null;
 
     conditions: FormFieldCondition;
 }
@@ -143,4 +143,11 @@ export interface SelectInputSettings {
     items: SelectItem[];
     style: 'dropdown' | 'rating' | 'list'
     multiple: boolean;
+}
+
+export interface TextBoxInputSettings {
+
+    type: 'color' | 'date' | 'datetime-local' | 'email' | 'month' | 'number' | 'password' | 'search' | 'tel' | 'text' | 'time' | 'url' | 'week';
+
+    multiline: boolean;
 }
